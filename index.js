@@ -46,8 +46,12 @@ weatherScene.enter(ctx => ctx.reply("enter a city name"));
 //weatherScene.on("text", ctx => ctx.reply(ctx.message.text));
 
 weatherScene.on("text", ctx => {
+  ctx.webhookReply = false;
   const { text } = ctx.update.message || {};
 
+  console.log("ctx", ctx);
+  console.log("ctx.update", ctx.update);
+  console.log("ctx.update.message", ctx.update.message);
   if (text.toLowerCase().includes("leave")) {
     leave();
     return;
@@ -91,11 +95,7 @@ weatherScene.on("text", ctx => {
 
 weatherScene.leave(ctx => ctx.reply("exiting weatherScene"));
 
-const bot = new Telegraf(process.env.BOT_TOKEN, {
-  // Telegram options
-  agent: null, // https.Agent instance, allows custom proxy, certificate, keep alive, etc.
-  webhookReply: true // Reply via webhook
-});
+const bot = new Telegraf(process.env.BOT_TOKEN);
 const telegram = new Telegram(process.env.BOT_TOKEN);
 const stage = new Stage([weatherScene], { ttl: 10 });
 
