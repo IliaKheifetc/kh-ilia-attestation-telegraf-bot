@@ -25,18 +25,19 @@ const GIPHY_API_KEY = "YVsAQADzVJvmOt52rXTtkJXijApmIa7Y";
 const GIPHY_BASE_URL = "https://api.giphy.com/v1/gifs/search";
 
 const getFullUrl = (baseUrl, params) => {
-  const queryString = Object.keys(
-    params
-  ).reduce((queryString, key, index, arr) => {
-    if (params[key] === undefined) {
+  const queryString = Object.keys(params).reduce(
+    (queryString, key, index, arr) => {
+      if (params[key] === undefined) {
+        return queryString;
+      }
+
+      queryString += `${key}=${params[key]}`;
+      queryString += index < arr.length - 1 ? "&" : "";
+
       return queryString;
-    }
-
-    queryString += `${key}=${params[key]}`;
-    queryString += index < arr.length - 1 ? "&" : "";
-
-    return queryString;
-  }, "");
+    },
+    ""
+  );
 
   return `${baseUrl}?${queryString}`;
 };
@@ -70,7 +71,11 @@ weatherScene.on("text", ctx => {
   axios
     .get(getFullUrl(WEATHERBIT_BASE_URL, params))
     .then(response => {
-      const { data: { data: [weatherInfo] } } = response;
+      const {
+        data: {
+          data: [weatherInfo]
+        }
+      } = response;
       const { temp, app_temp } = weatherInfo;
       console.log("weatherInfo", weatherInfo);
       ctx.reply(`Temperature: ${temp}\nFeels like temperature: ${app_temp}`);
@@ -197,7 +202,9 @@ bot.command("gif", ctx => {
   axios
     .get(getFullUrl(GIPHY_BASE_URL, params))
     .then(response => {
-      const { data: { data: gifs } } = response;
+      const {
+        data: { data: gifs }
+      } = response;
 
       const gif = gifs[Math.trunc(Math.random() * 10)];
       const { images = {} } = gif;
@@ -240,7 +247,12 @@ bot.hears("today", ctx => ctx.reply(new Date()));
 //       });
 //   }
 // );
-bot.launch();
+bot.launch({
+  webhook: {
+    domain: "https://ilia-kh-telegram-bot.herokuapp.com/",
+    port: process.env.PORT
+  }
+});
 
 function helpMiddleware(ctx, next) {
   ctx.reply("Send me a sticker");
