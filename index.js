@@ -259,7 +259,9 @@ bot.startWebhook(
   null,
   process.env.PORT
 );
-bot.telegram.setWebhook("https://ilia-kh-telegram-bot.herokuapp.com");
+bot.telegram.setWebhook(
+  "https://ilia-kh-telegram-bot.herokuapp.com/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
+);
 
 function helpMiddleware(ctx, next) {
   ctx.reply("Send me a sticker");
