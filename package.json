@@ -1,0 +1,17 @@
+{
+  "name": "telegraf_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env BOT_TOKEN=1204951589:AAHZj8hJCHf1YyJvKm4Ba8xh6_Cz6dEA3Sg node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cross-env": "^7.0.2",
+    "telegraf": "^3.38.0"
+  }
+}
