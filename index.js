@@ -247,12 +247,19 @@ bot.hears("today", ctx => ctx.reply(new Date()));
 //       });
 //   }
 // );
-bot.launch({
-  webhook: {
-    domain: "https://ilia-kh-telegram-bot.herokuapp.com/",
-    port: process.env.PORT
-  }
-});
+// bot.launch({
+//   webhook: {
+//     domain: "https://ilia-kh-telegram-bot.herokuapp.com/",
+//     port: process.env.PORT
+//   }
+// });
+
+bot.startWebhook(
+  "/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac",
+  null,
+  process.env.PORT
+);
+bot.telegram.setWebhook("https://ilia-kh-telegram-bot.herokuapp.com");
 
 function helpMiddleware(ctx, next) {
   ctx.reply("Send me a sticker");
