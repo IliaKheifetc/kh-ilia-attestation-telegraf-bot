@@ -190,6 +190,7 @@ bot.command("hi", async ctx => {
 });
 
 bot.command("gif", ctx => {
+  ctx.webhookReply = false;
   const { text } = ctx.update.message || {};
   const [_, keyWord] = text.split(" ");
 
