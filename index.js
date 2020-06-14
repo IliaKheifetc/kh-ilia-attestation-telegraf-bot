@@ -95,7 +95,11 @@ weatherScene.on("text", ctx => {
 
 weatherScene.leave(ctx => ctx.reply("exiting weatherScene"));
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
+const bot = new Telegraf(process.env.BOT_TOKEN, {
+  // Telegram options
+  agent: null, // https.Agent instance, allows custom proxy, certificate, keep alive, etc.
+  webhookReply: false // Reply via webhook
+});
 const telegram = new Telegram(process.env.BOT_TOKEN);
 const stage = new Stage([weatherScene], { ttl: 10 });
 
