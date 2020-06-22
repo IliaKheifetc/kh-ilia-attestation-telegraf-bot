@@ -24,23 +24,30 @@ const WEATHERBIT_BASE_URL = "https://api.weatherbit.io/v2.0/current";
 const GIPHY_API_KEY = "YVsAQADzVJvmOt52rXTtkJXijApmIa7Y";
 const GIPHY_BASE_URL = "https://api.giphy.com/v1/gifs/search";
 
-const getFullUrl = (baseUrl, params) => {
-  const queryString = Object.keys(params).reduce(
-    (queryString, key, index, arr) => {
-      if (params[key] === undefined) {
+class UrlBuilder {
+  constructor({ baseUrl }) {
+    this.baseUrl = baseUrl;
+  }
+
+  getFullUrl = params => {
+    const queryString = Object.keys(params).reduce(
+      (queryString, key, index, arr) => {
+        if (params[key] === undefined) {
+          return queryString;
+        }
+
+        queryString += `${key}=${params[key]}`;
+        queryString += index < arr.length - 1 ? "&" : "";
+
         return queryString;
-      }
+      },
+      ""
+    );
 
-      queryString += `${key}=${params[key]}`;
-      queryString += index < arr.length - 1 ? "&" : "";
+    return `${this.baseUrl}?${queryString}`;
+  };
+}
 
-      return queryString;
-    },
-    ""
-  );
-
-  return `${baseUrl}?${queryString}`;
-};
 const weatherScene = new Scene("weather");
 weatherScene.enter(ctx => ctx.reply("enter a city name"));
 //weatherScene.on("text", ctx => ctx.reply(ctx.message.text));
@@ -71,9 +78,10 @@ weatherScene.on("text", ctx => {
   //   ctx.reply("Please specify a city name after the /weather command");
   //   return;
   // }
+  const urlBuilder = new UrlBuilder({ baseUrl: WEATHERBIT_BASE_URL });
 
   axios
-    .get(getFullUrl(WEATHERBIT_BASE_URL, params))
+    .get(urlBuilder.getFullUrl(params))
     .then(response => {
       const {
         data: {
@@ -208,8 +216,10 @@ bot.command("gif", ctx => {
     lang: "en"
   };
 
+  const urlBuilder = new UrlBuilder({ baseUrl: GIPHY_BASE_URL });
+
   axios
-    .get(getFullUrl(GIPHY_BASE_URL, params))
+    .get(urlBuilder.getFullUrl(params))
     .then(response => {
       const {
         data: { data: gifs }
