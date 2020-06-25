@@ -6,6 +6,25 @@ const Scene = require("telegraf/scenes/base");
 const Markup = require("telegraf/markup");
 const axios = require("axios");
 
+const fetch = require("node-fetch");
+
+const { ApolloClient } = require("apollo-client");
+const { HttpLink } = require("apollo-link-http");
+const { InMemoryCache } = require("apollo-cache-inmemory");
+
+const { getCurrentWeatherInfo } = require("./graphqlOpreations");
+
+const client = new ApolloClient({
+  link: new HttpLink({
+    uri:
+      process.env.NODE_ENV === "production"
+        ? "https://telegraf-bot-graphql-server.herokuapp.com/ "
+        : "http://localhost:4055",
+    fetch: fetch
+  }),
+  cache: new InMemoryCache()
+});
+
 const { enter, leave } = Stage;
 
 //const BOT_TOKEN = "1204951589:AAHZj8hJCHf1YyJvKm4Ba8xh6_Cz6dEA3Sg";
@@ -52,7 +71,7 @@ const weatherScene = new Scene("weather");
 weatherScene.enter(ctx => ctx.reply("enter a city name"));
 //weatherScene.on("text", ctx => ctx.reply(ctx.message.text));
 
-weatherScene.on("text", ctx => {
+weatherScene.on("text", async ctx => {
   ctx.webhookReply = false;
   const { text } = ctx.update.message || {};
 
@@ -78,25 +97,31 @@ weatherScene.on("text", ctx => {
   //   ctx.reply("Please specify a city name after the /weather command");
   //   return;
   // }
-  const urlBuilder = new UrlBuilder({ baseUrl: WEATHERBIT_BASE_URL });
-
-  axios
-    .get(urlBuilder.getFullUrl(params))
-    .then(response => {
-      const {
-        data: {
-          data: [weatherInfo]
-        }
-      } = response;
-      const { temp, app_temp } = weatherInfo;
-      console.log("weatherInfo", weatherInfo);
-      ctx.reply(`Temperature: ${temp}\nFeels like temperature: ${app_temp}`);
-      ctx.reply("enter a city name or enter *leave* command");
-      enter("weather");
-    })
-    .catch(err => {
-      console.log("err", err);
+  try {
+    const {
+      data: { currentWeatherInfo }
+    } = await client.query({
+      query: getCurrentWeatherInfo,
+      variables: { cityName }
     });
+
+    const {
+      description,
+      icon,
+      realTemperature,
+      feelsLikeTemperature
+    } = currentWeatherInfo;
+
+    const iconPath = `./static/icons/${icon}.png`;
+    ctx.replyWithPhoto({ source: iconPath });
+
+    ctx.reply(
+      `Temperature: ${realTemperature}\nFeels like temperature: ${feelsLikeTemperature}\n${description}`
+    );
+    ctx.reply("enter a city name or enter *leave* command");
+  } catch (e) {
+    console.error("Error occurred when fetching weather info", e);
+  }
 });
 
 //weatherScene.hears("leave", leave());
