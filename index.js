@@ -155,6 +155,10 @@ const init = async () => {
         description: "get random gif by a keyword"
       },
       {
+        command: "translate_text",
+        description: "translate some text"
+      },
+      {
         command: "show_keyboard",
         description: "show keyboard with all commands"
       },
@@ -262,6 +266,12 @@ bot.command("gif", ctx => {
 });
 bot.hears("d", ctx => ctx.reply("🍆"));
 bot.hears("today", ctx => ctx.reply(new Date()));
+
+bot.command("translate_text", async ctx => {
+  console.log("translate_text command");
+
+  ctx.reply(`translate text command`);
+});
 // bot.hears(
 //   text => text.includes("weather"),
 //   ctx => {
