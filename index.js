@@ -131,6 +131,8 @@ weatherScene.leave(ctx => ctx.reply("exiting weatherScene"));
 const translationScene = new Scene("translation");
 translationScene.enter(ctx => ctx.reply("enter a source language"));
 translationScene.on("text", ctx => {
+  ctx.webhookReply = false;
+
   console.log("ctx.scene.state", ctx.scene.state);
 
   ctx.reply("text");
