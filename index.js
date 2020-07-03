@@ -128,13 +128,21 @@ weatherScene.on("text", async ctx => {
 
 weatherScene.leave(ctx => ctx.reply("exiting weatherScene"));
 
+const translationScene = new Scene("translation");
+translationScene.enter(ctx => ctx.reply("enter a source language"));
+translationScene.on("text", ctx => {
+  console.log("ctx.scene.state", ctx.scene.state);
+
+  ctx.reply("text");
+});
+
 const bot = new Telegraf(process.env.BOT_TOKEN, {
   // Telegram options
   agent: null, // https.Agent instance, allows custom proxy, certificate, keep alive, etc.
   webhookReply: false // Reply via webhook
 });
 const telegram = new Telegram(process.env.BOT_TOKEN);
-const stage = new Stage([weatherScene], { ttl: 10 });
+const stage = new Stage([translationScene, weatherScene], { ttl: 10 });
 
 bot.use(session());
 bot.use(stage.middleware());
@@ -268,9 +276,7 @@ bot.hears("d", ctx => ctx.reply("🍆"));
 bot.hears("today", ctx => ctx.reply(new Date()));
 
 bot.command("translate_text", async ctx => {
-  console.log("translate_text command");
-
-  ctx.reply(`translate text command`);
+  ctx.scene.enter("translation");
 });
 // bot.hears(
 //   text => text.includes("weather"),
