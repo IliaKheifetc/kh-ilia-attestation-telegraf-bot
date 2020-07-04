@@ -153,6 +153,8 @@ translationScene.on("text", async ctx => {
     return;
   } else if (!ctx.scene.state.text) {
     ctx.scene.state.text = text;
+    console.log("after text was assigned");
+    console.log("ctx.scene.state", ctx.scene.state);
   }
 
   console.log("ctx.scene.state", ctx.scene.state);
