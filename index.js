@@ -3,6 +3,7 @@ const session = require("telegraf/session");
 const Telegram = require("telegraf/telegram");
 const Stage = require("telegraf/stage");
 const Scene = require("telegraf/scenes/base");
+const WizardScene = require("telegraf/scenes/wizard");
 const Markup = require("telegraf/markup");
 const axios = require("axios");
 
@@ -131,48 +132,96 @@ weatherScene.on("text", async ctx => {
 
 weatherScene.leave(ctx => ctx.reply("exiting weatherScene"));
 
-const translationScene = new Scene("translation");
-translationScene.enter(ctx => ctx.reply("enter a source language"));
-translationScene.on("text", async ctx => {
-  ctx.webhookReply = false;
+const translationScene = new WizardScene(
+  "translation",
+  ctx => {
+    ctx.reply("enter a source language");
+    return ctx.wizard.next();
+  },
+  ctx => {
+    console.log("ctx", ctx);
 
-  const { text } = ctx.update.message || {};
+    const { text } = ctx.update.message || {};
 
-  console.log("text", text);
-  console.log("ctx.scene.state", ctx.scene.state);
-  if (ctx.scene.state && !ctx.scene.state.sourceLanguage) {
-    ctx.scene.state = {
+    ctx.wizard.state.translationData = {
       sourceLanguage: text
     };
 
     ctx.reply("enter a target language");
-    return;
-  } else if (!ctx.scene.state.targetLanguage) {
-    ctx.scene.state.targetLanguage = text;
 
-    console.log("ctx.scene.state", ctx.scene.state);
+    return ctx.wizard.next();
+  },
+  ctx => {
+    const { text } = ctx.update.message || {};
+
+    ctx.wizard.state.translationData.targetLanguage = text;
 
     ctx.reply("enter text to translate");
-    return;
-  } else if (!ctx.scene.state.text) {
-    ctx.scene.state.text = text;
-    console.log("after text was assigned");
-    console.log("ctx.scene.state", ctx.scene.state);
-  }
 
-  console.log("ctx.scene.state", ctx.scene.state);
+    console.log(
+      "ctx.wizard.state.translationData",
+      ctx.wizard.state.translationData
+    );
 
-  try {
-    const response = await client.query({
-      query: getTranslations,
-      variables: { ...ctx.scene.state }
-    });
-    console.log("query response", response);
-    ctx.scene.state = {};
-  } catch (e) {
-    console.error("error when fetching translations", e);
+    return ctx.wizard.next();
+  },
+  ctx => {
+    const { text } = ctx.update.message || {};
+
+    ctx.wizard.state.translationData.text = text;
+
+    ctx.reply("enter text to translate");
+
+    console.log(
+      "ctx.wizard.state.translationData",
+      ctx.wizard.state.translationData
+    );
+
+    return ctx.scene.leave();
   }
-});
+);
+
+//translationScene.enter(ctx => ctx.reply("enter a source language"));
+// translationScene.on("text", async ctx => {
+//   ctx.webhookReply = false;
+//
+//   const { text } = ctx.update.message || {};
+//
+//   console.log("text", text);
+//   console.log("ctx.scene.state", ctx.scene.state);
+//   if (ctx.scene.state && !ctx.scene.state.sourceLanguage) {
+//     ctx.scene.state = {
+//       sourceLanguage: text
+//     };
+//
+//     ctx.reply("enter a target language");
+//     return;
+//   } else if (!ctx.scene.state.targetLanguage) {
+//     ctx.scene.state.targetLanguage = text;
+//
+//     console.log("ctx.scene.state", ctx.scene.state);
+//
+//     ctx.reply("enter text to translate");
+//     return;
+//   } else if (!ctx.scene.state.text) {
+//     ctx.scene.state.text = text;
+//     console.log("after text was assigned");
+//     console.log("ctx.scene.state", ctx.scene.state);
+//   }
+//
+//   console.log("ctx.scene.state", ctx.scene.state);
+//
+//   try {
+//     const response = await client.query({
+//       query: getTranslations,
+//       variables: { ...ctx.scene.state }
+//     });
+//     console.log("query response", response);
+//     ctx.scene.state = {};
+//   } catch (e) {
+//     console.error("error when fetching translations", e);
+//   }
+// });
 
 const bot = new Telegraf(process.env.BOT_TOKEN, {
   // Telegram options
