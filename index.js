@@ -201,8 +201,18 @@ const translationScene = new WizardScene(
         } = response;
         console.log("primaryTranslation", primaryTranslation);
         console.log("translations", translations);
+
+        const concatenatedTranslationsTexts = translations.reduce(
+          (acc, text) => acc + `\n${text}`,
+          ""
+        );
+
+        ctx.reply(
+          `Primary translation: ${primaryTranslation},${concatenatedTranslationsTexts}`
+        );
       } catch (e) {
-        console.error("Error when fetching translations", e);
+        ctx.reply("Error occurred when fetching translations");
+        console.error("Error occurred when fetching translations", e);
       }
 
       return ctx.scene.leave();
