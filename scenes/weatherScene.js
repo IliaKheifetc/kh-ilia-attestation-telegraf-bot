@@ -1,6 +1,6 @@
 const Scene = require("telegraf/scenes/base");
 const apolloClient = require("../apolloClient");
-const { getCurrentWeatherInfo } = require("./graphqlOpreations");
+const { getCurrentWeatherInfo } = require("../graphqlOpreations");
 
 const weatherScene = new Scene("weather");
 weatherScene.enter(ctx => ctx.reply("enter a city name"));
