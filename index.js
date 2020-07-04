@@ -147,11 +147,18 @@ const translationScene = new WizardScene(
       sourceLanguage: text
     };
 
+    console.log(
+      "ctx.wizard.state.translationData",
+      ctx.wizard.state.translationData
+    );
+
     ctx.reply("enter a target language");
 
     return ctx.wizard.next();
   },
   ctx => {
+    console.log("ctx", ctx);
+
     const { text } = ctx.update.message || {};
 
     ctx.wizard.state.translationData.targetLanguage = text;
