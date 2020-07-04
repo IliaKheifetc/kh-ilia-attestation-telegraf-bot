@@ -155,6 +155,8 @@ translationScene.on("text", async ctx => {
     ctx.scene.state.text = text;
   }
 
+  console.log("ctx.scene.state", ctx.scene.state);
+
   try {
     const response = await client.query({
       query: getTranslations,
