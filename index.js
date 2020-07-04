@@ -157,20 +157,24 @@ const translationScene = new WizardScene(
     return ctx.wizard.next();
   },
   ctx => {
-    console.log("ctx", ctx);
+    try {
+      console.log("ctx", ctx);
 
-    const { text } = ctx.update.message || {};
+      const { text } = ctx.update.message || {};
 
-    ctx.wizard.state.translationData.targetLanguage = text;
+      ctx.wizard.state.translationData.targetLanguage = text;
 
-    ctx.reply("enter text to translate");
+      ctx.reply("enter text to translate");
 
-    console.log(
-      "ctx.wizard.state.translationData",
-      ctx.wizard.state.translationData
-    );
+      console.log(
+        "ctx.wizard.state.translationData",
+        ctx.wizard.state.translationData
+      );
 
-    return ctx.wizard.next();
+      return ctx.wizard.next();
+    } catch (e) {
+      console.log("Error when writing target language into state", e);
+    }
   },
   ctx => {
     const { text } = ctx.update.message || {};
