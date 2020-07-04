@@ -4,7 +4,6 @@ const { getCurrentWeatherInfo } = require("../graphqlOpreations");
 
 const weatherScene = new Scene("weather");
 weatherScene.enter(ctx => ctx.reply("enter a city name"));
-//weatherScene.on("text", ctx => ctx.reply(ctx.message.text));
 
 weatherScene.on("text", async ctx => {
   ctx.webhookReply = false;
@@ -18,16 +17,6 @@ weatherScene.on("text", async ctx => {
     return;
   }
 
-  const cityName = text;
-
-  console.log("text again");
-
-  //const [_, cityName] = text.split(" ");
-  const params = {
-    city: cityName,
-    key: WEATHERBIT_KEY
-  };
-
   // if (cityName === undefined) {
   //   ctx.reply("Please specify a city name after the /weather command");
   //   return;
@@ -37,7 +26,7 @@ weatherScene.on("text", async ctx => {
       data: { currentWeatherInfo }
     } = await apolloClient.query({
       query: getCurrentWeatherInfo,
-      variables: { cityName }
+      variables: { cityName: text }
     });
 
     const {
