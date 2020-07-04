@@ -105,6 +105,7 @@ bot.command("show_keyboard", ctx => {
     "/hi",
     "/weather",
     "/gif",
+    "/translate_text",
     "/hide_keyboard"
   ]);
   console.log("keyboard", keyboard);
