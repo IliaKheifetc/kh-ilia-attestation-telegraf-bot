@@ -69,7 +69,7 @@ const translationScene = new WizardScene(
         );
 
         ctx.reply(
-          `Primary translation: ${primaryTranslation},\nOther translation:${concatenatedTranslationsTexts}`
+          `Primary translation: ${primaryTranslation}\nOther translations:${concatenatedTranslationsTexts}`
         );
       } catch (e) {
         ctx.reply("Error occurred when fetching translations");
