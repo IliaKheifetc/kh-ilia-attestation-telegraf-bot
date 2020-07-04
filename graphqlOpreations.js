@@ -11,5 +11,21 @@ module.exports = {
         description
       }
     }
+  `,
+  getTranslations: gql`
+    query getTranslations(
+      $sourceLanguage: String!
+      $targetLanguage: String!
+      $text: String!
+    ) {
+      getTranslations(
+        sourceLanguage: $sourceLanguage
+        targetLanguage: $targetLanguage
+        text: $text
+      ) {
+        primaryTranslation
+        translations
+      }
+    }
   `
 };

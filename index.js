@@ -12,7 +12,10 @@ const { ApolloClient } = require("apollo-client");
 const { HttpLink } = require("apollo-link-http");
 const { InMemoryCache } = require("apollo-cache-inmemory");
 
-const { getCurrentWeatherInfo } = require("./graphqlOpreations");
+const {
+  getCurrentWeatherInfo,
+  getTranslations
+} = require("./graphqlOpreations");
 
 const client = new ApolloClient({
   link: new HttpLink({
@@ -130,12 +133,38 @@ weatherScene.leave(ctx => ctx.reply("exiting weatherScene"));
 
 const translationScene = new Scene("translation");
 translationScene.enter(ctx => ctx.reply("enter a source language"));
-translationScene.on("text", ctx => {
+translationScene.on("text", async ctx => {
   ctx.webhookReply = false;
 
-  console.log("ctx.scene.state", ctx.scene.state);
+  const { text } = ctx.update.message || {};
 
-  ctx.reply("text");
+  console.log("ctx.scene.state", ctx.scene.state);
+  if (ctx.scene.state && !ctx.scene.state.sourceLanguage) {
+    ctx.scene.state = {
+      sourceLanguage: text
+    };
+
+    ctx.reply("enter a target language");
+    return;
+  } else if (!ctx.scene.state.targetLanguage) {
+    ctx.scene.state.targetLanguage = text;
+
+    ctx.reply("enter text to translate");
+    return;
+  } else if (!ctx.scene.state.text) {
+    ctx.scene.state.text = text;
+  }
+
+  try {
+    const response = await client.query({
+      query: getTranslations,
+      variables: { ...ctx.scene.state }
+    });
+    console.log("query response", response);
+    ctx.scene.state = {};
+  } catch (e) {
+    console.error("error when fetching translations", e);
+  }
 });
 
 const bot = new Telegraf(process.env.BOT_TOKEN, {
