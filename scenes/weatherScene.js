@@ -60,3 +60,5 @@ weatherScene.on("text", async ctx => {
 });
 
 weatherScene.leave(ctx => ctx.reply("exiting weatherScene"));
+
+module.exports = weatherScene;
