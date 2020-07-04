@@ -18,7 +18,7 @@ module.exports = {
       $targetLanguage: String!
       $text: String!
     ) {
-      getTranslations(
+      translations(
         sourceLanguage: $sourceLanguage
         targetLanguage: $targetLanguage
         text: $text

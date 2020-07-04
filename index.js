@@ -194,7 +194,13 @@ const translationScene = new WizardScene(
           query: getTranslations,
           variables: { ...ctx.wizard.state.translationData }
         });
-        console.log("query response", response);
+        const {
+          data: {
+            translations: { primaryTranslation, translations }
+          }
+        } = response;
+        console.log("primaryTranslation", primaryTranslation);
+        console.log("translations", translations);
       } catch (e) {
         console.error("Error when fetching translations", e);
       }
