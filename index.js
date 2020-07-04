@@ -150,6 +150,8 @@ translationScene.on("text", async ctx => {
   } else if (!ctx.scene.state.targetLanguage) {
     ctx.scene.state.targetLanguage = text;
 
+    console.log("ctx.scene.state", ctx.scene.state);
+
     ctx.reply("enter text to translate");
     return;
   } else if (!ctx.scene.state.text) {
