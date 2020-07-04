@@ -176,10 +176,8 @@ const translationScene = new WizardScene(
       console.log("Error when writing target language into state", e);
     }
   },
-  ctx => {
+  async ctx => {
     try {
-      console.log("ctx", ctx);
-
       const { text } = ctx.update.message || {};
 
       ctx.wizard.state.translationData.text = text;
@@ -190,6 +188,16 @@ const translationScene = new WizardScene(
         "ctx.wizard.state.translationData",
         ctx.wizard.state.translationData
       );
+
+      try {
+        const response = await client.query({
+          query: getTranslations,
+          variables: { ...ctx.wizard.state.translationData }
+        });
+        console.log("query response", response);
+      } catch (e) {
+        console.error("Error when fetching translations", e);
+      }
 
       return ctx.scene.leave();
     } catch (e) {
