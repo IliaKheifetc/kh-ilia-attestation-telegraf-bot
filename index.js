@@ -138,6 +138,7 @@ translationScene.on("text", async ctx => {
 
   const { text } = ctx.update.message || {};
 
+  console.log("text", text);
   console.log("ctx.scene.state", ctx.scene.state);
   if (ctx.scene.state && !ctx.scene.state.sourceLanguage) {
     ctx.scene.state = {
