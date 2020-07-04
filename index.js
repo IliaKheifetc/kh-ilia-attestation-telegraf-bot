@@ -177,20 +177,24 @@ const translationScene = new WizardScene(
     }
   },
   ctx => {
-    console.log("ctx", ctx);
+    try {
+      console.log("ctx", ctx);
 
-    const { text } = ctx.update.message || {};
+      const { text } = ctx.update.message || {};
 
-    ctx.wizard.state.translationData.text = text;
+      ctx.wizard.state.translationData.text = text;
 
-    ctx.reply("enter text to translate");
+      ctx.reply("end");
 
-    console.log(
-      "ctx.wizard.state.translationData",
-      ctx.wizard.state.translationData
-    );
+      console.log(
+        "ctx.wizard.state.translationData",
+        ctx.wizard.state.translationData
+      );
 
-    return ctx.scene.leave();
+      return ctx.scene.leave();
+    } catch (e) {
+      console.log("Error when writing text to translate into state", e);
+    }
   }
 );
 
