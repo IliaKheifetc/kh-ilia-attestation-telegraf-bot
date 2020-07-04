@@ -246,7 +246,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN, {
   webhookReply: false // Reply via webhook
 });
 const telegram = new Telegram(process.env.BOT_TOKEN);
-const stage = new Stage([weatherScene], { ttl: 10 });
+const stage = new Stage([translationScene, weatherScene], { ttl: 10 });
 
 bot.use(session());
 bot.use(stage.middleware());
