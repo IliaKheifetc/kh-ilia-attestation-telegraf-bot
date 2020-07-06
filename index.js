@@ -110,6 +110,7 @@ bot.command("show_keyboard", ctx => {
     "/weather",
     "/gif",
     "/translate_text",
+    "run_javascript",
     "/hide_keyboard"
   ]);
   console.log("keyboard", keyboard);
