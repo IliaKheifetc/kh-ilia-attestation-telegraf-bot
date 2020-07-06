@@ -82,6 +82,10 @@ const init = async () => {
         description: "translate some text"
       },
       {
+        command: "run_javascript",
+        description: "run some javascript code"
+      },
+      {
         command: "show_keyboard",
         description: "show keyboard with all commands"
       },
@@ -140,6 +144,25 @@ bot.command("weather", ctx => {
 
 bot.command("translate_text", ctx => {
   ctx.scene.enter("translation");
+});
+
+bot.command("run_javascript", ctx => {
+  console.log("ctx", ctx);
+  const { text: codeString } = ctx.update.message;
+
+  let loggedData = [];
+  const log = (...args) => {
+    loggedData.push(args);
+  };
+
+  const result = eval(codeString);
+
+  ctx.reply(`Result: ${result}`);
+  ctx.reply(
+    `Logs: ${loggedData.reduce((acc, item) => {
+      return acc + `${item}\n`;
+    }, "")}`
+  );
 });
 
 bot.help(helpMiddleware);
