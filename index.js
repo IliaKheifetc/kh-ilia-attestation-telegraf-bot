@@ -151,6 +151,8 @@ bot.command("run_javascript", ctx => {
   console.log("ctx", ctx);
   const { text: codeString } = ctx.update.message;
 
+  console.log("codeString", codeString);
+
   let loggedData = [];
   const log = (...args) => {
     loggedData.push(args);
