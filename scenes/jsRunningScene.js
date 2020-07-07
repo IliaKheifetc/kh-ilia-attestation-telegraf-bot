@@ -17,14 +17,18 @@ const translationScene = new WizardScene(
       loggedData.push(args);
     };
 
-    const result = eval(codeString);
+    try {
+      const result = eval(codeString);
 
-    ctx.reply(`Result: ${result}`);
-    ctx.reply(
-      `Logs: ${loggedData.reduce((acc, item) => {
-        return acc + `${item}\n`;
-      }, "")}`
-    );
+      ctx.reply(`Result: ${result}`);
+      ctx.reply(
+        `Logs: ${loggedData.reduce((acc, item) => {
+          return acc + `${item}\n`;
+        }, "")}`
+      );
+    } catch (e) {
+      ctx.reply(`Error occurred: ${e}`);
+    }
 
     return ctx.scene.leave();
   }
