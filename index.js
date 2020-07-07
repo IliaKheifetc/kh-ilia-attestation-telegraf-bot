@@ -8,6 +8,7 @@ const axios = require("axios");
 const apolloClient = require("./apolloClient");
 const translationScene = require("./scenes/translationScene");
 const weatherScene = require("./scenes/weatherScene");
+const jsRunningScene = require("./scenes/jsRunningScene");
 
 const { enter, leave } = Stage;
 
@@ -57,7 +58,9 @@ const bot = new Telegraf(process.env.BOT_TOKEN, {
   webhookReply: false // Reply via webhook
 });
 const telegram = new Telegram(process.env.BOT_TOKEN);
-const stage = new Stage([translationScene, weatherScene], { ttl: 100 });
+const stage = new Stage([translationScene, weatherScene, jsRunningScene], {
+  ttl: 100
+});
 
 bot.use(session());
 bot.use(stage.middleware());
@@ -148,24 +151,7 @@ bot.command("translate_text", ctx => {
 });
 
 bot.command("run_javascript", ctx => {
-  console.log("ctx", ctx);
-  const { text: codeString } = ctx.update.message;
-
-  console.log("codeString", codeString);
-
-  let loggedData = [];
-  const log = (...args) => {
-    loggedData.push(args);
-  };
-
-  const result = eval(codeString);
-
-  ctx.reply(`Result: ${result}`);
-  ctx.reply(
-    `Logs: ${loggedData.reduce((acc, item) => {
-      return acc + `${item}\n`;
-    }, "")}`
-  );
+  ctx.scene.enter("run_js");
 });
 
 bot.help(helpMiddleware);
