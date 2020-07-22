@@ -48,7 +48,7 @@ module.exports = {
         });
       });
 
-      const server = app.listen(3000, () => {
+      const server = app.listen(6066, () => {
         // open the browser to the authorize url to start the workflow
         opn(this.authorizeUrl, { wait: false });
       });
