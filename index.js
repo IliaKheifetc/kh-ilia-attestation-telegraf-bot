@@ -214,8 +214,18 @@ bot.hears("today", ctx => ctx.reply(new Date()));
 
 bot.command("sheets", async ctx => {
   const { text } = ctx.update.message || {};
+
+  console.log("text", text);
+
   const authClient = await sheets.getAuthorizedClient();
+
+  console.log("authClient", authClient);
+
   const [rowNumber, ...cellsData] = text.split(" ");
+
+  console.log("rowNumber", rowNumber);
+  console.log("cellsData", cellsData);
+
   sheets.workWithMySpreadsheet(authClient, rowNumber, cellsData);
 
   console.log("sheets");
