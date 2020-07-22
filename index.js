@@ -9,6 +9,7 @@ const apolloClient = require("./apolloClient");
 const translationScene = require("./scenes/translationScene");
 const weatherScene = require("./scenes/weatherScene");
 const jsRunningScene = require("./scenes/jsRunningScene");
+const sheets = require("./sheets/index");
 
 const { enter, leave } = Stage;
 
@@ -87,6 +88,10 @@ const init = async () => {
       {
         command: "run_javascript",
         description: "run some javascript code"
+      },
+      {
+        command: "sheets",
+        description: "translate some text"
       },
       {
         command: "show_keyboard",
@@ -206,6 +211,15 @@ bot.command("gif", ctx => {
 });
 bot.hears("d", ctx => ctx.reply("🍆"));
 bot.hears("today", ctx => ctx.reply(new Date()));
+
+bot.command("sheets", async ctx => {
+  const { text } = ctx.update.message || {};
+  const authClient = await sheets.getAuthorizedClient();
+  const [rowNumber, ...cellsData] = text.split(" ");
+  sheets.workWithMySpreadsheet(authClient, rowNumber, cellsData);
+
+  console.log("sheets");
+});
 
 // bot.hears(
 //   text => text.includes("weather"),
