@@ -14,7 +14,7 @@ const getTokenByCode = async code => {
   console.log("code", code);
 
   try {
-    const response = await axios.post(
+    const { data } = await axios.post(
       "https://oauth.yandex.ru/token",
       qs.stringify({
         grant_type: "authorization_code",
@@ -24,6 +24,10 @@ const getTokenByCode = async code => {
       }),
       { headers: { "Content-type": "application/x-www-form-urlencoded" } }
     );
+
+    const { access_token, expires_in, refresh_token, token_type } = data;
+
+    console.log("access_token", access_token);
 
     console.log("response", response);
   } catch (e) {
