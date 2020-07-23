@@ -1,4 +1,5 @@
 const axios = require("axios");
+const qs = require("qs");
 
 const CLIENT_ID = "95beaa102a9344b2821203fc778ca27b";
 const REDIRECT_URI = "https://ilia-kh-telegram-bot.herokuapp.com/yandexOAuth";
@@ -15,12 +16,12 @@ const getTokenByCode = async code => {
   try {
     const response = await axios.post(
       "http://oauth.yandex.ru/token",
-      {
+      qs.stringify({
         grant_type: "authorization_code",
         code,
         client_id: CLIENT_ID,
         client_secret: APP_PASSWORD
-      },
+      }),
       { headers: { "Content-type": "application/x-www-form-urlencoded" } }
     );
 
