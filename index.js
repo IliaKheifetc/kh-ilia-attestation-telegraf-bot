@@ -95,6 +95,10 @@ const init = async () => {
         description: "authorize for Google Sheets API"
       },
       {
+        command: "sheets_update",
+        description: "authorize for Google Sheets API"
+      },
+      {
         command: "show_keyboard",
         description: "show keyboard with all commands"
       },
@@ -121,7 +125,8 @@ bot.command("show_keyboard", ctx => {
     "/translate_text",
     "/run_javascript",
     "/hide_keyboard",
-    "/sheets_auth"
+    "/sheets_auth",
+    "/sheets_update"
   ]);
   console.log("keyboard", keyboard);
 
@@ -274,6 +279,14 @@ bot.command("sheets_auth", async ctx => {
 //     port: process.env.PORT
 //   }
 // });
+
+bot.command("sheets_update", async ctx => {
+  const { text } = ctx.update.message || {};
+
+  console.log("text", text);
+
+  sheets.updateSpreadsheet(text);
+});
 
 bot.telegram.setWebhook(
   "https://ilia-kh-telegram-bot.herokuapp.com/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"

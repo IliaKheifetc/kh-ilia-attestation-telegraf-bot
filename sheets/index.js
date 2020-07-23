@@ -46,7 +46,7 @@ module.exports = {
 
       //server.close();
       //listMajors(client);
-      workWithMySpreadsheet(oAuth2Client);
+      //workWithMySpreadsheet(oAuth2Client);
     });
 
     // const server = app.listen(6066, () => {
@@ -54,7 +54,7 @@ module.exports = {
     //   opn(this.authorizeUrl, { wait: false });
     // });
   },
-  workWithMySpreadsheet: workWithMySpreadsheet
+  updateSpreadsheet
 };
 
 /**
@@ -88,14 +88,14 @@ function listMajors(auth) {
   );
 }
 
-async function workWithMySpreadsheet(
-  oAuth2Client,
-  rowNumber,
-  cellsData = ["x", "текст", "дата"]
-) {
+async function updateSpreadsheet(data) {
+  let [rowNumber, ...cellsData] = data;
+  cellsData = cellsData.length ? cellsData : ["x", "текст", "дата"];
+
   const sheets = google.sheets({ version: "v4", auth: oAuth2Client });
 
-  console.log("workWithMySpreadsheet");
+  console.log("updateSpreadsheet");
+  console.log("rowNumber", rowNumber);
   console.log("cellsData", cellsData);
 
   const SPREADSHEET_ID = "1C0aO4j2fVvjO_vXXNg1S_asNnwIOpkO3GaX5gsmpFH0";
