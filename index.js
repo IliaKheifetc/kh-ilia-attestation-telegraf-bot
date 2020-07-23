@@ -285,6 +285,27 @@ app.use(
     "/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
   )
 );
+
+app.get("/oauth2callback", (req, res) => {
+  console.log("oauth2callback");
+
+  sheets.getAndSaveToken(req.query.code);
+  // oAuth2Client.getToken(code, (err, tokens) => {
+  //   if (err) {
+  //     console.error("Error getting oAuth tokens:");
+  //     throw err;
+  //   }
+  //   oAuth2Client.credentials = tokens;
+  //   res.send("Authentication successful! Please return to the console.");
+  //
+  //   resolve(oAuth2Client);
+  //
+  //   server.close();
+  //   //listMajors(client);
+  //   workWithMySpreadsheet(oAuth2Client);
+  // });
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`App is listening on port ${process.env.PORT}!`);
 });

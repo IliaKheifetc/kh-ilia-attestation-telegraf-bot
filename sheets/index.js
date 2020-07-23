@@ -25,37 +25,34 @@ module.exports = {
 
     return { authUrl: authorizeUrl, authClient: oAuth2Client };
   },
-  getAuthorizedClient: async function(oAuth2Client) {
+  getAndSaveToken: async function(code) {
     // Open an http server to accept the oauth callback. In this
     // simple example, the only request to our webserver is to
     // /oauth2callback?code=<code>
-    const app = express();
+    //const app = express();
 
-    return new Promise(resolve => {
-      app.get("/oauth2callback", (req, res) => {
-        console.log("oauth2callback");
-        const code = req.query.code;
-        oAuth2Client.getToken(code, (err, tokens) => {
-          if (err) {
-            console.error("Error getting oAuth tokens:");
-            throw err;
-          }
-          oAuth2Client.credentials = tokens;
-          res.send("Authentication successful! Please return to the console.");
+    //return new Promise(resolve => {
+    //   app.get("/oauth2callback", (req, res) => {
+    //     console.log("oauth2callback");
+    //     const code = req.query.code;
+    oAuth2Client.getToken(code, (err, tokens) => {
+      if (err) {
+        console.error("Error getting oAuth tokens:");
+        throw err;
+      }
+      oAuth2Client.credentials = tokens;
 
-          resolve(oAuth2Client);
+      // resolve(oAuth2Client);
 
-          server.close();
-          //listMajors(client);
-          workWithMySpreadsheet(oAuth2Client);
-        });
-      });
-
-      // const server = app.listen(6066, () => {
-      //   // open the browser to the authorize url to start the workflow
-      //   opn(this.authorizeUrl, { wait: false });
-      // });
+      //server.close();
+      //listMajors(client);
+      workWithMySpreadsheet(oAuth2Client);
     });
+
+    // const server = app.listen(6066, () => {
+    //   // open the browser to the authorize url to start the workflow
+    //   opn(this.authorizeUrl, { wait: false });
+    // });
   },
   workWithMySpreadsheet: workWithMySpreadsheet
 };
