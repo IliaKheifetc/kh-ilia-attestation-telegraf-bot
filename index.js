@@ -91,8 +91,8 @@ const init = async () => {
         description: "run some javascript code"
       },
       {
-        command: "sheets",
-        description: "translate some text"
+        command: "sheets_auth",
+        description: "authorize for Google Sheets API"
       },
       {
         command: "show_keyboard",
@@ -120,7 +120,8 @@ bot.command("show_keyboard", ctx => {
     "/gif",
     "/translate_text",
     "/run_javascript",
-    "/hide_keyboard"
+    "/hide_keyboard",
+    "/sheets_auth"
   ]);
   console.log("keyboard", keyboard);
 
@@ -213,10 +214,14 @@ bot.command("gif", ctx => {
 bot.hears("d", ctx => ctx.reply("🍆"));
 bot.hears("today", ctx => ctx.reply(new Date()));
 
-bot.command("sheets", async ctx => {
+bot.command("sheets_auth", async ctx => {
   const { text } = ctx.update.message || {};
 
   console.log("text", text);
+
+  const { authUrl } = sheets.getAuthUrlAndClient();
+  ctx.reply(authUrl);
+
   // const { authorizeUrl, oAuth2Client } = sheets.getAuthUrlAndClient();
   // const authorizedClient = await sheets.getAuthorizedClient(oAuth2Client);
   //

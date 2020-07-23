@@ -8,22 +8,22 @@ const credentials = path.join(__dirname, "credentials.json");
 const keys = JSON.parse(fs.readFileSync(credentials));
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 
+// Create an oAuth2 client to authorize the API call
+const oAuth2Client = new google.auth.OAuth2(
+  keys.web.client_id,
+  keys.web.client_secret,
+  keys.web.redirect_uris[0]
+);
+
 module.exports = {
   getAuthUrlAndClient: () => {
-    // Create an oAuth2 client to authorize the API call
-    const oAuth2Client = new google.auth.OAuth2(
-      keys.web.client_id,
-      keys.web.client_secret,
-      keys.web.redirect_uris[0]
-    );
-
     // Generate the url that will be used for authorization
     const authorizeUrl = oAuth2Client.generateAuthUrl({
       access_type: "offline",
       scope: SCOPES
     });
 
-    return { authorizeUrl, oAuth2Client };
+    return { authUrl: authorizeUrl, authClient: oAuth2Client };
   },
   getAuthorizedClient: async function(oAuth2Client) {
     // Open an http server to accept the oauth callback. In this
