@@ -30,7 +30,7 @@ const getTokenByCode = async code => {
   }
 };
 
-getTokenByCode();
+// getTokenByCode();
 
 module.exports = {
   getAuthUrl: () => authUrl,
