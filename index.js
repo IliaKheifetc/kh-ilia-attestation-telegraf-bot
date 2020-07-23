@@ -296,7 +296,7 @@ bot.command("sheets_update", async ctx => {
 
 bot.command("metrika_auth", async ctx => {
   const authUrl = metrika.getAuthUrl();
-  cxt.reply(authUrl);
+  ctx.reply(authUrl);
 });
 
 bot.telegram.setWebhook(
