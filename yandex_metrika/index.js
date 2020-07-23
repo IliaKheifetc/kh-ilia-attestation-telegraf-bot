@@ -1,5 +1,9 @@
 const axios = require("axios");
 const qs = require("qs");
+const util = require("util");
+const fs = require("fs");
+
+const writeFile = util.promisify(fs.writeFile);
 
 const CLIENT_ID = "95beaa102a9344b2821203fc778ca27b";
 const REDIRECT_URI = "https://ilia-kh-telegram-bot.herokuapp.com/yandexOAuth";
@@ -27,15 +31,15 @@ const getTokenByCode = async code => {
 
     const { access_token, expires_in, refresh_token, token_type } = data;
 
-    console.log("access_token", access_token);
+    await fs.writeFile("token.json", access_token);
 
-    console.log("response", response);
+    console.log("access_token", access_token);
   } catch (e) {
     console.error("Error occurred when requesting token", e);
   }
 };
 
-// getTokenByCode();
+//getTokenByCode();
 
 module.exports = {
   getAuthUrl: () => authUrl,
