@@ -1,6 +1,7 @@
 const { Telegraf } = require("telegraf");
 const session = require("telegraf/session");
 const Telegram = require("telegraf/telegram");
+const express = require("express");
 const Stage = require("telegraf/stage");
 
 const Markup = require("telegraf/markup");
@@ -216,17 +217,19 @@ bot.command("sheets", async ctx => {
   const { text } = ctx.update.message || {};
 
   console.log("text", text);
-
-  const authClient = await sheets.getAuthorizedClient();
-
-  console.log("authClient", authClient);
-
-  const [rowNumber, ...cellsData] = text.split(" ");
-
-  console.log("rowNumber", rowNumber);
-  console.log("cellsData", cellsData);
-
-  sheets.workWithMySpreadsheet(authClient, rowNumber, cellsData);
+  // const { authorizeUrl, oAuth2Client } = sheets.getAuthUrlAndClient();
+  // const authorizedClient = await sheets.getAuthorizedClient(oAuth2Client);
+  //
+  // ctx.reply(authorizeUrl);
+  //
+  // console.log("authClient", oAuth2Client);
+  //
+  // const [rowNumber, ...cellsData] = text.split(" ");
+  //
+  // console.log("rowNumber", rowNumber);
+  // console.log("cellsData", cellsData);
+  //
+  // sheets.workWithMySpreadsheet(authClient, rowNumber, cellsData);
 
   console.log("sheets");
 });
@@ -267,14 +270,24 @@ bot.command("sheets", async ctx => {
 //   }
 // });
 
-bot.startWebhook(
-  "/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac",
-  null,
-  process.env.PORT
+const app = express();
+app.use(
+  bot.webhookCallback(
+    "/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
+  )
 );
-bot.telegram.setWebhook(
-  "https://ilia-kh-telegram-bot.herokuapp.com/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
-);
+app.listen(process.env.PORT, () => {
+  console.log(`App is listening on port ${process.env.PORT}!`);
+});
+
+// bot.startWebhook(
+//   "/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac",
+//   null,
+//   process.env.PORT
+// );
+// bot.telegram.setWebhook(
+//   "https://ilia-kh-telegram-bot.herokuapp.com/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
+// );
 
 function helpMiddleware(ctx, next) {
   ctx.reply("Send me a sticker");
