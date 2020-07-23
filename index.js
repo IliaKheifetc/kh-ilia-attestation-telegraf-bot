@@ -11,7 +11,7 @@ const translationScene = require("./scenes/translationScene");
 const weatherScene = require("./scenes/weatherScene");
 const jsRunningScene = require("./scenes/jsRunningScene");
 const sheets = require("./sheets/index");
-const metrics = require("./yandex_metrika/index");
+const metrika = require("./yandex_metrika/index");
 
 const { enter, leave } = Stage;
 
@@ -100,6 +100,10 @@ const init = async () => {
         description: "authorize for Google Sheets API"
       },
       {
+        command: "metrika_auth",
+        description: "authorize for yandex metrika"
+      },
+      {
         command: "show_keyboard",
         description: "show keyboard with all commands"
       },
@@ -127,7 +131,8 @@ bot.command("show_keyboard", ctx => {
     "/run_javascript",
     "/hide_keyboard",
     "/sheets_auth",
-    "/sheets_update"
+    "/sheets_update",
+    "/metrika_auth"
   ]);
   console.log("keyboard", keyboard);
 
@@ -289,6 +294,11 @@ bot.command("sheets_update", async ctx => {
   sheets.updateSpreadsheet(text);
 });
 
+bot.command("metrika_auth", async ctx => {
+  const authUrl = metrika.getAuthUrl();
+  cxt.reply(authUrl);
+});
+
 bot.telegram.setWebhook(
   "https://ilia-kh-telegram-bot.herokuapp.com/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
 );
@@ -335,7 +345,7 @@ app.get("/yandexOAuth", (req, res) => {
     "<body>Authorized with Yandex OAuth successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2000);</script></body>"
   );
 
-  metrics.getTokenByCode(req.query.code);
+  metrika.getTokenByCode(req.query.code);
 });
 
 app.listen(process.env.PORT, () => {
