@@ -11,6 +11,7 @@ const translationScene = require("./scenes/translationScene");
 const weatherScene = require("./scenes/weatherScene");
 const jsRunningScene = require("./scenes/jsRunningScene");
 const sheets = require("./sheets/index");
+const metrics = require("./yandex_metrika/index");
 
 const { enter, leave } = Stage;
 
@@ -323,6 +324,18 @@ app.get("/oauth2callback", (req, res) => {
   //   //listMajors(client);
   //   workWithMySpreadsheet(oAuth2Client);
   // });
+});
+
+app.get("/yandexOAuth", (req, res) => {
+  console.log("yandexOAuth");
+
+  console.log("req.query.code", req.query.code);
+
+  res.send(
+    "<body>Authorized with Yandex OAuth successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2000);</script></body>"
+  );
+
+  metrics.getTokenByCode(req.query.code);
 });
 
 app.listen(process.env.PORT, () => {
