@@ -291,6 +291,10 @@ app.get("/oauth2callback", (req, res) => {
 
   console.log("req.query.code", req.query.code);
 
+  res.send(
+    "<body>Authorized successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2000);</script></body>"
+  );
+
   sheets.getAndSaveToken(req.query.code);
   // oAuth2Client.getToken(code, (err, tokens) => {
   //   if (err) {

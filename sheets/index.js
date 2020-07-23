@@ -95,6 +95,9 @@ async function workWithMySpreadsheet(
 ) {
   const sheets = google.sheets({ version: "v4", auth: oAuth2Client });
 
+  console.log("workWithMySpreadsheet");
+  console.log("cellsData", cellsData);
+
   const SPREADSHEET_ID = "1C0aO4j2fVvjO_vXXNg1S_asNnwIOpkO3GaX5gsmpFH0";
 
   sheets.spreadsheets.values.get(
