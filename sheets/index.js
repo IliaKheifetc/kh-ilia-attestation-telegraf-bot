@@ -89,7 +89,7 @@ function listMajors(auth) {
 }
 
 async function updateSpreadsheet(data) {
-  let [_commandName, rowNumber, ...cellsData] = data;
+  let [_commandName, rowNumber, ...cellsData] = data.split(" ");
   cellsData = cellsData.length ? cellsData : ["x", "текст", "дата"];
 
   const sheets = google.sheets({ version: "v4", auth: oAuth2Client });
