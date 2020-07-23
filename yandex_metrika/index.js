@@ -14,7 +14,7 @@ const getTokenByCode = async code => {
 
   try {
     const response = await axios.post(
-      "oauth.yandex.ru/token",
+      "http://oauth.yandex.ru/token",
       {
         grant_type: "authorization_code",
         code,
