@@ -270,6 +270,10 @@ bot.command("sheets", async ctx => {
 //   }
 // });
 
+bot.telegram.setWebhook(
+  "https://ilia-kh-telegram-bot.herokuapp.com/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
+);
+
 const app = express();
 app.use(
   bot.webhookCallback(
@@ -284,9 +288,6 @@ app.listen(process.env.PORT, () => {
 //   "/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac",
 //   null,
 //   process.env.PORT
-// );
-// bot.telegram.setWebhook(
-//   "https://ilia-kh-telegram-bot.herokuapp.com/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
 // );
 
 function helpMiddleware(ctx, next) {
