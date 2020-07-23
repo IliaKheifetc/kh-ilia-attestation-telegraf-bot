@@ -289,6 +289,8 @@ app.use(
 app.get("/oauth2callback", (req, res) => {
   console.log("oauth2callback");
 
+  console.log("req.query.code", req.query.code);
+
   sheets.getAndSaveToken(req.query.code);
   // oAuth2Client.getToken(code, (err, tokens) => {
   //   if (err) {
