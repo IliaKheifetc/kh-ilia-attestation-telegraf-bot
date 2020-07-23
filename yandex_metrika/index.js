@@ -1,9 +1,9 @@
 const axios = require("axios");
 const qs = require("qs");
 const util = require("util");
-const fs = require("fs");
+const fs = require("fs").promises;
 
-const writeFile = util.promisify(fs.writeFile);
+//const writeFile = util.promisify(fs.writeFile);
 
 const CLIENT_ID = "95beaa102a9344b2821203fc778ca27b";
 const REDIRECT_URI = "https://ilia-kh-telegram-bot.herokuapp.com/yandexOAuth";
