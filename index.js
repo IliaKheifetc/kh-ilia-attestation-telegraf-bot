@@ -5,6 +5,7 @@ const express = require("express");
 const Stage = require("telegraf/stage");
 
 const Markup = require("telegraf/markup");
+const Extra = require("telegraf/extra");
 const axios = require("axios");
 const apolloClient = require("./apolloClient");
 const translationScene = require("./scenes/translationScene");
@@ -117,6 +118,18 @@ const init = async () => {
       {
         command: "hide_keyboard",
         description: "hide keyboard"
+      },
+      {
+        command: "inline",
+        description: "inline keyboard"
+      },
+      {
+        command: "special",
+        description: "special"
+      },
+      {
+        command: "simple",
+        description: "simple"
       }
     ]);
     console.log("setMyCommands success");
