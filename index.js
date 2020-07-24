@@ -186,7 +186,7 @@ bot.command("run_javascript", ctx => {
 });
 
 bot.command("yandex_metrika_start", ctx => {
-  ctx.scene.enter("yandexMetrikaScene");
+  ctx.scene.enter("yandexMetrika");
 });
 
 bot.help(helpMiddleware);
