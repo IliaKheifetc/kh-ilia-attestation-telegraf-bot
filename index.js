@@ -118,18 +118,6 @@ const init = async () => {
       {
         command: "hide_keyboard",
         description: "hide keyboard"
-      },
-      {
-        command: "inline",
-        description: "inline keyboard"
-      },
-      {
-        command: "special",
-        description: "special"
-      },
-      {
-        command: "simple",
-        description: "simple"
       }
     ]);
     console.log("setMyCommands success");
@@ -163,40 +151,6 @@ bot.command("show_keyboard", ctx => {
       .oneTime()
       .resize()
       .extra()
-  );
-});
-
-bot.command("special", ctx => {
-  return ctx.reply(
-    "Special buttons keyboard",
-    Extra.markup(markup => {
-      return markup
-        .resize()
-        .keyboard([
-          markup.contactRequestButton("Send contact"),
-          markup.locationRequestButton("Send location")
-        ]);
-    })
-  );
-});
-
-bot.command("simple", ctx => {
-  return ctx.replyWithHTML(
-    "<b>Coke</b> or <i>Pepsi?</i>",
-    Extra.markup(Markup.keyboard(["Coke", "Pepsi"]))
-  );
-});
-
-bot.command("inline", ctx => {
-  return ctx.reply(
-    "<b>Coke</b> or <i>Pepsi?</i>",
-    Extra.HTML().markup(m =>
-      m.inlineKeyboard([
-        m.callbackButton("Coke", "Coke"),
-        m.callbackButton("Pepsi", "Pepsi"),
-        m.urlButton("Google", "https://www.google.com/")
-      ])
-    )
   );
 });
 
