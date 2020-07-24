@@ -153,6 +153,39 @@ bot.command("show_keyboard", ctx => {
   );
 });
 
+bot.command("special", ctx => {
+  return ctx.reply(
+    "Special buttons keyboard",
+    Extra.markup(markup => {
+      return markup
+        .resize()
+        .keyboard([
+          markup.contactRequestButton("Send contact"),
+          markup.locationRequestButton("Send location")
+        ]);
+    })
+  );
+});
+
+bot.command("simple", ctx => {
+  return ctx.replyWithHTML(
+    "<b>Coke</b> or <i>Pepsi?</i>",
+    Extra.markup(Markup.keyboard(["Coke", "Pepsi"]))
+  );
+});
+
+bot.command("inline", ctx => {
+  return ctx.reply(
+    "<b>Coke</b> or <i>Pepsi?</i>",
+    Extra.HTML().markup(m =>
+      m.inlineKeyboard([
+        m.callbackButton("Coke", "Coke"),
+        m.callbackButton("Pepsi", "Pepsi")
+      ])
+    )
+  );
+});
+
 bot.command("hide_keyboard", ctx => {
   console.log("ctx.chat", ctx.chat);
   const { id: chatId } = ctx.chat;
