@@ -69,9 +69,12 @@ const bot = new Telegraf(process.env.BOT_TOKEN, {
   webhookReply: false // Reply via webhook
 });
 const telegram = new Telegram(process.env.BOT_TOKEN);
-const stage = new Stage([translationScene, weatherScene, jsRunningScene], {
-  ttl: 100
-});
+const stage = new Stage(
+  [translationScene, weatherScene, jsRunningScene, yandexMetrikaScene],
+  {
+    ttl: 100
+  }
+);
 
 bot.use(session());
 bot.use(stage.middleware());
