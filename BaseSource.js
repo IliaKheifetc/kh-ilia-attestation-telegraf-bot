@@ -9,6 +9,9 @@ class BaseSource {
   request() {}
 
   get(url, config = {}) {
+    console.log("url", url);
+    console.log("this.token", this.token);
+
     return axios.get(url, {
       ...config,
       headers: {
