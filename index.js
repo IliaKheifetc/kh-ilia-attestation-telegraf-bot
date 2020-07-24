@@ -238,7 +238,7 @@ const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
   const { authUrl } = getAuthUrl();
 
   return ctx.reply(
-    `<b>Please, authorize with ${authServerName} to have access to ${apiName}</b>`,
+    `<b>Please, authorize with ${authServerName} to have access<br/> to ${apiName}</b>`,
     Extra.HTML().markup(m =>
       m.inlineKeyboard([m.urlButton(`Authorize`, authUrl)])
     )
