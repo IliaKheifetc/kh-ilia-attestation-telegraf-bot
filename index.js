@@ -228,16 +228,13 @@ bot.command("gif", ctx => {
 bot.hears("d", ctx => ctx.reply("🍆"));
 bot.hears("today", ctx => ctx.reply(new Date()));
 
-bot.command("sheets_auth", async ctx => {
-  const { text } = ctx.update.message || {};
-
-  console.log("text", text);
-
-  const { authUrl } = sheets.getAuthUrlAndClient();
+const authCommandHandler = getAuthUrl => ctx => {
+  const { authUrl } = getAuthUrl();
   ctx.reply(authUrl);
+};
 
-  console.log("sheets");
-});
+bot.command("sheets_auth", authCommandHandler(sheets.getAuthUrlAndClient));
+bot.command("metrika_auth", authCommandHandler(metrikaAuth.getAuthUrl));
 
 // bot.hears(
 //   text => text.includes("weather"),
@@ -281,11 +278,6 @@ bot.command("sheets_update", async ctx => {
   console.log("text", text);
 
   sheets.updateSpreadsheet(text);
-});
-
-bot.command("metrika_auth", async ctx => {
-  const authUrl = metrikaAuth.getAuthUrl();
-  ctx.reply(authUrl);
 });
 
 bot.command("metrika_get_visitors", async ctx => {

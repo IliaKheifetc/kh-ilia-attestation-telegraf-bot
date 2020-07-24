@@ -44,6 +44,8 @@ const getTokenByCode = async code => {
 //getTokenByCode();
 
 module.exports = {
-  getAuthUrl: () => authUrl,
+  getAuthUrl: () => ({
+    authUrl
+  }),
   getTokenByCode
 };
