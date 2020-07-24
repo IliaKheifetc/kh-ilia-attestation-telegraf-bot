@@ -107,6 +107,10 @@ const init = async () => {
         description: "authorize for yandex metrika"
       },
       {
+        command: "metrika_get_visitors",
+        description: "get count of unique visitors"
+      },
+      {
         command: "show_keyboard",
         description: "show keyboard with all commands"
       },
@@ -135,7 +139,8 @@ bot.command("show_keyboard", ctx => {
     "/hide_keyboard",
     "/sheets_auth",
     "/sheets_update",
-    "/metrika_auth"
+    "/metrika_auth",
+    "/metrika_get_visitors"
   ]);
   console.log("keyboard", keyboard);
 
