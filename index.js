@@ -280,11 +280,11 @@ bot.command("gif", ctx => {
 bot.hears("d", ctx => ctx.reply("🍆"));
 bot.hears("today", ctx => ctx.reply(new Date()));
 
-const authCommandHandler = (getAuthUrl, authServerName) => ctx => {
+const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
   const { authUrl } = getAuthUrl();
 
   return ctx.reply(
-    `<b>Please, authorize with ${authServerName}</b>`,
+    `<b>Please, authorize with ${authServerName} to have access to ${apiName}</b>`,
     Extra.HTML().markup(m =>
       m.inlineKeyboard([m.urlButton(`Authorize`, authUrl)])
     )
@@ -293,8 +293,22 @@ const authCommandHandler = (getAuthUrl, authServerName) => ctx => {
   //ctx.reply(authUrl);
 };
 
-bot.command("sheets_auth", authCommandHandler(sheets.getAuthUrlAndClient));
-bot.command("metrika_auth", authCommandHandler(metrikaAuth.getAuthUrl));
+bot.command(
+  "sheets_auth",
+  authCommandHandler({
+    getAuthUrl: sheets.getAuthUrlAndClient,
+    authServerName: "Google",
+    apiName: "Google Sheets API"
+  })
+);
+bot.command(
+  "metrika_auth",
+  authCommandHandler({
+    getAuthUrl: metrikaAuth.getAuthUrl,
+    authServerName: "Yandex",
+    apiName: "Yandex Metrika API"
+  })
+);
 
 // bot.hears(
 //   text => text.includes("weather"),
