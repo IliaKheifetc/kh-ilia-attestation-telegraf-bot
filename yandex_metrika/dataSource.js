@@ -15,7 +15,9 @@ class MetrikaAPI extends BaseSource {
     }data?dimensions=ym:s:searchEngine&metrics=ym:s:visits,ym:s:users&filters=ym:s:trafficSource=='organic'&ids=44147844`;
 
     try {
-      const { data } = await this.get(VISITS_AND_VISITORS__COUNT_URL);
+      const {
+        data: { data }
+      } = await this.get(VISITS_AND_VISITORS__COUNT_URL);
 
       console.log("requestVisitors data", JSON.stringify(data));
 
