@@ -10,10 +10,7 @@ const yandexMetrikaScene = new WizardScene(
     ctx.reply(
       `<b>Choose report:</b>`,
       Extra.HTML().markup(m =>
-        m.inlineKeyboard([
-          ...REPORTS.map(dataReportName => m.button(dataReportName)),
-          m.button("Some stuff")
-        ])
+        m.inlineKeyboard([m.button("Visitors"), m.button("Some stuff")])
       )
     );
 
