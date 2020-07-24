@@ -193,7 +193,8 @@ bot.command("inline", ctx => {
     Extra.HTML().markup(m =>
       m.inlineKeyboard([
         m.callbackButton("Coke", "Coke"),
-        m.callbackButton("Pepsi", "Pepsi")
+        m.callbackButton("Pepsi", "Pepsi"),
+        m.urlButton("Google", "https://www.google.com/")
       ])
     )
   );
