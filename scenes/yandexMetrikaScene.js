@@ -11,10 +11,8 @@ const yandexMetrikaScene = new WizardScene(
       `<b>Choose report:</b>`,
       Extra.HTML().markup(m =>
         m.inlineKeyboard([
-          ...REPORTS.map(dataReportName =>
-            m.callbackButton(dataReportName, dataReportName)
-          ),
-          m.callbackButton("Some stuff", "Some stuff")
+          ...REPORTS.map(dataReportName => m.button(dataReportName)),
+          m.button("Some stuff")
         ])
       )
     );
