@@ -12,7 +12,7 @@ class MetrikaAPI extends BaseSource {
   async requestVisitors() {
     const VISITS_AND_VISITORS__COUNT_URL = `${
       this.baseUrl
-    }data?dimensions=ym:s:searchEngine&metrics=ym:s:visits,ym:s:users&filters=ym:s:trafficSource=='organic'&ids=44147844`;
+    }data?metrics=ym:s:visits,ym:s:users&ids=50788801`;
 
     try {
       const {
