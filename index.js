@@ -285,7 +285,7 @@ bot.command("metrika_get_visitors", async ctx => {
 
   const data = await mertikaAPI.requestVisitors();
 
-  ctx.reply("data", JSON.stringify(data));
+  ctx.reply(`data ${JSON.stringify(data)}`);
 });
 
 bot.telegram.setWebhook(
