@@ -6,6 +6,9 @@ const TIME_INTERVALS = {
   year: "year"
 };
 
+const REPORTS = ["Visitors"];
+
 module.exports = {
+  REPORTS,
   TIME_INTERVALS
 };

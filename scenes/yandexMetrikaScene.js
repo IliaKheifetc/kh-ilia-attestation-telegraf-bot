@@ -1,6 +1,9 @@
 const WizardScene = require("telegraf/scenes/wizard");
 const Extra = require("telegraf/extra");
 
+// constants
+const { REPORTS, TIME_INTERVALS } = require("./constants/yandexMetrika");
+
 const yandexMetrikaScene = new WizardScene(
   "yandexMetrika",
   ctx => {
@@ -8,8 +11,8 @@ const yandexMetrikaScene = new WizardScene(
       `<b>Choose report:</b>`,
       Extra.HTML().markup(m =>
         m.inlineKeyboard([
-          m.callbackButton("Visitors", "Visitors"),
-          m.callbackButton("Some stuff", "Some stuff")
+          ...REPORTS.map(dataReportName => m.button(dataReportName)),
+          m.button("Some stuff")
         ])
       )
     );

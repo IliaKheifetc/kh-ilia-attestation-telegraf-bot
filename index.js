@@ -16,8 +16,7 @@ const sheets = require("./sheets/index");
 const metrikaAuth = require("./yandex_metrika/auth");
 const MetrikaAPI = require("./yandex_metrika/dataSource");
 
-// constants
-const { TIME_INTERVALS } = require("./constants/timeIntervals");
+
 
 let metrikaAccessToken;
 
