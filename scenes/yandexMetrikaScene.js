@@ -1,4 +1,5 @@
 const WizardScene = require("telegraf/scenes/wizard");
+const Extra = require("telegraf/extra");
 
 const yandexMetrikaScene = new WizardScene(
   "yandexMetrika",
