@@ -11,9 +11,13 @@ const apolloClient = require("./apolloClient");
 const translationScene = require("./scenes/translationScene");
 const weatherScene = require("./scenes/weatherScene");
 const jsRunningScene = require("./scenes/jsRunningScene");
+const yandexMetrikaScene = require("./scenes/yandexMetrikaScene");
 const sheets = require("./sheets/index");
 const metrikaAuth = require("./yandex_metrika/auth");
 const MetrikaAPI = require("./yandex_metrika/dataSource");
+
+// constants
+const { TIME_INTERVALS } = require("./constants/timeIntervals");
 
 let metrikaAccessToken;
 
@@ -104,11 +108,11 @@ const init = async () => {
         description: "authorize for Google Sheets API"
       },
       {
-        command: "metrika_auth",
+        command: "yandex_metrika_auth",
         description: "authorize for yandex metrika"
       },
       {
-        command: "metrika_get_visitors",
+        command: "yandex_metrika_start",
         description: "get count of unique visitors"
       },
       {
@@ -140,8 +144,8 @@ bot.command("show_keyboard", ctx => {
     "/hide_keyboard",
     "/sheets_auth",
     "/sheets_update",
-    "/metrika_auth",
-    "/metrika_get_visitors"
+    "/yandex_metrika_auth",
+    "/yandex_metrika_start"
   ]);
   console.log("keyboard", keyboard);
 
@@ -179,6 +183,10 @@ bot.command("translate_text", ctx => {
 
 bot.command("run_javascript", ctx => {
   ctx.scene.enter("run_js");
+});
+
+bot.command("yandex_metrika_start", ctx => {
+  ctx.scene.enter("yandexMetrikaScene");
 });
 
 bot.help(helpMiddleware);
@@ -255,8 +263,9 @@ bot.command(
     apiName: "Google Sheets API"
   })
 );
+
 bot.command(
-  "metrika_auth",
+  "yandex_metrika_auth",
   authCommandHandler({
     getAuthUrl: metrikaAuth.getAuthUrl,
     authServerName: "Yandex",
@@ -312,6 +321,13 @@ bot.command("metrika_get_visitors", async ctx => {
   const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
 
   const data = await mertikaAPI.requestVisitors();
+
+  return ctx.reply(
+    `<b>Choose time interval:</b>`,
+    Extra.HTML().markup(m =>
+      m.inlineKeyboard([m.urlButton(`Authorize`, authUrl)])
+    )
+  );
 
   ctx.reply(`data ${JSON.stringify(data)}`);
 });

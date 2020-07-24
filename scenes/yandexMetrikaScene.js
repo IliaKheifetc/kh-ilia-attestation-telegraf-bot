@@ -1,0 +1,40 @@
+const WizardScene = require("telegraf/scenes/wizard");
+
+const yandexMetrikaScene = new WizardScene(
+  "yandexMetrika",
+  ctx => {
+    ctx.reply(
+      `<b>Choose report:</b>`,
+      Extra.HTML().markup(m =>
+        m.inlineKeyboard([
+          m.callbackButton("Visitors", "Visitors"),
+          m.callbackButton("Some stuff", "Some stuff")
+        ])
+      )
+    );
+
+    return ctx.wizard.next();
+  },
+  ctx => {
+    console.log("ctx", ctx);
+
+    const { text } = ctx.update.message || {};
+
+    console.log("text", text);
+
+    // ctx.wizard.state.translationData = {
+    //   sourceLanguage: text
+    // };
+
+    // console.log(
+    //   "ctx.wizard.state.translationData",
+    //   ctx.wizard.state.translationData
+    // );
+
+    ctx.reply("choose time interval");
+
+    return ctx.wizard.next();
+  }
+);
+
+module.exports = yandexMetrikaScene;
