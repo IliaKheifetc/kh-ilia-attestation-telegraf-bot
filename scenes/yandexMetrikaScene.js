@@ -2,7 +2,7 @@ const WizardScene = require("telegraf/scenes/wizard");
 const Extra = require("telegraf/extra");
 
 // constants
-const { REPORTS, TIME_INTERVALS } = require("./constants/yandexMetrika");
+const { REPORTS, TIME_INTERVALS } = require("../constants/yandexMetrika");
 
 const yandexMetrikaScene = new WizardScene(
   "yandexMetrika",
