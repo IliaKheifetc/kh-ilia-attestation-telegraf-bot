@@ -17,7 +17,7 @@ class MetrikaAPI extends BaseSource {
     try {
       const { data } = await this.get(VISITS_AND_VISITORS__COUNT_URL);
 
-      console.log("requestVisitors data", data)
+      console.log("requestVisitors data", JSON.stringify(data));
 
       return data;
     } catch (e) {
