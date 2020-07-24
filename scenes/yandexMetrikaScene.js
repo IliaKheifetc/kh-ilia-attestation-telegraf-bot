@@ -25,9 +25,11 @@ const yandexMetrikaScene = new WizardScene(
     console.log("ctx", ctx);
 
     const { text } = ctx.update.message || {};
+    const { data } = ctx.update.callback_query || {};
 
     console.log("ctx.update", JSON.stringify(ctx.update));
-    console.log("text", text);
+
+    console.log("data", data);
 
     // ctx.wizard.state.translationData = {
     //   sourceLanguage: text
