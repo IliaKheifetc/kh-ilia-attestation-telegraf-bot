@@ -34,6 +34,8 @@ const getTokenByCode = async code => {
     await fs.writeFile("token.json", access_token);
 
     console.log("access_token", access_token);
+
+    return access_token;
   } catch (e) {
     console.error("Error occurred when requesting token", e);
   }

@@ -11,7 +11,10 @@ const translationScene = require("./scenes/translationScene");
 const weatherScene = require("./scenes/weatherScene");
 const jsRunningScene = require("./scenes/jsRunningScene");
 const sheets = require("./sheets/index");
-const metrika = require("./yandex_metrika/index");
+const metrikaAuth = require("./yandex_metrika/auth");
+const MetrikaAPI = require("./yandex_metrika/dataSource");
+
+let metrikaAccessToken;
 
 const { enter, leave } = Stage;
 
@@ -233,20 +236,6 @@ bot.command("sheets_auth", async ctx => {
   const { authUrl } = sheets.getAuthUrlAndClient();
   ctx.reply(authUrl);
 
-  // const { authorizeUrl, oAuth2Client } = sheets.getAuthUrlAndClient();
-  // const authorizedClient = await sheets.getAuthorizedClient(oAuth2Client);
-  //
-  // ctx.reply(authorizeUrl);
-  //
-  // console.log("authClient", oAuth2Client);
-  //
-  // const [rowNumber, ...cellsData] = text.split(" ");
-  //
-  // console.log("rowNumber", rowNumber);
-  // console.log("cellsData", cellsData);
-  //
-  // sheets.workWithMySpreadsheet(authClient, rowNumber, cellsData);
-
   console.log("sheets");
 });
 
@@ -295,8 +284,16 @@ bot.command("sheets_update", async ctx => {
 });
 
 bot.command("metrika_auth", async ctx => {
-  const authUrl = metrika.getAuthUrl();
+  const authUrl = metrikaAuth.getAuthUrl();
   ctx.reply(authUrl);
+});
+
+bot.command("metrika_get_visitors", async ctx => {
+  const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
+
+  const data = await mertikaAPI.requestVisitors();
+
+  ctx.reply("data", JSON.stringify(data));
 });
 
 bot.telegram.setWebhook(
@@ -336,7 +333,7 @@ app.get("/oauth2callback", (req, res) => {
   // });
 });
 
-app.get("/yandexOAuth", (req, res) => {
+app.get("/yandexOAuth", async (req, res) => {
   console.log("yandexOAuth");
 
   console.log("req.query.code", req.query.code);
@@ -345,7 +342,7 @@ app.get("/yandexOAuth", (req, res) => {
     "<body>Authorized with Yandex OAuth successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2000);</script></body>"
   );
 
-  metrika.getTokenByCode(req.query.code);
+  metrikaAccessToken = await metrikaAuth.getTokenByCode(req.query.code);
 });
 
 app.listen(process.env.PORT, () => {
