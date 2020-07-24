@@ -280,9 +280,17 @@ bot.command("gif", ctx => {
 bot.hears("d", ctx => ctx.reply("🍆"));
 bot.hears("today", ctx => ctx.reply(new Date()));
 
-const authCommandHandler = getAuthUrl => ctx => {
+const authCommandHandler = (getAuthUrl, authServerName) => ctx => {
   const { authUrl } = getAuthUrl();
-  ctx.reply(authUrl);
+
+  return ctx.reply(
+    `<b>Please, authorize with ${authServerName}</b>`,
+    Extra.HTML().markup(m =>
+      m.inlineKeyboard([m.urlButton(`Authorize`, authUrl)])
+    )
+  );
+
+  //ctx.reply(authUrl);
 };
 
 bot.command("sheets_auth", authCommandHandler(sheets.getAuthUrlAndClient));
