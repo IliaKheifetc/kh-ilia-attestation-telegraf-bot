@@ -36,7 +36,7 @@ module.exports = {
     //   app.get("/oauth2callback", (req, res) => {
     //     console.log("oauth2callback");
     //     const code = req.query.code;
-    return new Promise(() => {
+    return new Promise(resolve => {
       oAuth2Client.getToken(code, (err, tokens) => {
         if (err) {
           console.error("Error getting oAuth tokens:");
