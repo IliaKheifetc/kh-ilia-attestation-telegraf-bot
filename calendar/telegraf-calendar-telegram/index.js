@@ -78,6 +78,10 @@ class Calendar {
         "this.helper.getCalendarMarkup(date)",
         this.helper.getCalendarMarkup(date)
       );
+      console.log(
+        "typeof this.helper.getCalendarMarkup(date)",
+        typeof this.helper.getCalendarMarkup(date)
+      );
 
       let prevText = context.callbackQuery.message.text;
       return context.answerCbQuery().then(() =>
