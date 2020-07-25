@@ -245,7 +245,7 @@ bot.hears("today", ctx => ctx.reply(new Date()));
 const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
   const { authUrl } = getAuthUrl();
 
-  console.log("ctx.update", JSON.stringify(ctx.update));
+  console.log("ctx.update.message", JSON.stringify(ctx.update.message));
 
   return ctx.reply(
     `<b>Please, authorize with ${authServerName} to have access\n to ${apiName}</b>`,
