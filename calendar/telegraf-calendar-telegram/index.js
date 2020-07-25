@@ -27,6 +27,8 @@ class Calendar {
 	 * @param {(context: Context, date: Date) => void} onDateSelected The callback to be used
 	 */
   setDateListener(onDateSelected) {
+    console.log("setDateListener");
+
     this.bot.action(/calendar-telegram-date-[\d-]+/g, context => {
       console.log("this.bot.action(/calendar-telegram-date");
 
