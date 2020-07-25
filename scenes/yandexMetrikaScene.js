@@ -77,7 +77,7 @@ const yandexMetrikaScene = new WizardScene(
           Object.keys(TIME_INTERVALS).map(timeIntervalName =>
             m.callbackButton(capitalize(timeIntervalName), timeIntervalName)
           ),
-          m.callbackButton(capitalize("Calendar"), Calendar)
+          m.callbackButton(capitalize("Calendar"), "Calendar")
         )
       )
     );
