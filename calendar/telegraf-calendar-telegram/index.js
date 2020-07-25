@@ -55,7 +55,10 @@ class Calendar {
 
     this.bot.action(/calendar-telegram-next-[\d-]+/g, context => {
       console.log("context", context);
-      console.log("context", JSON.stringify(context));
+      console.log(
+        "context.update.callback_query",
+        JSON.stringify(context.update.callback_query)
+      );
 
       console.log("this.bot.action(/calendar-telegram-next");
 
