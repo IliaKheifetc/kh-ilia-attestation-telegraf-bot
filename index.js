@@ -272,7 +272,9 @@ const getConfirmationCodeHandler = ({
 
   // res.send(`<body>Received confirmation code from ${authServerName} successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2500);</script></body>`)
 
-  res.sendFile("confirmationCode.html");
+  res.sendFile("confirmationCode.html", {
+    root: path.join(__dirname, "static")
+  });
 
   tokenStorage[tokenName] = await getToken(code);
 
