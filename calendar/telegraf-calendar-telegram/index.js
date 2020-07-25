@@ -54,7 +54,9 @@ class Calendar {
     });
 
     this.bot.action(/calendar-telegram-next-[\d-]+/g, context => {
-      console.log("context");
+      console.log("context", context);
+      console.log("context", JSON.stringify(context));
+
       console.log("this.bot.action(/calendar-telegram-next");
 
       let dateString = context.match[0].replace("calendar-telegram-next-", "");
