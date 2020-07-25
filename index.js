@@ -188,7 +188,9 @@ bot.command("run_javascript", ctx => {
 });
 
 bot.command("yandex_metrika_start", ctx => {
-  ctx.scene.enter("yandexMetrika", { metrikaAccessToken });
+  ctx.scene.enter("yandexMetrika", {
+    metrikaAccessToken: tokenStorage.metrikaAccessToken
+  });
 });
 
 bot.help(helpMiddleware);
@@ -257,8 +259,6 @@ const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
       m.inlineKeyboard([m.urlButton(`Authorize`, authUrl)])
     )
   );
-
-  //ctx.reply(authUrl);
 };
 
 const getAuthCodeHandler = ({
@@ -268,17 +268,17 @@ const getAuthCodeHandler = ({
   tokenName
 }) => async (req, res) => {
   const { state, code } = req.query;
-
+  const chatId = state.replace(/\D/g, "");
   console.log("req.query.code", req.query.code);
   console.log("req.query.state", req.query.state);
 
   res.send(
-    `<body>Received auth code from ${authServerName} successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 200000);</script></body>`
+    `<body>Received confirmation code from ${authServerName} successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 20000);</script></body>`
   );
 
   tokenStorage[tokenName] = await getToken(code);
 
-  //telegram.sendMessage(chatId, "Authorized successfully");
+  telegram.sendMessage(chatId, "Authorized successfully");
 };
 
 bot.command(
