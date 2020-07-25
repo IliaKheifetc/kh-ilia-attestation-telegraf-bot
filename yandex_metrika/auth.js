@@ -1,9 +1,6 @@
 const axios = require("axios");
 const qs = require("qs");
-const util = require("util");
 const fs = require("fs").promises;
-
-//const writeFile = util.promisify(fs.writeFile);
 
 const CLIENT_ID = "95beaa102a9344b2821203fc778ca27b";
 const REDIRECT_URI = "https://ilia-kh-telegram-bot.herokuapp.com/yandexOAuth";
@@ -12,7 +9,7 @@ const APP_PASSWORD = "3607d561cc9d4fbba01ac80f048e838e";
 // const authUrl =
 //   "https://oauth.yandex.ru/authorize?response_type=code&client_id=95beaa102a9344b2821203fc778ca27b&redirect_uri=https://ilia-kh-telegram-bot.herokuapp.com/yandexOAuth";
 
-const baseAuthUrl = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}`;
+const baseAuthUrl = `https://oauth.yandex.ru/authorize?`;
 
 const getTokenByCode = async code => {
   console.log("code", code);
@@ -44,8 +41,16 @@ const getTokenByCode = async code => {
 //getTokenByCode();
 
 module.exports = {
-  getAuthUrl: extraQueryStringParams => ({
-    authUrl: `${baseAuthUrl}&${extraQueryStringParams}`
-  }),
+  getAuthUrl: extraQueryStringParams => {
+    const baseQueryStringParams = qs.stringify({
+      response_type: "code",
+      client_id: CLIENT_ID,
+      redirect_uri: REDIRECT_URI
+    });
+
+    return {
+      authUrl: `${baseAuthUrl}${baseQueryStringParams}&${extraQueryStringParams}`
+    };
+  },
   getTokenByCode
 };

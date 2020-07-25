@@ -247,7 +247,7 @@ bot.hears("today", ctx => ctx.reply(new Date()));
 const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
   console.log("ctx.chat", JSON.stringify(ctx.chat));
   const { id: chatId } = ctx.chat;
-  const extraQueryStringParams = qs.stringify({ chatId });
+  const extraQueryStringParams = qs.stringify({ state: `chatId${chatId}` });
 
   const { authUrl } = getAuthUrl(extraQueryStringParams);
 
@@ -267,17 +267,18 @@ const getAuthCodeHandler = ({
   tokenStorage,
   tokenName
 }) => async (req, res) => {
-  const { chatId, code } = req.query;
+  const { state, code } = req.query;
 
   console.log("req.query.code", req.query.code);
+  console.log("req.query.state", req.query.state);
 
   res.send(
-    `<body>Received auth code from ${authServerName} successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2000);</script></body>`
+    `<body>Received auth code from ${authServerName} successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 200000);</script></body>`
   );
 
   tokenStorage[tokenName] = await getToken(code);
 
-  telegram.sendMessage(chatId, "Authorized successfully");
+  //telegram.sendMessage(chatId, "Authorized successfully");
 };
 
 bot.command(
