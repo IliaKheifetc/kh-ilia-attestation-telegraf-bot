@@ -59,6 +59,10 @@ class Calendar {
         "context.update.callback_query.message",
         JSON.stringify(context.update.callback_query.message)
       );
+      const {
+        message_id: messageId,
+        chat: { id: chatId }
+      } = context.update.callback_query.message;
 
       console.log("this.bot.action(/calendar-telegram-next");
 
@@ -71,10 +75,14 @@ class Calendar {
       console.log("date", date);
 
       let prevText = context.callbackQuery.message.text;
-      return context.answerCbQuery().then(
-        () =>
-          context.editMessageText(prevText, this.helper.getCalendarMarkup(date))
-        //context.editMessageReplyMarkup()
+      return context.answerCbQuery().then(() =>
+        //context.editMessageText(prevText, this.helper.getCalendarMarkup(date))
+        context.editMessageReplyMarkup(
+          chatId,
+          messageId,
+          undefined,
+          this.helper.getCalendarMarkup(date)
+        )
       );
     });
 
