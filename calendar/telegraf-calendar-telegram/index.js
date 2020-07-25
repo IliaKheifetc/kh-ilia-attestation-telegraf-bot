@@ -74,6 +74,11 @@ class Calendar {
 
       console.log("date", date);
 
+      console.log(
+        "this.helper.getCalendarMarkup(date)",
+        this.helper.getCalendarMarkup(date)
+      );
+
       let prevText = context.callbackQuery.message.text;
       return context.answerCbQuery().then(() =>
         //context.editMessageText(prevText, this.helper.getCalendarMarkup(date))
