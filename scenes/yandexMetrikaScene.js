@@ -90,6 +90,8 @@ const yandexMetrikaScene = new WizardScene(
     if (selectedTimeInterval === "Calendar") {
       const { calendar, dataReportParams } = ctx.wizard.state;
       calendar.setDateListener((context, date) => {
+        console.log("date", date);
+
         context.reply(date);
         if (!dataReportParams.date1) {
           dataReportParams.date1 = date;
@@ -98,6 +100,8 @@ const yandexMetrikaScene = new WizardScene(
           dataReportParams.date2 = date;
           return ctx.wizard.next();
         }
+
+        console.log("ctx.wizard.state", ctx.wizard.state);
       });
 
       ctx.reply("Select start date", calendar.getCalendar());

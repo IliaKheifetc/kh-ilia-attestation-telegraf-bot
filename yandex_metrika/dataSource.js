@@ -4,22 +4,16 @@ const fs = require("fs").promises;
 const BaseSource = require("../BaseSource");
 const { METRIKA_BASE_URL } = require("../constants/apiEndpoints");
 
-
 class MetrikaAPI extends BaseSource {
   constructor(token) {
     super(METRIKA_BASE_URL, token);
   }
 
   async requestVisitors(queryStringParams) {
-    const dataPresentationQsParam = dataPresentationForm
-      ? `/${dataPresentationForm}`
-      : "";
-    const VISITS_AND_VISITORS__COUNT_URL = `${
-      this.baseUrl
-    }${dataPresentationQsParam}?metrics=ym:s:visits,ym:s:users&dimensions=ym:s:datePeriod${timeIntervalName}&ids=${COUNTER_ID}`;
+    const VISITS_AND_VISITORS_COUNT_URL = `${this.baseUrl}${queryStringParams}`;
 
     try {
-      const { data } = await this.get(VISITS_AND_VISITORS__COUNT_URL);
+      const { data } = await this.get(VISITS_AND_VISITORS_COUNT_URL);
 
       console.log("requestVisitors data", JSON.stringify(data));
 
