@@ -8,7 +8,10 @@ const TIME_INTERVALS = {
 
 const REPORTS = ["Visitors"];
 
+const COUNTER_ID = 50788801;
+
 module.exports = {
+  COUNTER_ID,
   REPORTS,
   TIME_INTERVALS
 };

@@ -21,10 +21,12 @@
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "lodash": "^4.17.19",
+    "moment": "^2.27.0",
     "node-fetch": "^2.6.0",
     "open": "^7.1.0",
     "pug": "^3.0.0",
     "qs": "^6.9.4",
-    "telegraf": "^3.38.0"
+    "telegraf": "^3.38.0",
+    "telegraf-calendar-telegram": "^1.5.8"
   }
 }

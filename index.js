@@ -67,6 +67,7 @@ const bot = new Telegraf(process.env.BOT_TOKEN, {
   agent: null, // https.Agent instance, allows custom proxy, certificate, keep alive, etc.
   webhookReply: false // Reply via webhook
 });
+const calendar = new Calendar(bot);
 const telegram = new Telegram(process.env.BOT_TOKEN);
 const stage = new Stage(
   [translationScene, weatherScene, jsRunningScene, yandexMetrikaScene],
@@ -189,7 +190,8 @@ bot.command("run_javascript", ctx => {
 
 bot.command("yandex_metrika_start", ctx => {
   ctx.scene.enter("yandexMetrika", {
-    metrikaAccessToken: tokenStorage.metrikaAccessToken
+    metrikaAccessToken: tokenStorage.metrikaAccessToken,
+    calendar
   });
 });
 
