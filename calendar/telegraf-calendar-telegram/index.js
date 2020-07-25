@@ -91,7 +91,7 @@ class Calendar {
           chatId,
           messageId,
           undefined,
-          Extra.markup(this.helper.getCalendarMarkup(date)).reply_markup
+          this.helper.getCalendarMarkup(date).reply_markup.inline_keyboard
         )
       );
     });
