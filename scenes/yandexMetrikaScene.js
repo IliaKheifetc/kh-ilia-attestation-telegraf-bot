@@ -56,10 +56,6 @@ const yandexMetrikaScene = new WizardScene(
     //const { text } = ctx.update.message || {};
     const { data: timeIntervalName } = ctx.update.callback_query || {};
 
-    ctx.wizard.state.dataReportParams = {
-      reportName: data
-    };
-
     console.log("ctx.update", JSON.stringify(ctx.update));
     console.log("timeIntervalName", timeIntervalName);
     console.log("ctx.wizard.state", ctx.wizard.state);
