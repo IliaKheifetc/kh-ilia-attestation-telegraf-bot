@@ -60,32 +60,24 @@ const yandexMetrikaScene = new WizardScene(
     console.log("timeIntervalName", timeIntervalName);
     console.log("ctx.wizard.state", ctx.wizard.state);
 
-    // switch (data) {
-    //   case "Visitors":
-    //     const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
-    //
-    //     const data = await mertikaAPI.requestVisitors();
-    //
-    //     return ctx.reply(
-    //       `<b>Choose time interval:</b>`,
-    //       Extra.HTML().markup(m =>
-    //         m.inlineKeyboard([m.urlButton(`Authorize`, authUrl)])
-    //       )
-    //     );
-    // }
+    const {
+      dataReportParams: { reportName },
+      metrikaAccessToken
+    } = ctx.wizard.state;
 
-    // ctx.wizard.state.translationData = {
-    //   sourceLanguage: text
-    // };
+    switch (reportName) {
+      case "Visitors":
+        const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
 
-    // console.log(
-    //   "ctx.wizard.state.translationData",
-    //   ctx.wizard.state.translationData
-    // );
+        const data = await mertikaAPI.requestVisitors(timeIntervalName);
 
-    ctx.reply("choose time interval");
+        return ctx.reply(`data ${JSON.stringify(data)}`);
+      default:
+        ctx.reply("The specified report is not supported");
+    }
 
-    return ctx.wizard.next();
+    //return ctx.wizard.next();
+    return ctx.scene.leave();
   }
 );
 

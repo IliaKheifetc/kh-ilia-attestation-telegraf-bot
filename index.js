@@ -317,20 +317,20 @@ bot.command("sheets_update", async ctx => {
   sheets.updateSpreadsheet(text);
 });
 
-bot.command("metrika_get_visitors", async ctx => {
-  const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
-
-  const data = await mertikaAPI.requestVisitors();
-
-  return ctx.reply(
-    `<b>Choose time interval:</b>`,
-    Extra.HTML().markup(m =>
-      m.inlineKeyboard([m.urlButton(`Authorize`, authUrl)])
-    )
-  );
-
-  ctx.reply(`data ${JSON.stringify(data)}`);
-});
+// bot.command("metrika_get_visitors", async ctx => {
+//   const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
+//
+//   const data = await mertikaAPI.requestVisitors();
+//
+//   return ctx.reply(
+//     `<b>Choose time interval:</b>`,
+//     Extra.HTML().markup(m =>
+//       m.inlineKeyboard([m.urlButton(`Authorize`, authUrl)])
+//     )
+//   );
+//
+//   ctx.reply(`data ${JSON.stringify(data)}`);
+// });
 
 bot.telegram.setWebhook(
   "https://ilia-kh-telegram-bot.herokuapp.com/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"

@@ -9,10 +9,10 @@ class MetrikaAPI extends BaseSource {
     super(METRIKA_BASE_URL, token);
   }
 
-  async requestVisitors(timePeriod) {
+  async requestVisitors(timeIntervalName) {
     const VISITS_AND_VISITORS__COUNT_URL = `${
       this.baseUrl
-    }data?metrics=ym:s:visits,ym:s:users&dimensions=ym:s:datePeriod${timePeriod}&ids=50788801`;
+    }data?metrics=ym:s:visits,ym:s:users&dimensions=ym:s:datePeriod${timeIntervalName}&ids=50788801`;
 
     try {
       const {
