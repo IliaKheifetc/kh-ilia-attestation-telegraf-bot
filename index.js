@@ -246,6 +246,7 @@ const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
   const { authUrl } = getAuthUrl();
 
   console.log("ctx.update.message", JSON.stringify(ctx.update.message));
+  console.log("ctx.chat", JSON.stringify(ctx.chat));
 
   return ctx.reply(
     `<b>Please, authorize with ${authServerName} to have access\n to ${apiName}</b>`,
