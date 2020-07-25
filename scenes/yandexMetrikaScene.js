@@ -73,12 +73,12 @@ const yandexMetrikaScene = new WizardScene(
     ctx.reply(
       `<b>Choose time interval:</b>`,
       Extra.HTML().markup(m =>
-        m.inlineKeyboard(
-          Object.keys(TIME_INTERVALS).map(timeIntervalName =>
+        m.inlineKeyboard([
+          ...Object.keys(TIME_INTERVALS).map(timeIntervalName =>
             m.callbackButton(capitalize(timeIntervalName), timeIntervalName)
           ),
           m.callbackButton(capitalize("Calendar"), "Calendar")
-        )
+        ])
       )
     );
 
