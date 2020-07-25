@@ -1,3 +1,4 @@
+const Extra = require("telegraf").Extra;
 const CalendarHelper = require("./calendar-helper");
 
 class Calendar {
@@ -90,7 +91,7 @@ class Calendar {
           chatId,
           messageId,
           undefined,
-          JSON.stringify(this.helper.getCalendarMarkup(date).reply_markup)
+          Extra.markup(this.helper.getCalendarMarkup(date)).reply_markup
         )
       );
     });
