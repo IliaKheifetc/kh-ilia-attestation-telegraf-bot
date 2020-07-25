@@ -7,6 +7,7 @@ const Stage = require("telegraf/stage");
 const Markup = require("telegraf/markup");
 const Extra = require("telegraf/extra");
 const axios = require("axios");
+const qs = require("qs");
 const apolloClient = require("./apolloClient");
 const translationScene = require("./scenes/translationScene");
 const weatherScene = require("./scenes/weatherScene");
@@ -16,6 +17,7 @@ const sheets = require("./sheets/index");
 const metrikaAuth = require("./yandex_metrika/auth");
 const MetrikaAPI = require("./yandex_metrika/dataSource");
 
+let tokenStorage = {};
 let metrikaAccessToken;
 
 const { enter, leave } = Stage;
@@ -243,10 +245,11 @@ bot.hears("d", ctx => ctx.reply("🍆"));
 bot.hears("today", ctx => ctx.reply(new Date()));
 
 const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
-  const { authUrl } = getAuthUrl();
-
-  console.log("ctx.update.message", JSON.stringify(ctx.update.message));
   console.log("ctx.chat", JSON.stringify(ctx.chat));
+  const { id: chatId } = ctx.chat;
+  const extraQueryStringParams = qs.stringify({ chatId });
+
+  const { authUrl } = getAuthUrl(extraQueryStringParams);
 
   return ctx.reply(
     `<b>Please, authorize with ${authServerName} to have access\n to ${apiName}</b>`,
@@ -256,6 +259,25 @@ const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
   );
 
   //ctx.reply(authUrl);
+};
+
+const getAuthCodeHandler = ({
+  getToken,
+  authServerName,
+  tokenStorage,
+  tokenName
+}) => async (req, res) => {
+  const { chatId, code } = req.query;
+
+  console.log("req.query.code", req.query.code);
+
+  res.send(
+    `<body>Received auth code from ${authServerName} successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2000);</script></body>`
+  );
+
+  tokenStorage[tokenName] = await getToken(code);
+
+  telegram.sendMessage(chatId, "Authorized successfully");
 };
 
 bot.command(
@@ -346,43 +368,41 @@ app.use(
   )
 );
 
-app.get("/oauth2callback", (req, res) => {
-  console.log("oauth2callback");
+app.get(
+  "/oauth2callback",
+  getAuthCodeHandler({
+    getToken: sheets.getAndSaveToken,
+    authServerName: "Google API",
+    tokenName: "googleAccessToken",
+    tokenStorage
+  })
+);
 
-  console.log("req.query.code", req.query.code);
+app.get(
+  "/yandexOAuth",
+  getAuthCodeHandler({
+    getToken: metrikaAuth.getTokenByCode,
+    authServerName: "Yandex OAuth",
+    tokenName: "metrikaAccessToken",
+    tokenStorage
+  })
+);
 
-  res.send(
-    "<body>Authorized successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2000);</script></body>"
-  );
-
-  sheets.getAndSaveToken(req.query.code);
-  // oAuth2Client.getToken(code, (err, tokens) => {
-  //   if (err) {
-  //     console.error("Error getting oAuth tokens:");
-  //     throw err;
-  //   }
-  //   oAuth2Client.credentials = tokens;
-  //   res.send("Authentication successful! Please return to the console.");
-  //
-  //   resolve(oAuth2Client);
-  //
-  //   server.close();
-  //   //listMajors(client);
-  //   workWithMySpreadsheet(oAuth2Client);
-  // });
-});
-
-app.get("/yandexOAuth", async (req, res) => {
-  console.log("yandexOAuth");
-
-  console.log("req.query.code", req.query.code);
-
-  res.send(
-    "<body>Authorized with Yandex OAuth successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2000);</script></body>"
-  );
-
-  metrikaAccessToken = await metrikaAuth.getTokenByCode(req.query.code);
-});
+// app.get("/yandexOAuth", async (req, res) => {
+//   console.log("yandexOAuth");
+//
+//   const { chatId } = req.query;
+//
+//   console.log("req.query.code", req.query.code);
+//
+//   res.send(
+//     "<body>Received auth code from Yandex OAuth successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2000);</script></body>"
+//   );
+//
+//   metrikaAccessToken = await metrikaAuth.getTokenByCode(req.query.code);
+//
+//   telegram.sendMessage(chatId, "Authorized successfully");
+// });
 
 app.listen(process.env.PORT, () => {
   console.log(`App is listening on port ${process.env.PORT}!`);

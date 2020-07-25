@@ -35,18 +35,21 @@ module.exports = {
     //   app.get("/oauth2callback", (req, res) => {
     //     console.log("oauth2callback");
     //     const code = req.query.code;
-    oAuth2Client.getToken(code, (err, tokens) => {
-      if (err) {
-        console.error("Error getting oAuth tokens:");
-        throw err;
-      }
-      oAuth2Client.credentials = tokens;
+    return new Promise(() => {
+      oAuth2Client.getToken(code, (err, tokens) => {
+        if (err) {
+          console.error("Error getting oAuth tokens:");
+          throw err;
+        }
+        oAuth2Client.credentials = tokens;
 
-      // resolve(oAuth2Client);
+        // resolve(oAuth2Client);
+        resolve();
 
-      //server.close();
-      //listMajors(client);
-      //workWithMySpreadsheet(oAuth2Client);
+        //server.close();
+        //listMajors(client);
+        //workWithMySpreadsheet(oAuth2Client);
+      });
     });
 
     // const server = app.listen(6066, () => {
