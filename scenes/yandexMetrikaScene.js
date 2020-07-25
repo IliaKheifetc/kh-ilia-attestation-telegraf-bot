@@ -90,7 +90,7 @@ const yandexMetrikaScene = new WizardScene(
     if (selectedTimeInterval === "Calendar") {
       const { calendar, dataReportParams } = ctx.wizard.state;
       calendar.setDateListener((context, date) => {
-        console.log("date", date);
+        console.log("setDateListener date", date);
 
         context.reply(date);
         if (!dataReportParams.date1) {
@@ -110,6 +110,8 @@ const yandexMetrikaScene = new WizardScene(
     return ctx.wizard.next();
   },
   async ctx => {
+    console.log("collect all input and make request");
+
     console.log("ctx", ctx);
 
     //const { text } = ctx.update.message || {};
