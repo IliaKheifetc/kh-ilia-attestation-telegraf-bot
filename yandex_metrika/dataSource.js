@@ -15,9 +15,7 @@ class MetrikaAPI extends BaseSource {
     }data?metrics=ym:s:visits,ym:s:users&dimensions=ym:s:datePeriod${timeIntervalName}&ids=50788801`;
 
     try {
-      const {
-        data: { data }
-      } = await this.get(VISITS_AND_VISITORS__COUNT_URL);
+      const { data } = await this.get(VISITS_AND_VISITORS__COUNT_URL);
 
       console.log("requestVisitors data", JSON.stringify(data));
 
