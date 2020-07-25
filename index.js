@@ -348,6 +348,12 @@ bot.command("sheets_update", async ctx => {
   sheets.updateSpreadsheet(text);
 });
 
+calendar.setDateListener((context, date) => context.reply(date));
+
+bot.command("calendar", ctx => {
+  ctx.reply("Here you are", calendar.getCalendar());
+});
+
 // bot.command("metrika_get_visitors", async ctx => {
 //   const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
 //
