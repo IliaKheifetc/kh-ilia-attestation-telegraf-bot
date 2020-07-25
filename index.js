@@ -5,6 +5,7 @@ const express = require("express");
 const Stage = require("telegraf/stage");
 const Markup = require("telegraf/markup");
 const Extra = require("telegraf/extra");
+const Calendar = require("telegraf-calendar-telegram");
 const axios = require("axios");
 const qs = require("qs");
 const path = require("path");
