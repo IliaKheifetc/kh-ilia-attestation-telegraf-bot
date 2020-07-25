@@ -16,8 +16,6 @@ const sheets = require("./sheets/index");
 const metrikaAuth = require("./yandex_metrika/auth");
 const MetrikaAPI = require("./yandex_metrika/dataSource");
 
-
-
 let metrikaAccessToken;
 
 const { enter, leave } = Stage;
@@ -188,7 +186,7 @@ bot.command("run_javascript", ctx => {
 });
 
 bot.command("yandex_metrika_start", ctx => {
-  ctx.scene.enter("yandexMetrika");
+  ctx.scene.enter("yandexMetrika", { metrikaAccessToken });
 });
 
 bot.help(helpMiddleware);
