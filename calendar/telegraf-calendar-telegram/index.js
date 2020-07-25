@@ -90,7 +90,7 @@ class Calendar {
           chatId,
           messageId,
           undefined,
-          this.helper.getCalendarMarkup(date).reply_markup
+          JSON.stringify(this.helper.getCalendarMarkup(date).reply_markup)
         )
       );
     });
