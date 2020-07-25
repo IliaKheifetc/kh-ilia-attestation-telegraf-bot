@@ -3,11 +3,12 @@ const session = require("telegraf/session");
 const Telegram = require("telegraf/telegram");
 const express = require("express");
 const Stage = require("telegraf/stage");
-
 const Markup = require("telegraf/markup");
 const Extra = require("telegraf/extra");
 const axios = require("axios");
 const qs = require("qs");
+const path = require("path");
+
 const apolloClient = require("./apolloClient");
 const translationScene = require("./scenes/translationScene");
 const weatherScene = require("./scenes/weatherScene");
@@ -15,7 +16,6 @@ const jsRunningScene = require("./scenes/jsRunningScene");
 const yandexMetrikaScene = require("./scenes/yandexMetrikaScene");
 const sheets = require("./sheets/index");
 const metrikaAuth = require("./yandex_metrika/auth");
-const MetrikaAPI = require("./yandex_metrika/dataSource");
 
 let tokenStorage = {};
 let metrikaAccessToken;
