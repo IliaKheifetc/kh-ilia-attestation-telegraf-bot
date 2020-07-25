@@ -107,7 +107,7 @@ const yandexMetrikaScene = new WizardScene(
       ctx.reply("Select start date", calendar.getCalendar());
     }
 
-    return ctx.wizard.next();
+    // return ctx.wizard.next();
   },
   async ctx => {
     console.log("collect all input and make request");
