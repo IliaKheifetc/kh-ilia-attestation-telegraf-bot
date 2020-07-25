@@ -57,8 +57,12 @@ class Calendar {
       console.log("this.bot.action(/calendar-telegram-next");
 
       let dateString = context.match[0].replace("calendar-telegram-next-", "");
+      console.log("dateString", dateString);
+
       let date = new Date(dateString);
       date.setMonth(date.getMonth() + 1);
+
+      console.log("date", date);
 
       let prevText = context.callbackQuery.message.text;
       return context
