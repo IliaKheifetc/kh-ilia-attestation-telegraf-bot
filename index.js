@@ -5,7 +5,8 @@ const express = require("express");
 const Stage = require("telegraf/stage");
 const Markup = require("telegraf/markup");
 const Extra = require("telegraf/extra");
-const Calendar = require("telegraf-calendar-telegram");
+//const Calendar = require("telegraf-calendar-telegram");
+const Calendar = require("./calendar/telegraf-calendar-telegram/index");
 const axios = require("axios");
 const qs = require("qs");
 const path = require("path");
@@ -45,19 +46,18 @@ class UrlBuilder {
   }
 
   getFullUrl = params => {
-    const queryString = Object.keys(params).reduce(
-      (queryString, key, index, arr) => {
-        if (params[key] === undefined) {
-          return queryString;
-        }
-
-        queryString += `${key}=${params[key]}`;
-        queryString += index < arr.length - 1 ? "&" : "";
-
+    const queryString = Object.keys(
+      params
+    ).reduce((queryString, key, index, arr) => {
+      if (params[key] === undefined) {
         return queryString;
-      },
-      ""
-    );
+      }
+
+      queryString += `${key}=${params[key]}`;
+      queryString += index < arr.length - 1 ? "&" : "";
+
+      return queryString;
+    }, "");
 
     return `${this.baseUrl}?${queryString}`;
   };
@@ -232,9 +232,7 @@ bot.command("gif", ctx => {
   axios
     .get(urlBuilder.getFullUrl(params))
     .then(response => {
-      const {
-        data: { data: gifs }
-      } = response;
+      const { data: { data: gifs } } = response;
 
       const gif = gifs[Math.trunc(Math.random() * 10)];
       const { images = {} } = gif;

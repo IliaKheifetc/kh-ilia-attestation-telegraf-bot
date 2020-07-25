@@ -1,0 +1,64 @@
+{
+  "_args": [
+    [
+      "telegraf-calendar-telegram@1.5.8",
+      "/Users/ilia/Projects/ilia-kh-telegram-bot"
+    ]
+  ],
+  "_from": "telegraf-calendar-telegram@1.5.8",
+  "_id": "telegraf-calendar-telegram@1.5.8",
+  "_inBundle": false,
+  "_integrity": "sha512-SF94TBR1JirMDnOk0OdDwhJcK/X2TqXl34seR3EWHB2HkHjrqxXP+z4i6h2e5y2S8OJq9E8vF2RuBAj/WsmOEA==",
+  "_location": "/telegraf-calendar-telegram",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "telegraf-calendar-telegram@1.5.8",
+    "name": "telegraf-calendar-telegram",
+    "escapedName": "telegraf-calendar-telegram",
+    "rawSpec": "1.5.8",
+    "saveSpec": null,
+    "fetchSpec": "1.5.8"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/telegraf-calendar-telegram/-/telegraf-calendar-telegram-1.5.8.tgz",
+  "_spec": "1.5.8",
+  "_where": "/Users/ilia/Projects/ilia-kh-telegram-bot",
+  "author": {
+    "name": "gianlucaparadise",
+    "email": "gianlucaparadise@gmail.com",
+    "url": "https://github.com/gianlucaparadise"
+  },
+  "bugs": {
+    "url": "https://github.com/gianlucaparadise/telegraf-calendar-telegram/issues"
+  },
+  "dependencies": {
+    "telegraf": "^3.25.0"
+  },
+  "description": "Inline calendar for Telegram bots using Telegraf framework",
+  "devDependencies": {
+    "eslint": "^3.19.0"
+  },
+  "homepage": "https://github.com/gianlucaparadise/telegraf-calendar-telegram#readme",
+  "keywords": [
+    "telegram",
+    "bot",
+    "telegraf",
+    "calendar"
+  ],
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "name": "telegraf-calendar-telegram",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gianlucaparadise/telegraf-calendar-telegram.git"
+  },
+  "scripts": {
+    "deploy": "now --public && now alias && now remove telegraf-calendar-telegram --safe -y",
+    "start": "node bin/www"
+  },
+  "version": "1.5.8"
+}
