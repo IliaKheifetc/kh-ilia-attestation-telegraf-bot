@@ -35,7 +35,7 @@ const yandexMetrikaScene = new WizardScene(
 
     console.log("ctx.update", JSON.stringify(ctx.update));
 
-    console.log("data", data);
+    console.log("reportName", reportName);
 
     ctx.reply(
       `<b>Choose time interval:</b>`,
