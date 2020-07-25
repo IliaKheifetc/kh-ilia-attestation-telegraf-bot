@@ -261,7 +261,7 @@ const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
   );
 };
 
-const getAuthCodeHandler = ({
+const getConfirmationCodeHandler = ({
   getToken,
   authServerName,
   tokenStorage,
@@ -269,12 +269,10 @@ const getAuthCodeHandler = ({
 }) => async (req, res) => {
   const { state, code } = req.query;
   const chatId = state ? state.replace(/\D/g, "") : "";
-  console.log("req.query.code", req.query.code);
-  console.log("req.query.state", req.query.state);
 
-  res.send(
-    `<body>Received confirmation code from ${authServerName} successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 20000);</script></body>`
-  );
+  // res.send(`<body>Received confirmation code from ${authServerName} successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2500);</script></body>`)
+
+  res.sendFile("confirmationCode.html");
 
   tokenStorage[tokenName] = await getToken(code);
 
@@ -370,10 +368,11 @@ app.use(
     "/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
   )
 );
+app.use(express.static(path.join(__dirname, "static")));
 
 app.get(
   "/oauth2callback",
-  getAuthCodeHandler({
+  getConfirmationCodeHandler({
     getToken: sheets.getAndSaveToken,
     authServerName: "Google API",
     tokenName: "googleAccessToken",
@@ -383,29 +382,13 @@ app.get(
 
 app.get(
   "/yandexOAuth",
-  getAuthCodeHandler({
+  getConfirmationCodeHandler({
     getToken: metrikaAuth.getTokenByCode,
     authServerName: "Yandex OAuth",
     tokenName: "metrikaAccessToken",
     tokenStorage
   })
 );
-
-// app.get("/yandexOAuth", async (req, res) => {
-//   console.log("yandexOAuth");
-//
-//   const { chatId } = req.query;
-//
-//   console.log("req.query.code", req.query.code);
-//
-//   res.send(
-//     "<body>Received auth code from Yandex OAuth successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2000);</script></body>"
-//   );
-//
-//   metrikaAccessToken = await metrikaAuth.getTokenByCode(req.query.code);
-//
-//   telegram.sendMessage(chatId, "Authorized successfully");
-// });
 
 app.listen(process.env.PORT, () => {
   console.log(`App is listening on port ${process.env.PORT}!`);
