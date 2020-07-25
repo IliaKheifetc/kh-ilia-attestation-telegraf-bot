@@ -272,9 +272,11 @@ const getConfirmationCodeHandler = ({
 
   // res.send(`<body>Received confirmation code from ${authServerName} successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2500);</script></body>`)
 
-  res.sendFile("confirmationCode.html", {
-    root: path.join(__dirname, "static")
-  });
+  // res.sendFile(`confirmationCode.html`, {
+  //   root: path.join(__dirname, "static")
+  // });
+
+  res.render("confirmationCode", { authServerName });
 
   tokenStorage[tokenName] = await getToken(code);
 
@@ -365,6 +367,9 @@ bot.telegram.setWebhook(
 );
 
 const app = express();
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
+
 app.use(
   bot.webhookCallback(
     "/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
