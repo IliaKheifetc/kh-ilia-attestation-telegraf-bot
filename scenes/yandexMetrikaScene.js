@@ -69,7 +69,10 @@ const yandexMetrikaScene = new WizardScene(
       case "Visitors":
         const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
 
-        const data = await mertikaAPI.requestVisitors(timeIntervalName);
+        const data = await mertikaAPI.requestVisitors({
+          dataPresentationForm: "bytime",
+          timeIntervalName
+        });
 
         return ctx.reply(`data ${JSON.stringify(data)}`);
       default:
