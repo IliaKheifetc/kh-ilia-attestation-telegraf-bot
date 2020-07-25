@@ -41,12 +41,13 @@ const getTokenByCode = async code => {
 //getTokenByCode();
 
 module.exports = {
-  getAuthUrl: extraQueryStringParams => {
+  getAuthUrl: extraParams => {
     const baseQueryStringParams = qs.stringify({
       response_type: "code",
       client_id: CLIENT_ID,
       redirect_uri: REDIRECT_URI
     });
+    const extraQueryStringParams = qs.stringify(extraParams);
 
     return {
       authUrl: `${baseAuthUrl}${baseQueryStringParams}&${extraQueryStringParams}`

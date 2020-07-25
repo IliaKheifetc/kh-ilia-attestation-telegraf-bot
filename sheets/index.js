@@ -16,11 +16,12 @@ const oAuth2Client = new google.auth.OAuth2(
 );
 
 module.exports = {
-  getAuthUrlAndClient: () => {
+  getAuthUrlAndClient: extraParams => {
     // Generate the url that will be used for authorization
     const authorizeUrl = oAuth2Client.generateAuthUrl({
       access_type: "offline",
-      scope: SCOPES
+      scope: SCOPES,
+      state: extraParams.state
     });
 
     return { authUrl: authorizeUrl, authClient: oAuth2Client };
