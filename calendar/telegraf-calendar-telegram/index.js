@@ -54,6 +54,7 @@ class Calendar {
     });
 
     this.bot.action(/calendar-telegram-next-[\d-]+/g, context => {
+      console.log("context");
       console.log("this.bot.action(/calendar-telegram-next");
 
       let dateString = context.match[0].replace("calendar-telegram-next-", "");
@@ -65,11 +66,11 @@ class Calendar {
       console.log("date", date);
 
       let prevText = context.callbackQuery.message.text;
-      return context
-        .answerCbQuery()
-        .then(() =>
+      return context.answerCbQuery().then(
+        () =>
           context.editMessageText(prevText, this.helper.getCalendarMarkup(date))
-        );
+        //context.editMessageReplyMarkup()
+      );
     });
 
     this.bot.action(/calendar-telegram-ignore-[\d\w-]+/g, context =>
