@@ -49,24 +49,23 @@ dateSelectionHandler.action("Calendar", ctx => {
   //return ctx.wizard.selectStep(ctx.wizard.cursor);
 });
 
-dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, ctx => {
+dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
   const { state } = ctx.wizard;
   let date = ctx.match[0].replace("calendar-telegram-date-", "");
 
-  return ctx.answerCbQuery().then(() => {
-    ctx.reply(date);
-    if (!state.dataReportParams.date1) {
-      console.log("set date1", date);
-      state.dataReportParams.date1 = date;
-    } else if (!state.dataReportParams.date2) {
-      console.log("set date2", date);
-      state.dataReportParams.date2 = date;
-      return ctx.wizard.next();
-    }
-  });
+  await ctx.answerCbQuery();
+  ctx.reply(date);
+  if (!state.dataReportParams.date1) {
+    console.log("set date1", date);
+    state.dataReportParams.date1 = date;
+  } else if (!state.dataReportParams.date2) {
+    console.log("set date2", date);
+    state.dataReportParams.date2 = date;
+    return ctx.wizard.next();
+  }
 });
 
-dateSelectionHandler.action(/calendar-telegram-prev-[\d-]+/g, context => {
+dateSelectionHandler.action(/calendar-telegram-prev-[\d-]+/g, async context => {
   const { calendar, dataReportParams } = context.wizard.state;
   let dateString = context.match[0].replace("calendar-telegram-prev-", "");
 
@@ -74,9 +73,8 @@ dateSelectionHandler.action(/calendar-telegram-prev-[\d-]+/g, context => {
   date.setMonth(date.getMonth() - 1);
 
   let prevText = context.callbackQuery.message.text;
-  return context
-    .answerCbQuery()
-    .then(() => context.editMessageText(prevText, calendar.getCalendar(date)));
+  await context.answerCbQuery();
+  context.editMessageText(prevText, calendar.getCalendar(date));
 });
 
 dateSelectionHandler.action(/calendar-telegram-next-[\d-]+/g, context => {
