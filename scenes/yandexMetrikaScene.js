@@ -43,6 +43,9 @@ const getQueryString = params => {
 const dateSelectionHandler = new Composer();
 
 dateSelectionHandler.action(/.+/, ctx => {
+  console.log("dateSelectionHandler ");
+  console.log("dateSelectionHandler ctx", ctx);
+
   const { data: selectedTimeInterval } = ctx.update.callback_query || {};
 
   if (selectedTimeInterval === "Calendar") {
