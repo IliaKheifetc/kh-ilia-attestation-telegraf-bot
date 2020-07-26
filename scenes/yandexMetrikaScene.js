@@ -42,7 +42,7 @@ const getQueryString = params => {
 
 const dateSelectionHandler = new Composer();
 
-dateSelectionHandler.action(/.+/, ctx => {
+dateSelectionHandler.action("Calendar", ctx => {
   console.log("dateSelectionHandler ");
   console.log("dateSelectionHandler ctx", ctx);
 
