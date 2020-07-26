@@ -41,11 +41,8 @@ const getQueryString = params => {
 };
 
 const dateSelectionHandler = new Composer();
-dateSelectionHandler.action(/.+/, ctx => {
-  console.log("ctx", ctx);
-});
 
-dateSelectionHandler.use(ctx => {
+dateSelectionHandler.action(/.+/, ctx => {
   const { data: selectedTimeInterval } = ctx.update.callback_query || {};
 
   if (selectedTimeInterval === "Calendar") {
@@ -69,6 +66,11 @@ dateSelectionHandler.use(ctx => {
   }
 
   // return ctx.wizard.next();
+});
+
+dateSelectionHandler.use(ctx => {
+  console.log("use middleware");
+  console.log("ctx", ctx);
 });
 
 const yandexMetrikaScene = new WizardScene(
