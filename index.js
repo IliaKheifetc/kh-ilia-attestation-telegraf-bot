@@ -46,18 +46,19 @@ class UrlBuilder {
   }
 
   getFullUrl = params => {
-    const queryString = Object.keys(
-      params
-    ).reduce((queryString, key, index, arr) => {
-      if (params[key] === undefined) {
+    const queryString = Object.keys(params).reduce(
+      (queryString, key, index, arr) => {
+        if (params[key] === undefined) {
+          return queryString;
+        }
+
+        queryString += `${key}=${params[key]}`;
+        queryString += index < arr.length - 1 ? "&" : "";
+
         return queryString;
-      }
-
-      queryString += `${key}=${params[key]}`;
-      queryString += index < arr.length - 1 ? "&" : "";
-
-      return queryString;
-    }, "");
+      },
+      ""
+    );
 
     return `${this.baseUrl}?${queryString}`;
   };
@@ -232,7 +233,9 @@ bot.command("gif", ctx => {
   axios
     .get(urlBuilder.getFullUrl(params))
     .then(response => {
-      const { data: { data: gifs } } = response;
+      const {
+        data: { data: gifs }
+      } = response;
 
       const gif = gifs[Math.trunc(Math.random() * 10)];
       const { images = {} } = gif;
@@ -352,6 +355,26 @@ calendar.setDateListener((context, date) => context.reply(date));
 
 bot.command("calendar", ctx => {
   ctx.reply("Here you are", calendar.getCalendar());
+});
+
+bot.command("create_callback_button", ctx => {
+  ctx.reply(
+    `<b>Click this button:</b>`,
+    Extra.HTML().markup(m =>
+      m.inlineKeyboard([m.callbackButton("My button", "My button")])
+    )
+  );
+});
+
+bot.command("eidt_callback_button", ctx => {
+  const markup = Extra.HTML().markup(m =>
+    m.inlineKeyboard([m.callbackButton("My button", "My button")])
+  );
+  console.log("markup", markup);
+
+  ctx.editMessageReplyMarkup({
+    inline_keyboard: markup.reply_markup
+  });
 });
 
 // bot.command("metrika_get_visitors", async ctx => {
