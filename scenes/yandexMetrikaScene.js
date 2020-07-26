@@ -55,9 +55,11 @@ dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, ctx => {
 
   return ctx.answerCbQuery().then(() => {
     ctx.reply(date);
-    if (!state.dataReportParams || !state.dataReportParams.date1) {
-      state.dataReportParams = { date1: date };
+    if (!state.dataReportParams.date1) {
+      console.log("set date1", date);
+      state.dataReportParams.date1 = date;
     } else if (!state.dataReportParams.date2) {
+      console.log("set date2", date);
       state.dataReportParams.date2 = date;
       return ctx.wizard.next();
     }
