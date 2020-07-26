@@ -1,5 +1,6 @@
 const WizardScene = require("telegraf/scenes/wizard");
 const Extra = require("telegraf/extra");
+const Composer = require("telegraf/composer");
 const { capitalize } = require("lodash");
 const qs = require("qs");
 const moment = require("moment");
@@ -38,6 +39,37 @@ const getQueryString = params => {
 
   return `${dataPresentationFormQsParam}?${queryString}`;
 };
+
+const dateSelectionHandler = new Composer();
+dateSelectionHandler.action(/.+/, ctx => {
+  console.log("ctx", ctx);
+});
+
+dateSelectionHandler.command(/.+/, ctx => {
+  const { data: selectedTimeInterval } = ctx.update.callback_query || {};
+
+  if (selectedTimeInterval === "Calendar") {
+    const { calendar, dataReportParams } = ctx.wizard.state;
+    calendar.setDateListener((context, date) => {
+      console.log("setDateListener date", date);
+
+      context.reply(date);
+      if (!dataReportParams.date1) {
+        dataReportParams.date1 = date;
+        context.reply("Select end date", calendar.getCalendar());
+      } else if (!dataReportParams.date2) {
+        dataReportParams.date2 = date;
+        return ctx.wizard.next();
+      }
+
+      console.log("ctx.wizard.state", ctx.wizard.state);
+    });
+
+    ctx.reply("Select start date", calendar.getCalendar());
+  }
+
+  // return ctx.wizard.next();
+});
 
 const yandexMetrikaScene = new WizardScene(
   "yandexMetrika",
@@ -84,31 +116,7 @@ const yandexMetrikaScene = new WizardScene(
 
     return ctx.wizard.next();
   },
-  ctx => {
-    const { data: selectedTimeInterval } = ctx.update.callback_query || {};
-
-    if (selectedTimeInterval === "Calendar") {
-      const { calendar, dataReportParams } = ctx.wizard.state;
-      calendar.setDateListener((context, date) => {
-        console.log("setDateListener date", date);
-
-        context.reply(date);
-        if (!dataReportParams.date1) {
-          dataReportParams.date1 = date;
-          context.reply("Select end date", calendar.getCalendar());
-        } else if (!dataReportParams.date2) {
-          dataReportParams.date2 = date;
-          return ctx.wizard.next();
-        }
-
-        console.log("ctx.wizard.state", ctx.wizard.state);
-      });
-
-      ctx.reply("Select start date", calendar.getCalendar());
-    }
-
-    // return ctx.wizard.next();
-  },
+  dateSelectionHandler,
   async ctx => {
     console.log("collect all input and make request");
 
@@ -145,5 +153,7 @@ const yandexMetrikaScene = new WizardScene(
     return ctx.scene.leave();
   }
 );
+
+yandexMetrikaScene.use;
 
 module.exports = yandexMetrikaScene;
