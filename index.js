@@ -361,12 +361,12 @@ bot.command("create_callback_button", ctx => {
   ctx.reply(
     `<b>Click this button:</b>`,
     Extra.HTML().markup(m =>
-      m.inlineKeyboard([m.callbackButton("My button", "My button")])
+      m.inlineKeyboard([m.callbackButton("My button", "my_button")])
     )
   );
 });
 
-bot.command("edit_callback_button", ctx => {
+bot.action("my_button", ctx => {
   ctx.editMessageText(
     `<b>Click this button(edited):</b>`,
     Extra.HTML().markup(m =>
