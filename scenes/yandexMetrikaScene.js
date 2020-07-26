@@ -164,7 +164,7 @@ const fetchReportData = async ctx => {
   console.log("ctx.wizard.state", ctx.wizard.state);
 
   const {
-    dataReportParams: { reportName },
+    dataReportParams: { date1, date2, reportName },
     metrikaAccessToken
   } = ctx.wizard.state;
 
@@ -172,6 +172,8 @@ const fetchReportData = async ctx => {
     case "Visitors":
       const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
       const queryString = getQueryString({
+        date1,
+        date2,
         dataPresentationForm: "bytime",
         timeIntervalName
       });
