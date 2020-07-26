@@ -90,6 +90,7 @@ dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, context => {
 });
 
 dateSelectionHandler.action(/calendar-telegram-prev-[\d-]+/g, context => {
+  const { calendar, dataReportParams } = context.wizard.state;
   let dateString = context.match[0].replace("calendar-telegram-prev-", "");
   console.log("dateString", dateString);
 
@@ -101,12 +102,11 @@ dateSelectionHandler.action(/calendar-telegram-prev-[\d-]+/g, context => {
   let prevText = context.callbackQuery.message.text;
   return context
     .answerCbQuery()
-    .then(() =>
-      context.editMessageText(prevText, this.helper.getCalendarMarkup(date))
-    );
+    .then(() => context.editMessageText(prevText, calendar.getCalendar(date)));
 });
 
 dateSelectionHandler.action(/calendar-telegram-next-[\d-]+/g, context => {
+  const { calendar, dataReportParams } = context.wizard.state;
   console.log("context", context);
   console.log(
     "context.update.callback_query.message",
@@ -125,23 +125,21 @@ dateSelectionHandler.action(/calendar-telegram-next-[\d-]+/g, context => {
   let date = new Date(dateString);
   date.setMonth(date.getMonth() + 1);
 
-  console.log("date", date);
+  //console.log("date", date);
 
-  console.log(
-    "this.helper.getCalendarMarkup(date)",
-    this.helper.getCalendarMarkup(date)
-  );
-  console.log(
-    "typeof this.helper.getCalendarMarkup(date)",
-    typeof this.helper.getCalendarMarkup(date)
-  );
+  // console.log(
+  //   "this.helper.getCalendarMarkup(date)",
+  //   this.helper.getCalendarMarkup(date)
+  // );
+  // console.log(
+  //   "typeof this.helper.getCalendarMarkup(date)",
+  //   typeof this.helper.getCalendarMarkup(date)
+  // );
 
   let prevText = context.callbackQuery.message.text;
   return context
     .answerCbQuery()
-    .then(() =>
-      context.editMessageText(prevText, this.helper.getCalendarMarkup(date))
-    );
+    .then(() => context.editMessageText(prevText, calendar.getCalendar(date)));
 });
 
 dateSelectionHandler.action(/calendar-telegram-ignore-[\d\w-]+/g, context =>
