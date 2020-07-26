@@ -366,15 +366,15 @@ bot.command("create_callback_button", ctx => {
   );
 });
 
-bot.command("eidt_callback_button", ctx => {
-  const markup = Extra.HTML().markup(m =>
-    m.inlineKeyboard([m.callbackButton("My button", "My button")])
+bot.command("edit_callback_button", ctx => {
+  ctx.reply(
+    `<b>Click this button(edited):</b>`,
+    Extra.HTML().markup(m =>
+      m.inlineKeyboard([
+        m.callbackButton("My button (edited)", "My button (edited)")
+      ])
+    )
   );
-  console.log("markup", markup);
-
-  ctx.editMessageReplyMarkup({
-    inline_keyboard: markup.reply_markup
-  });
 });
 
 // bot.command("metrika_get_visitors", async ctx => {
