@@ -89,17 +89,18 @@ class Calendar {
       );
 
       let prevText = context.callbackQuery.message.text;
-      return context.answerCbQuery().then(() =>
-        //context.editMessageText(prevText, this.helper.getCalendarMarkup(date))
+      return context.answerCbQuery().then(
+        () =>
+          context.editMessageText(prevText, this.helper.getCalendarMarkup(date))
         // context.editMessageReplyMarkup(
         //   chatId,
         //   messageId,
         //   null,
         //   this.helper.getCalendarMarkup(date).reply_markup.inline_keyboard
         // )
-        context.editMessageReplyMarkup(
-          this.helper.getCalendarMarkup(date).reply_markup
-        )
+        // context.editMessageReplyMarkup(
+        //   this.helper.getCalendarMarkup(date).reply_markup
+        // )
       );
     });
 
