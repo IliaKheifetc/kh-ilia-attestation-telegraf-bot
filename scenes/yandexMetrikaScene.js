@@ -60,7 +60,7 @@ dateSelectionHandler.action(/.+/, ctx => {
       }
 
       console.log("ctx.wizard.state", ctx.wizard.state);
-    });
+    }, dateSelectionHandler);
 
     ctx.reply("Select start date", calendar.getCalendar());
   }

@@ -27,10 +27,10 @@ class Calendar {
    * Set the callback that will be called when a date is selected
    * @param {(context: Context, date: Date) => void} onDateSelected The callback to be used
    */
-  setDateListener(onDateSelected) {
+  setDateListener(onDateSelected, sceneStep) {
     console.log("setDateListener");
 
-    this.bot.action(/calendar-telegram-date-[\d-]+/g, context => {
+    sceneStep.action(/calendar-telegram-date-[\d-]+/g, context => {
       console.log("this.bot.action(/calendar-telegram-date");
 
       if (onDateSelected) {
@@ -44,7 +44,7 @@ class Calendar {
       }
     });
 
-    this.bot.action(/calendar-telegram-prev-[\d-]+/g, context => {
+    sceneStep.action(/calendar-telegram-prev-[\d-]+/g, context => {
       let dateString = context.match[0].replace("calendar-telegram-prev-", "");
       console.log("dateString", dateString);
 
@@ -61,7 +61,7 @@ class Calendar {
         );
     });
 
-    this.bot.action(/calendar-telegram-next-[\d-]+/g, context => {
+    sceneStep.action(/calendar-telegram-next-[\d-]+/g, context => {
       console.log("context", context);
       console.log(
         "context.update.callback_query.message",
@@ -107,7 +107,7 @@ class Calendar {
       );
     });
 
-    this.bot.action(/calendar-telegram-ignore-[\d\w-]+/g, context =>
+    sceneStep.action(/calendar-telegram-ignore-[\d\w-]+/g, context =>
       context.answerCbQuery()
     );
   }
