@@ -42,8 +42,9 @@ const getQueryString = params => {
 
 const dateSelectionHandler = new Composer();
 
-dateSelectionHandler.action("Calendar", ctx => {
+dateSelectionHandler.action("Calendar", async ctx => {
   const { calendar } = ctx.wizard.state;
+  await ctx.answerCbQuery();
   ctx.reply("Select start date", calendar.getCalendar());
 
   //return ctx.wizard.selectStep(ctx.wizard.cursor);
@@ -54,10 +55,11 @@ dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
   let date = ctx.match[0].replace("calendar-telegram-date-", "");
 
   await ctx.answerCbQuery();
-  ctx.reply(date);
+
   if (!state.dataReportParams.date1) {
     console.log("set date1", date);
     state.dataReportParams.date1 = date;
+    return ctx.reply(date);
   } else if (!state.dataReportParams.date2) {
     console.log("set date2", date);
     state.dataReportParams.date2 = date;
