@@ -46,45 +46,42 @@ dateSelectionHandler.action("Calendar", ctx => {
   console.log("dateSelectionHandler ");
   console.log("dateSelectionHandler ctx", ctx);
 
-  const { data: selectedTimeInterval } = ctx.update.callback_query || {};
+  const { calendar, dataReportParams } = ctx.wizard.state;
+  // calendar.setDateListener((context, date) => {
+  //   console.log("setDateListener date", date);
+  //
+  //   context.reply(date);
+  //   if (!dataReportParams.date1) {
+  //     dataReportParams.date1 = date;
+  //     context.reply("Select end date", calendar.getCalendar());
+  //   } else if (!dataReportParams.date2) {
+  //     dataReportParams.date2 = date;
+  //     return ctx.wizard.next();
+  //   }
+  //
+  //   console.log("ctx.wizard.state", ctx.wizard.state);
+  // }, dateSelectionHandler);
 
-  if (selectedTimeInterval === "Calendar") {
-    const { calendar, dataReportParams } = ctx.wizard.state;
-    calendar.setDateListener((context, date) => {
-      console.log("setDateListener date", date);
+  ctx.reply("Select start date", calendar.getCalendar());
+  console.log("ctx.wizard", ctx.wizard);
 
-      context.reply(date);
-      if (!dataReportParams.date1) {
-        dataReportParams.date1 = date;
-        context.reply("Select end date", calendar.getCalendar());
-      } else if (!dataReportParams.date2) {
-        dataReportParams.date2 = date;
-        return ctx.wizard.next();
-      }
-
-      console.log("ctx.wizard.state", ctx.wizard.state);
-    }, dateSelectionHandler);
-
-    ctx.reply("Select start date", calendar.getCalendar());
-    console.log("ctx.wizard", ctx.wizard);
-
-    //return ctx.wizard.back();
-    return ctx.wizard.selectStep(ctx.wizard.cursor);
-  }
+  //return ctx.wizard.back();
+  return ctx.wizard.selectStep(ctx.wizard.cursor);
 
   // return ctx.wizard.next();
 });
 
-dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, context => {
+dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, ctx => {
   console.log("this.bot.action(/calendar-telegram-date");
 
   //if (onDateSelected) {
   console.log("onDateSelected");
-  let date = context.match[0].replace("calendar-telegram-date-", "");
+  let date = ctx.match[0].replace("calendar-telegram-date-", "");
   console.log("onDateSelected date", date);
-  return context.answerCbQuery().then(() => {
+  return ctx.answerCbQuery().then(() => {
     console.log("context answerCbQuery then");
     //onDateSelected(context, date);
+    ctx.reply(date);
   });
   //}
 });
@@ -107,34 +104,15 @@ dateSelectionHandler.action(/calendar-telegram-prev-[\d-]+/g, context => {
 
 dateSelectionHandler.action(/calendar-telegram-next-[\d-]+/g, context => {
   const { calendar, dataReportParams } = context.wizard.state;
-  console.log("context", context);
-  console.log(
-    "context.update.callback_query.message",
-    JSON.stringify(context.update.callback_query.message)
-  );
   const {
     message_id: messageId,
     chat: { id: chatId }
   } = context.update.callback_query.message;
 
-  console.log("this.bot.action(/calendar-telegram-next");
-
   let dateString = context.match[0].replace("calendar-telegram-next-", "");
-  console.log("dateString", dateString);
 
   let date = new Date(dateString);
   date.setMonth(date.getMonth() + 1);
-
-  //console.log("date", date);
-
-  // console.log(
-  //   "this.helper.getCalendarMarkup(date)",
-  //   this.helper.getCalendarMarkup(date)
-  // );
-  // console.log(
-  //   "typeof this.helper.getCalendarMarkup(date)",
-  //   typeof this.helper.getCalendarMarkup(date)
-  // );
 
   let prevText = context.callbackQuery.message.text;
   return context
