@@ -179,7 +179,8 @@ const yandexMetrikaScene = new WizardScene(
 
         const data = await mertikaAPI.requestVisitors(queryString);
 
-        return ctx.reply(`data ${JSON.stringify(data)}`);
+        ctx.reply(`data ${JSON.stringify(data)}`);
+        break;
       default:
         ctx.reply("The specified report is not supported");
     }
