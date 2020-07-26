@@ -34,10 +34,13 @@ class Calendar {
       console.log("this.bot.action(/calendar-telegram-date");
 
       if (onDateSelected) {
+        console.log("onDateSelected");
         let date = context.match[0].replace("calendar-telegram-date-", "");
-        return context
-          .answerCbQuery()
-          .then(() => onDateSelected(context, date));
+        console.log("onDateSelected date", date);
+        return context.answerCbQuery().then(() => {
+          console.log("context answerCbQuery then");
+          onDateSelected(context, date);
+        });
       }
     });
 
