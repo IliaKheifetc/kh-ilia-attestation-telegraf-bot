@@ -45,7 +45,7 @@ dateSelectionHandler.action(/.+/, ctx => {
   console.log("ctx", ctx);
 });
 
-dateSelectionHandler.use(/.+/, ctx => {
+dateSelectionHandler.use(ctx => {
   const { data: selectedTimeInterval } = ctx.update.callback_query || {};
 
   if (selectedTimeInterval === "Calendar") {
