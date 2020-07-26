@@ -351,11 +351,11 @@ bot.command("sheets_update", async ctx => {
   sheets.updateSpreadsheet(text);
 });
 
-calendar.setDateListener((context, date) => context.reply(date));
-
-bot.command("calendar", ctx => {
-  ctx.reply("Here you are", calendar.getCalendar());
-});
+// calendar.setDateListener((context, date) => context.reply(date));
+//
+// bot.command("calendar", ctx => {
+//   ctx.reply("Here you are", calendar.getCalendar());
+// });
 
 bot.command("create_callback_button", ctx => {
   ctx.reply(
