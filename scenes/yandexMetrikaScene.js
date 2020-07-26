@@ -73,20 +73,20 @@ dateSelectionHandler.action("Calendar", ctx => {
 
 dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, ctx => {
   const { state } = ctx.wizard;
-  console.log("onDateSelected");
+  // console.log("onDateSelected");
   let date = ctx.match[0].replace("calendar-telegram-date-", "");
-  console.log("onDateSelected date", date);
+  // console.log("onDateSelected date", date);
 
   return ctx.answerCbQuery().then(() => {
     console.log("context answerCbQuery then");
 
     ctx.reply(date);
     if (!state.dataReportParams || !state.dataReportParams.date1) {
-      state.dataReportParams = {};
-      dataReportParams.date1 = date;
+      state.dataReportParams = { date1: date };
+
       //context.reply("Select end date", calendar.getCalendar());
-    } else if (!state.dataReportParams.date1) {
-      dataReportParams.date2 = date;
+    } else if (!state.dataReportParams.date2) {
+      state.dataReportParams.date2 = date;
       return ctx.wizard.next();
     }
   });
