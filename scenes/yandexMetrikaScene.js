@@ -43,48 +43,20 @@ const getQueryString = params => {
 const dateSelectionHandler = new Composer();
 
 dateSelectionHandler.action("Calendar", ctx => {
-  console.log("dateSelectionHandler ");
-  console.log("dateSelectionHandler ctx", ctx);
-
-  const { calendar, dataReportParams } = ctx.wizard.state;
-  // calendar.setDateListener((context, date) => {
-  //   console.log("setDateListener date", date);
-  //
-  //   context.reply(date);
-  //   if (!dataReportParams.date1) {
-  //     dataReportParams.date1 = date;
-  //     context.reply("Select end date", calendar.getCalendar());
-  //   } else if (!dataReportParams.date2) {
-  //     dataReportParams.date2 = date;
-  //     return ctx.wizard.next();
-  //   }
-  //
-  //   console.log("ctx.wizard.state", ctx.wizard.state);
-  // }, dateSelectionHandler);
-
+  const { calendar } = ctx.wizard.state;
   ctx.reply("Select start date", calendar.getCalendar());
-  console.log("ctx.wizard", ctx.wizard);
 
-  //return ctx.wizard.back();
-  return ctx.wizard.selectStep(ctx.wizard.cursor);
-
-  // return ctx.wizard.next();
+  //return ctx.wizard.selectStep(ctx.wizard.cursor);
 });
 
 dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, ctx => {
   const { state } = ctx.wizard;
-  // console.log("onDateSelected");
   let date = ctx.match[0].replace("calendar-telegram-date-", "");
-  // console.log("onDateSelected date", date);
 
   return ctx.answerCbQuery().then(() => {
-    console.log("context answerCbQuery then");
-
     ctx.reply(date);
     if (!state.dataReportParams || !state.dataReportParams.date1) {
       state.dataReportParams = { date1: date };
-
-      //context.reply("Select end date", calendar.getCalendar());
     } else if (!state.dataReportParams.date2) {
       state.dataReportParams.date2 = date;
       return ctx.wizard.next();
@@ -95,12 +67,9 @@ dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, ctx => {
 dateSelectionHandler.action(/calendar-telegram-prev-[\d-]+/g, context => {
   const { calendar, dataReportParams } = context.wizard.state;
   let dateString = context.match[0].replace("calendar-telegram-prev-", "");
-  console.log("dateString", dateString);
 
   let date = new Date(dateString);
   date.setMonth(date.getMonth() - 1);
-
-  console.log("date", date);
 
   let prevText = context.callbackQuery.message.text;
   return context
