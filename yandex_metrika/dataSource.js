@@ -19,7 +19,7 @@ class MetrikaAPI extends BaseSource {
 
       return data;
     } catch (e) {
-      console.error("Error occurred when fetching visits");
+      console.error("Error occurred when fetching visits", e);
       return null;
     }
   }
