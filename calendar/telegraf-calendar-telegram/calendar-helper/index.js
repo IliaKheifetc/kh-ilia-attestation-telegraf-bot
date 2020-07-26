@@ -144,10 +144,15 @@ class CalendarHelper {
     // I use a math clamp to check if the input date is in range
     console.log("inputDate", inputDate);
 
-    let dateNumber = Math.min(
-      Math.max(inputDate, this.options.minDate),
-      this.options.maxDate
-    );
+    let dateNumber;
+    if (!this.options.minDate && !this.options.maxDate) {
+      dateNumber = +inputDate;
+    } else {
+      dateNumber = Math.min(
+        Math.max(inputDate, this.options.minDate),
+        this.options.maxDate
+      );
+    }
 
     let date = new Date(dateNumber);
 
