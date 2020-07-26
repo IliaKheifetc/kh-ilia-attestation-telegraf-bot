@@ -52,6 +52,7 @@ dateSelectionHandler.action("Calendar", async ctx => {
 
 dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
   const { state } = ctx.wizard;
+  const { calendar } = state;
   let date = ctx.match[0].replace("calendar-telegram-date-", "");
 
   await ctx.answerCbQuery();
@@ -59,7 +60,8 @@ dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
   if (!state.dataReportParams.date1) {
     console.log("set date1", date);
     state.dataReportParams.date1 = date;
-    return ctx.reply(date);
+    ctx.reply(date);
+    return ctx.reply("Select start date", calendar.getCalendar());
   } else if (!state.dataReportParams.date2) {
     console.log("set date2", date);
     state.dataReportParams.date2 = date;
@@ -69,32 +71,27 @@ dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
 
 dateSelectionHandler.action(/calendar-telegram-prev-[\d-]+/g, async context => {
   const { calendar, dataReportParams } = context.wizard.state;
-  let dateString = context.match[0].replace("calendar-telegram-prev-", "");
+  const dateString = context.match[0].replace("calendar-telegram-prev-", "");
 
   let date = new Date(dateString);
   date.setMonth(date.getMonth() - 1);
 
-  let prevText = context.callbackQuery.message.text;
+  const prevText = context.callbackQuery.message.text;
   await context.answerCbQuery();
   context.editMessageText(prevText, calendar.getCalendar(date));
 });
 
-dateSelectionHandler.action(/calendar-telegram-next-[\d-]+/g, context => {
-  const { calendar, dataReportParams } = context.wizard.state;
-  const {
-    message_id: messageId,
-    chat: { id: chatId }
-  } = context.update.callback_query.message;
+dateSelectionHandler.action(/calendar-telegram-next-[\d-]+/g, async ctx => {
+  const { calendar, dataReportParams } = ctx.wizard.state;
 
-  let dateString = context.match[0].replace("calendar-telegram-next-", "");
+  const dateString = ctx.match[0].replace("calendar-telegram-next-", "");
 
   let date = new Date(dateString);
   date.setMonth(date.getMonth() + 1);
 
-  let prevText = context.callbackQuery.message.text;
-  return context
-    .answerCbQuery()
-    .then(() => context.editMessageText(prevText, calendar.getCalendar(date)));
+  const prevText = ctx.callbackQuery.message.text;
+  await ctx.answerCbQuery();
+  ctx.editMessageText(prevText, calendar.getCalendar(date));
 });
 
 dateSelectionHandler.action(/calendar-telegram-ignore-[\d\w-]+/g, context =>
