@@ -5,11 +5,14 @@ const { capitalize } = require("lodash");
 const qs = require("qs");
 const moment = require("moment");
 const MetrikaAPI = require("../yandex_metrika/dataSource");
-const { COUNTER_ID } = require("../constants/yandexMetrika");
-const { YANDEX_TIME_INTERVAL_FORMAT } = require("../constants/moment");
 
 // constants
-const { REPORTS, TIME_INTERVALS } = require("../constants/yandexMetrika");
+const {
+  COUNTER_ID,
+  REPORTS,
+  TIME_INTERVALS
+} = require("../constants/yandexMetrika");
+const { YANDEX_TIME_INTERVAL_FORMAT } = require("../constants/moment");
 
 const getQueryString = params => {
   let {
@@ -40,6 +43,51 @@ const getQueryString = params => {
   return `${dataPresentationFormQsParam}?${queryString}`;
 };
 
+const showReportTypeSelector = ctx => {
+  ctx.reply(
+    `<b>Choose report:</b>`,
+    Extra.HTML().markup(m =>
+      m.inlineKeyboard([
+        ...REPORTS.map(dataReportName =>
+          m.callbackButton(dataReportName, dataReportName)
+        ),
+        m.callbackButton("Some stuff", "Some stuff")
+      ])
+    )
+  );
+
+  return ctx.wizard.next();
+};
+
+const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
+  console.log("ctx", ctx);
+
+  const { data: reportName } = ctx.update.callback_query || {};
+
+  ctx.wizard.state.dataReportParams = {
+    reportName
+  };
+
+  console.log("ctx.update", JSON.stringify(ctx.update));
+
+  console.log("reportName", reportName);
+  await ctx.answerCbQuery();
+
+  ctx.reply(
+    `<b>Choose time interval:</b>`,
+    Extra.HTML().markup(m =>
+      m.inlineKeyboard([
+        ...Object.keys(TIME_INTERVALS).map(timeIntervalName =>
+          m.callbackButton(capitalize(timeIntervalName), timeIntervalName)
+        ),
+        m.callbackButton(capitalize("Calendar"), "Calendar")
+      ])
+    )
+  );
+
+  return ctx.wizard.next();
+};
+
 const dateSelectionHandler = new Composer();
 
 dateSelectionHandler.action("Calendar", async ctx => {
@@ -61,7 +109,7 @@ dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     console.log("set date1", date);
     state.dataReportParams.date1 = date;
     ctx.reply(date);
-    return ctx.reply("Select start date", calendar.getCalendar());
+    return ctx.reply("Select end date", calendar.getCalendar());
   } else if (!state.dataReportParams.date2) {
     console.log("set date2", date);
     state.dataReportParams.date2 = date;
@@ -103,90 +151,49 @@ dateSelectionHandler.use(ctx => {
   console.log("ctx", ctx);
 });
 
+const fetchReportData = async ctx => {
+  console.log("collect all input and make request");
+
+  console.log("ctx", ctx);
+
+  //const { text } = ctx.update.message || {};
+  const { data: timeIntervalName } = ctx.update.callback_query || {};
+
+  console.log("ctx.update", JSON.stringify(ctx.update));
+  console.log("timeIntervalName", timeIntervalName);
+  console.log("ctx.wizard.state", ctx.wizard.state);
+
+  const {
+    dataReportParams: { reportName },
+    metrikaAccessToken
+  } = ctx.wizard.state;
+
+  switch (reportName) {
+    case "Visitors":
+      const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
+      const queryString = getQueryString({
+        dataPresentationForm: "bytime",
+        timeIntervalName
+      });
+
+      const data = await mertikaAPI.requestVisitors(queryString);
+
+      ctx.reply(`data ${JSON.stringify(data)}`);
+      break;
+    default:
+      ctx.reply("The specified report is not supported");
+  }
+
+  //return ctx.wizard.next();
+  return ctx.scene.leave();
+};
+
 const yandexMetrikaScene = new WizardScene(
   "yandexMetrika",
-  ctx => {
-    ctx.reply(
-      `<b>Choose report:</b>`,
-      Extra.HTML().markup(m =>
-        m.inlineKeyboard([
-          ...REPORTS.map(dataReportName =>
-            m.callbackButton(dataReportName, dataReportName)
-          ),
-          m.callbackButton("Some stuff", "Some stuff")
-        ])
-      )
-    );
-
-    return ctx.wizard.next();
-  },
-  async ctx => {
-    console.log("ctx", ctx);
-
-    //const { text } = ctx.update.message || {};
-    const { data: reportName } = ctx.update.callback_query || {};
-
-    ctx.wizard.state.dataReportParams = {
-      reportName
-    };
-
-    console.log("ctx.update", JSON.stringify(ctx.update));
-
-    console.log("reportName", reportName);
-
-    ctx.reply(
-      `<b>Choose time interval:</b>`,
-      Extra.HTML().markup(m =>
-        m.inlineKeyboard([
-          ...Object.keys(TIME_INTERVALS).map(timeIntervalName =>
-            m.callbackButton(capitalize(timeIntervalName), timeIntervalName)
-          ),
-          m.callbackButton(capitalize("Calendar"), "Calendar")
-        ])
-      )
-    );
-
-    return ctx.wizard.next();
-  },
+  showReportTypeSelector,
+  saveReportTypeAndShowTimeIntervalSelector,
   dateSelectionHandler,
-  async ctx => {
-    console.log("collect all input and make request");
-
-    console.log("ctx", ctx);
-
-    //const { text } = ctx.update.message || {};
-    const { data: timeIntervalName } = ctx.update.callback_query || {};
-
-    console.log("ctx.update", JSON.stringify(ctx.update));
-    console.log("timeIntervalName", timeIntervalName);
-    console.log("ctx.wizard.state", ctx.wizard.state);
-
-    const {
-      dataReportParams: { reportName },
-      metrikaAccessToken
-    } = ctx.wizard.state;
-
-    switch (reportName) {
-      case "Visitors":
-        const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
-        const queryString = getQueryString({
-          dataPresentationForm: "bytime",
-          timeIntervalName
-        });
-
-        const data = await mertikaAPI.requestVisitors(queryString);
-
-        ctx.reply(`data ${JSON.stringify(data)}`);
-        break;
-      default:
-        ctx.reply("The specified report is not supported");
-    }
-
-    //return ctx.wizard.next();
-    return ctx.scene.leave();
-  }
+  fetchReportData
 );
-
-yandexMetrikaScene.use;
 
 module.exports = yandexMetrikaScene;
