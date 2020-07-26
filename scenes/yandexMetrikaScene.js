@@ -34,8 +34,8 @@ const getQueryString = params => {
 
   const queryString = qs.stringify({
     ids: COUNTER_ID,
-    metrics,
-    //dimensions,
+    metrics: metrics.join(","),
+    dimensions: [`ym:s:datePeriodDay`].join(","),
     date1,
     date2
   });
