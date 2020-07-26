@@ -75,6 +75,79 @@ dateSelectionHandler.action(/.+/, ctx => {
   // return ctx.wizard.next();
 });
 
+dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, context => {
+  console.log("this.bot.action(/calendar-telegram-date");
+
+  //if (onDateSelected) {
+  console.log("onDateSelected");
+  let date = context.match[0].replace("calendar-telegram-date-", "");
+  console.log("onDateSelected date", date);
+  return context.answerCbQuery().then(() => {
+    console.log("context answerCbQuery then");
+    //onDateSelected(context, date);
+  });
+  //}
+});
+
+dateSelectionHandler.action(/calendar-telegram-prev-[\d-]+/g, context => {
+  let dateString = context.match[0].replace("calendar-telegram-prev-", "");
+  console.log("dateString", dateString);
+
+  let date = new Date(dateString);
+  date.setMonth(date.getMonth() - 1);
+
+  console.log("date", date);
+
+  let prevText = context.callbackQuery.message.text;
+  return context
+    .answerCbQuery()
+    .then(() =>
+      context.editMessageText(prevText, this.helper.getCalendarMarkup(date))
+    );
+});
+
+dateSelectionHandler.action(/calendar-telegram-next-[\d-]+/g, context => {
+  console.log("context", context);
+  console.log(
+    "context.update.callback_query.message",
+    JSON.stringify(context.update.callback_query.message)
+  );
+  const {
+    message_id: messageId,
+    chat: { id: chatId }
+  } = context.update.callback_query.message;
+
+  console.log("this.bot.action(/calendar-telegram-next");
+
+  let dateString = context.match[0].replace("calendar-telegram-next-", "");
+  console.log("dateString", dateString);
+
+  let date = new Date(dateString);
+  date.setMonth(date.getMonth() + 1);
+
+  console.log("date", date);
+
+  console.log(
+    "this.helper.getCalendarMarkup(date)",
+    this.helper.getCalendarMarkup(date)
+  );
+  console.log(
+    "typeof this.helper.getCalendarMarkup(date)",
+    typeof this.helper.getCalendarMarkup(date)
+  );
+
+  let prevText = context.callbackQuery.message.text;
+  return context
+    .answerCbQuery()
+    .then(() =>
+      context.editMessageText(prevText, this.helper.getCalendarMarkup(date))
+    );
+});
+
+dateSelectionHandler.action(/calendar-telegram-ignore-[\d\w-]+/g, context =>
+  context.answerCbQuery()
+);
+
 dateSelectionHandler.use(ctx => {
   console.log("use middleware");
   console.log("ctx", ctx);
