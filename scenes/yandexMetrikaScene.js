@@ -65,7 +65,7 @@ dateSelectionHandler.action(/.+/, ctx => {
     ctx.reply("Select start date", calendar.getCalendar());
     console.log("ctx.wizard", ctx.wizard);
 
-    ctx.wizard.selectStep(ctx.wizard.cursor);
+    return ctx.wizard.selectStep(ctx.wizard.cursor);
   }
 
   // return ctx.wizard.next();
