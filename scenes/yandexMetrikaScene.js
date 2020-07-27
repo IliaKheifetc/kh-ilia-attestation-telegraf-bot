@@ -43,19 +43,21 @@ const getQueryString = params => {
   return `${dataPresentationFormQsParam}?${queryString}`;
 };
 
-const getTabularData = data => {
-  return data.data.map(({ dimensions, metrics }) => ({
-    datesRange: `${dimensions[0].from} - ${dimensions[0].to}`,
-    metricsValues: metrics
-      .map(arr => arr.filter(Boolean))
-      .reduce((metrics, metricValue) => [...metrics, ...metricValue], [])
-  }));
+const getTabularData = (data, name) => {
+  return data.data
+    .map(({ dimensions, metrics }) => ({
+      datesRange: `${dimensions[0].from} - ${dimensions[0].to}`,
+      metricsValues: metrics
+        .map(arr => arr.filter(Boolean))
+        .reduce((metrics, metricValue) => [...metrics, ...metricValue], [])
+    }))
+    .map(item => ({ ...item, name }));
 };
 
 const createTable = table => {
   const ROW_MAX_LENGTH = 30;
   let tableHeader = table.headers.reduce(
-    (acc, item) => acc + `|  ${item}  |\n`,
+    (acc, item) => acc + `|  ${item}  |`,
     ""
   );
 
@@ -68,7 +70,7 @@ const createTable = table => {
     );
   }, "");
 
-  return `<pre>${tableHeader}${tableBody}</pre>`;
+  return `<pre>${tableHeader}\n${tableBody}</pre>`;
 };
 
 const showReportTypeSelector = ctx => {
@@ -216,7 +218,7 @@ const fetchReportData = async ctx => {
 
       const data = await mertikaAPI.requestVisitors(queryString);
 
-      const tabularData = getTabularData(data);
+      const tabularData = getTabularData(data, "Визиты и посетители");
 
       // const compiledFunction = pug.compileFile(
       //   __dirname + "/../views/report.pug"
