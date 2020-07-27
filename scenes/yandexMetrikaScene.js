@@ -32,7 +32,7 @@ const createTable = (table, name) => {
 
   const tableBody = table.data.reduce((acc, item) => {
     return (
-      acc + `|  ${item.datesRange}  |  ${item.metricsValues.join(", ")}  |\n`
+      acc + `| ${item.datesRange}  |  ${item.metricsValues.join(", ")} |\n`
     );
   }, "");
 
@@ -210,7 +210,7 @@ const fetchReportData = async ctx => {
   //const addName = createAddName(reportName);
   const table = createTable(
     {
-      data: reportRows.map(addName),
+      data: reportRows,
       headers: ["Даты", "Значения"]
     },
     TABLE_LABELS_BY_REPORT_NAME[reportName]
