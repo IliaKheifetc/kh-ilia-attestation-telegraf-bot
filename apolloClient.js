@@ -1,12 +1,14 @@
 const fetch = require("node-fetch");
-const { ApolloClient } = require("apollo-client");
-const { HttpLink } = require("apollo-link-http");
-const { InMemoryCache } = require("apollo-cache-inmemory");
+const {
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache
+} = require("@apollo-client");
 const { setContext } = require("@apollo/client/link/context");
 
 const { tokenStorage } = require("./index");
 
-const httpLink = new HttpLink({
+const httpLink = createHttpLink({
   uri:
     process.env.NODE_ENV === "production"
       ? "https://telegraf-bot-graphql-server.herokuapp.com/ "
