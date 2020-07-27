@@ -2,38 +2,24 @@ const WizardScene = require("telegraf/scenes/wizard");
 const Extra = require("telegraf/extra");
 const Composer = require("telegraf/composer");
 const { capitalize } = require("lodash");
-const qs = require("qs");
-const moment = require("moment");
-const pug = require("pug");
+
 //const MetrikaAPI = require("../yandex_metrika/dataSource");
 const apolloClient = require("../apolloClient");
 const { getReportData } = require("../graphqlOpreations");
 
-//utils
-const { getTabularData } = require("../utils/yandexMetrika");
-
 // constants
 const {
-  COUNTER_ID,
+  DEFAULT_VARIABLES,
   REPORTS,
-  TIME_INTERVALS
+  TABLE_LABELS_BY_REPORT_NAME,
+  TIME_INTERVALS,
+  VARIABLES_BY_REPORT_NAME
 } = require("../constants/yandexMetrika");
 
-const DEFAULT_VARIABLES = {
-  dataPresentationForm: "bytime",
-  ids: COUNTER_ID
-};
-
-const VARIABLES_BY_REPORT_NAME = {
-  [REPORTS.visitors]: {
-    metrics: ["ym:s:visits", "ym:s:users"],
-    dimensions: [`ym:s:datePeriod<group>`]
-  },
-  [REPORTS.newVisitors]: {
-    metrics: ["ym:s:newUsers"],
-    dimensions: [`ym:s:datePeriod<group>`]
-  }
-};
+const createAddName = reportName => item => ({
+  ...item,
+  name: TABLE_LABELS_BY_REPORT_NAME[reportName]
+});
 
 const createTable = table => {
   const ROW_MAX_LENGTH = 30;
@@ -209,11 +195,11 @@ const fetchReportData = async ctx => {
 
   console.log("reportData", reportData);
   const reportRows = reportData ? reportData.reportRows : [];
-  //const tabularData = getTabularData(data, "Визиты и посетители");
 
   ctx.reply(`reportRows ${JSON.stringify(reportRows)}`);
+  const addName = createAddName(reportName);
   const table = createTable({
-    data: reportRows,
+    data: reportRows.map(addName),
     headers: ["Метрики", "Даты", "Значения"]
   });
   console.log(table);
