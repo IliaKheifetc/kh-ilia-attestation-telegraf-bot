@@ -12,9 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "@apollo/client": "^3.0.2",
-    "apollo-cache-inmemory": "^1.6.2",
-    "apollo-client": "^2.6.3",
-    "apollo-link-http": "^1.5.15",
     "axios": "^0.19.2",
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
