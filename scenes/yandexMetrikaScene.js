@@ -7,6 +7,9 @@ const moment = require("moment");
 const pug = require("pug");
 const MetrikaAPI = require("../yandex_metrika/dataSource");
 
+//utils
+const { getTabularData } = require("../utils/yandexMetrika");
+
 // constants
 const {
   COUNTER_ID,
@@ -41,17 +44,6 @@ const getQueryString = params => {
   });
 
   return `${dataPresentationFormQsParam}?${queryString}`;
-};
-
-const getTabularData = (data, name) => {
-  return data.data
-    .map(({ dimensions, metrics }) => ({
-      datesRange: `${dimensions[0].from} - ${dimensions[0].to}`,
-      metricsValues: metrics
-        .map(arr => arr.filter(Boolean))
-        .reduce((metrics, metricValue) => [...metrics, ...metricValue], [])
-    }))
-    .map(item => ({ ...item, name }));
 };
 
 const createTable = table => {
@@ -194,11 +186,8 @@ const fetchReportData = async ctx => {
 
   console.log("ctx", ctx);
 
-  //const { text } = ctx.update.message || {};
-  //const { data: timeIntervalName } = ctx.update.callback_query || {};
-
   console.log("ctx.update", JSON.stringify(ctx.update));
-  //console.log("timeIntervalName", timeIntervalName);
+
   console.log("ctx.wizard.state", ctx.wizard.state);
 
   const {

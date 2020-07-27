@@ -440,3 +440,7 @@ app.listen(process.env.PORT, () => {
 function helpMiddleware(ctx, next) {
   ctx.reply("Send me a sticker");
 }
+
+module.exports = {
+  tokenStorage
+}
