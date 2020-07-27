@@ -441,5 +441,5 @@ function helpMiddleware(ctx, next) {
 }
 
 module.exports = {
-  tokenStorage
+  getTokenStorage: () => tokenStorage
 };

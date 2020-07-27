@@ -6,7 +6,7 @@ const {
 } = require("@apollo/client");
 const { setContext } = require("@apollo/client/link/context");
 
-const { tokenStorage } = require("./index");
+const { getTokenStorage } = require("./index");
 
 const httpLink = createHttpLink({
   uri:
@@ -17,9 +17,9 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  console.log("tokenStorage", tokenStorage);
+  console.log("tokenStorage", getTokenStorage());
   // get the authentication token from local storage if it exists
-  const token = tokenStorage.metrikaAccessToken;
+  const token = getTokenStorage().metrikaAccessToken;
   // return the headers to the context so httpLink can read them
   return {
     headers: {
