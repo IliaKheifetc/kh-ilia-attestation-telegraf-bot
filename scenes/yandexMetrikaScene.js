@@ -17,14 +17,14 @@ const {
   VARIABLES_BY_REPORT_NAME
 } = require("../constants/yandexMetrika");
 
-const createAddName = reportName => item => ({
-  ...item,
-  name: TABLE_LABELS_BY_REPORT_NAME[reportName]
-});
+// const createAddName = reportName => item => ({
+//   ...item,
+//   name: TABLE_LABELS_BY_REPORT_NAME[reportName]
+// });
 
-const createTable = table => {
+const createTable = (table, name) => {
   const ROW_MAX_LENGTH = 30;
-  let caption = `Метрика: <b>${item.name}</b>`;
+  let caption = `Метрика: <b>${name}</b>`;
   let tableHeader = table.headers.reduce(
     (acc, item) => acc + `|  ${item}  |`,
     ""
@@ -207,11 +207,14 @@ const fetchReportData = async ctx => {
   const reportRows = reportData ? reportData.reportRows : [];
 
   ctx.reply(`reportRows ${JSON.stringify(reportRows)}`);
-  const addName = createAddName(reportName);
-  const table = createTable({
-    data: reportRows.map(addName),
-    headers: ["Даты", "Значения"]
-  });
+  //const addName = createAddName(reportName);
+  const table = createTable(
+    {
+      data: reportRows.map(addName),
+      headers: ["Даты", "Значения"]
+    },
+    TABLE_LABELS_BY_REPORT_NAME[reportName]
+  );
   console.log(table);
   ctx.replyWithHTML(table, { parse_mode: "HTML" });
 
