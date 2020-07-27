@@ -6,7 +6,7 @@ const TIME_INTERVALS = {
   year: "year"
 };
 
-const REPORTS = ["Visitors"];
+const REPORTS = { visitors: "Visitors", newVisitors: "New visitors" };
 
 const COUNTER_ID = 50788801;
 

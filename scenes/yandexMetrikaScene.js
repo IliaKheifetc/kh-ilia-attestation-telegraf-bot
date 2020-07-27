@@ -18,35 +18,22 @@ const {
   REPORTS,
   TIME_INTERVALS
 } = require("../constants/yandexMetrika");
-//const { YANDEX_TIME_INTERVAL_FORMAT } = require("../constants/moment");
 
-// const getQueryString = params => {
-//   let {
-//     dataPresentationForm,
-//     date1 = moment()
-//       .subtract(7, "days")
-//       .format(YANDEX_TIME_INTERVAL_FORMAT),
-//     date2 = moment().format(YANDEX_TIME_INTERVAL_FORMAT),
-//     timeIntervalName,
-//     metrics = ["ym:s:visits", "ym:s:users"].toString(),
-//     dimensions
-//   } = params;
-//   dimensions = dimensions || [`ym:s:datePeriod<group>`].toString();
-//   const dataPresentationFormQsParam = dataPresentationForm
-//     ? `/${dataPresentationForm}`
-//     : "";
-//
-//   const queryString = qs.stringify({
-//     ids: COUNTER_ID,
-//     metrics,
-//     dimensions,
-//     group: timeIntervalName,
-//     date1,
-//     date2
-//   });
-//
-//   return `${dataPresentationFormQsParam}?${queryString}`;
-// };
+const DEFAULT_VARIABLES = {
+  dataPresentationForm: "bytime",
+  ids: COUNTER_ID
+};
+
+const VARIABLES_BY_REPORT_NAME = {
+  [REPORTS.visitors]: {
+    metrics: ["ym:s:visits", "ym:s:users"],
+    dimensions: [`ym:s:datePeriod<group>`]
+  },
+  [REPORTS.newVisitors]: {
+    metrics: ["ym:s:newUsers"],
+    dimensions: [`ym:s:datePeriod<group>`]
+  }
+};
 
 const createTable = table => {
   const ROW_MAX_LENGTH = 30;
@@ -72,10 +59,9 @@ const showReportTypeSelector = ctx => {
     `<b>Choose report:</b>`,
     Extra.HTML().markup(m =>
       m.inlineKeyboard([
-        ...REPORTS.map(dataReportName =>
+        ...Object.values(REPORTS).map(dataReportName =>
           m.callbackButton(dataReportName, dataReportName)
-        ),
-        m.callbackButton("Some stuff", "Some stuff")
+        )
       ])
     )
   );
@@ -197,41 +183,23 @@ const fetchReportData = async ctx => {
     metrikaAccessToken
   } = ctx.wizard.state;
 
-  let query;
-  let variables = {};
+  const variablesByReportName = VARIABLES_BY_REPORT_NAME[reportName];
 
-  switch (reportName) {
-    case "Visitors":
-      //const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
-      // const queryString = getQueryString({
-      //   date1,
-      //   date2,
-      //   dataPresentationForm: "bytime",
-      //   timeIntervalName
-      // });
-
-      variables = {
-        dataPresentationForm: "bytime",
-        date1,
-        date2,
-        ids: COUNTER_ID,
-        timeIntervalName,
-        metrics: ["ym:s:visits", "ym:s:users"],
-        dimensions: [`ym:s:datePeriod<group>`]
-      };
-      query = getReportData;
-
-      //const data = await mertikaAPI.requestVisitors(queryString);
-      break;
-    default:
-      return ctx.reply("The specified report is not supported");
+  if (!variables) {
+    return ctx.reply("The specified report is not supported");
   }
 
   const {
     data: { reportData }
   } = await apolloClient.query({
-    query,
-    variables,
+    query: getReportData,
+    variables: {
+      ...DEFAULT_VARIABLES,
+      ...variablesByReportName,
+      date1,
+      date2,
+      timeIntervalName
+    },
     context: {
       headers: {
         authorization: metrikaAccessToken
