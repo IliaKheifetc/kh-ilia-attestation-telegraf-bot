@@ -42,7 +42,10 @@ const createTable = table => {
 const showReportTypeSelector = ctx => {
   const { metrikaAccessToken } = ctx.wizard.state;
   if (!metrikaAccessToken) {
-    handleYandexMetrikaAuth.call(null, ctx);
+    ctx.replyWithHTML(
+      "Please authorize using <b>/yandex_metrika</b>_auth command",
+      { parse_mode: "HTML" }
+    );
     ctx.scene.leave();
     return;
   }
