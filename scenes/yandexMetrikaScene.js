@@ -231,7 +231,12 @@ const fetchReportData = async ctx => {
     data: { reportData }
   } = await apolloClient.query({
     query,
-    variables
+    variables,
+    context: {
+      headers: {
+        authorization: metrikaAccessToken
+      }
+    }
   });
 
   console.log("reportData", reportData);

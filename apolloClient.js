@@ -18,20 +18,20 @@ const httpLink = createHttpLink({
   fetch: fetch
 });
 
-const authLink = setContext((_, { headers }) => {
-  console.log("tokenStorage", indexModule.getTokenStorage());
-  // get the authentication token from local storage if it exists
-  const token = indexModule.getTokenStorage().metrikaAccessToken;
-  // return the headers to the context so httpLink can read them
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : ""
-    }
-  };
-});
+// const authLink = setContext((_, { headers }) => {
+//   console.log("tokenStorage", indexModule.getTokenStorage());
+//   // get the authentication token from local storage if it exists
+//   const token = indexModule.getTokenStorage().metrikaAccessToken;
+//   // return the headers to the context so httpLink can read them
+//   return {
+//     headers: {
+//       ...headers,
+//       authorization: token ? `Bearer ${token}` : ""
+//     }
+//   };
+// });
 
 module.exports = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: httpLink,
   cache: new InMemoryCache()
 });
