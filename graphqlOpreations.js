@@ -27,5 +27,31 @@ module.exports = {
         translations
       }
     }
+  `,
+  getReportData: gql`
+    query getReportData(
+      $dataPresentationForm: String!
+      $date1: String!
+      $date2: String!
+      $ids: [Int]
+      $timeIntervalName: String!
+      $metrics: [String]
+      $dimensions: [String]
+    ) {
+      reportData(
+        dataPresentationForm: $dataPresentationForm
+        date1: $date1
+        date2: $date2
+        ids: $ids
+        timeIntervalName: $timeIntervalName
+        metrics: $metrics
+        dimensions: $dimensions
+      ) {
+        reportRows {
+          datesRange
+          metricsValues
+          name
+      }
+    }
   `
 };

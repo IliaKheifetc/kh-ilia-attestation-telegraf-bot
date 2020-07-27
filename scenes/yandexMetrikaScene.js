@@ -5,7 +5,9 @@ const { capitalize } = require("lodash");
 const qs = require("qs");
 const moment = require("moment");
 const pug = require("pug");
-const MetrikaAPI = require("../yandex_metrika/dataSource");
+//const MetrikaAPI = require("../yandex_metrika/dataSource");
+const apolloClient = require("../apolloClient");
+const { getReportData } = require("../graphqlOpreations");
 
 //utils
 const { getTabularData } = require("../utils/yandexMetrika");
@@ -16,35 +18,35 @@ const {
   REPORTS,
   TIME_INTERVALS
 } = require("../constants/yandexMetrika");
-const { YANDEX_TIME_INTERVAL_FORMAT } = require("../constants/moment");
+//const { YANDEX_TIME_INTERVAL_FORMAT } = require("../constants/moment");
 
-const getQueryString = params => {
-  let {
-    dataPresentationForm,
-    date1 = moment()
-      .subtract(7, "days")
-      .format(YANDEX_TIME_INTERVAL_FORMAT),
-    date2 = moment().format(YANDEX_TIME_INTERVAL_FORMAT),
-    timeIntervalName,
-    metrics = ["ym:s:visits", "ym:s:users"].toString(),
-    dimensions
-  } = params;
-  dimensions = dimensions || [`ym:s:datePeriod<group>`].toString();
-  const dataPresentationFormQsParam = dataPresentationForm
-    ? `/${dataPresentationForm}`
-    : "";
-
-  const queryString = qs.stringify({
-    ids: COUNTER_ID,
-    metrics,
-    dimensions,
-    group: timeIntervalName,
-    date1,
-    date2
-  });
-
-  return `${dataPresentationFormQsParam}?${queryString}`;
-};
+// const getQueryString = params => {
+//   let {
+//     dataPresentationForm,
+//     date1 = moment()
+//       .subtract(7, "days")
+//       .format(YANDEX_TIME_INTERVAL_FORMAT),
+//     date2 = moment().format(YANDEX_TIME_INTERVAL_FORMAT),
+//     timeIntervalName,
+//     metrics = ["ym:s:visits", "ym:s:users"].toString(),
+//     dimensions
+//   } = params;
+//   dimensions = dimensions || [`ym:s:datePeriod<group>`].toString();
+//   const dataPresentationFormQsParam = dataPresentationForm
+//     ? `/${dataPresentationForm}`
+//     : "";
+//
+//   const queryString = qs.stringify({
+//     ids: COUNTER_ID,
+//     metrics,
+//     dimensions,
+//     group: timeIntervalName,
+//     date1,
+//     date2
+//   });
+//
+//   return `${dataPresentationFormQsParam}?${queryString}`;
+// };
 
 const createTable = table => {
   const ROW_MAX_LENGTH = 30;
@@ -195,35 +197,54 @@ const fetchReportData = async ctx => {
     metrikaAccessToken
   } = ctx.wizard.state;
 
+  let query;
+  let variables = {};
+
   switch (reportName) {
     case "Visitors":
-      const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
-      const queryString = getQueryString({
+      //const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
+      // const queryString = getQueryString({
+      //   date1,
+      //   date2,
+      //   dataPresentationForm: "bytime",
+      //   timeIntervalName
+      // });
+
+      variables = {
+        dataPresentationForm: "bytime",
         date1,
         date2,
-        dataPresentationForm: "bytime",
-        timeIntervalName
-      });
+        ids: COUNTER_ID,
+        timeIntervalName,
+        metrics: ["ym:s:visits", "ym:s:users"],
+        dimensions: [`ym:s:datePeriod<group>`]
+      };
+      query = getReportData;
 
-      const data = await mertikaAPI.requestVisitors(queryString);
-
-      const tabularData = getTabularData(data, "Визиты и посетители");
-
-      // const compiledFunction = pug.compileFile(
-      //   __dirname + "/../views/report.pug"
-      // );
-
-      ctx.reply(`data ${JSON.stringify(data)}`);
-      const table = createTable({
-        data: tabularData,
-        headers: ["Метрики", "Даты", "Значения"]
-      });
-      console.log(table);
-      ctx.replyWithHTML(table, { parse_mode: "HTML" });
+      //const data = await mertikaAPI.requestVisitors(queryString);
       break;
     default:
-      ctx.reply("The specified report is not supported");
+      return ctx.reply("The specified report is not supported");
   }
+
+  const {
+    data: { reportData }
+  } = await apolloClient.query({
+    query,
+    variables
+  });
+
+  console.log("reportData", reportData);
+
+  const tabularData = getTabularData(data, "Визиты и посетители");
+
+  ctx.reply(`data ${JSON.stringify(data)}`);
+  const table = createTable({
+    data: tabularData,
+    headers: ["Метрики", "Даты", "Значения"]
+  });
+  console.log(table);
+  ctx.replyWithHTML(table, { parse_mode: "HTML" });
 
   //return ctx.wizard.next();
   return ctx.scene.leave();
