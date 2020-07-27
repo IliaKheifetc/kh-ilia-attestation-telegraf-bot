@@ -42,8 +42,8 @@ const createTable = table => {
 const showReportTypeSelector = ctx => {
   const { metrikaAccessToken } = ctx.wizard.state;
   if (!metrikaAccessToken) {
-    ctx.scene.leave();
     handleYandexMetrikaAuth.call(null, ctx);
+    ctx.scene.leave();
     return;
   }
 
