@@ -205,7 +205,7 @@ const fetchReportData = async ctx => {
       const tabularData = getTabularData(data);
 
       const compiledFunction = pug.compileFile(
-        __dirname + "../views/report.pug"
+        __dirname + "/../views/report.pug"
       );
 
       ctx.reply(`data ${JSON.stringify(data)}`);
