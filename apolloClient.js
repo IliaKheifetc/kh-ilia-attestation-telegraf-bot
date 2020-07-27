@@ -3,7 +3,7 @@ const {
   ApolloClient,
   createHttpLink,
   InMemoryCache
-} = require("@apollo-client");
+} = require("@apollo/client");
 const { setContext } = require("@apollo/client/link/context");
 
 const { tokenStorage } = require("./index");
