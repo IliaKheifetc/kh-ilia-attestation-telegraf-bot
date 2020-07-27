@@ -240,12 +240,12 @@ const fetchReportData = async ctx => {
   });
 
   console.log("reportData", reportData);
+  const reportRows = reportData ? reportData.reportRows : [];
+  //const tabularData = getTabularData(data, "Визиты и посетители");
 
-  const tabularData = getTabularData(data, "Визиты и посетители");
-
-  ctx.reply(`data ${JSON.stringify(data)}`);
+  ctx.reply(`reportRows ${JSON.stringify(reportRows)}`);
   const table = createTable({
-    data: tabularData,
+    data: reportRows,
     headers: ["Метрики", "Даты", "Значения"]
   });
   console.log(table);
