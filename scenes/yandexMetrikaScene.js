@@ -4,6 +4,7 @@ const Composer = require("telegraf/composer");
 const { capitalize } = require("lodash");
 const qs = require("qs");
 const moment = require("moment");
+const pug = require("pug");
 const MetrikaAPI = require("../yandex_metrika/dataSource");
 
 // constants
@@ -40,6 +41,20 @@ const getQueryString = params => {
   });
 
   return `${dataPresentationFormQsParam}?${queryString}`;
+};
+
+const getTabularData = data => {
+  return data.data.map(({ dimensions, metrics }) => ({
+    datesRange: `${dimensions[0].from} - ${dimensions[0].to}`,
+    metricsValues: metrics
+      .map(arr => arr.filter(Boolean))
+      .reduce((metrics, metricValue) => [...metrics, ...metricValue], [])
+  }));
+};
+
+const wrapWithHTML = tabularData => {
+  let str = "<table>";
+  return;
 };
 
 const showReportTypeSelector = ctx => {
@@ -187,7 +202,21 @@ const fetchReportData = async ctx => {
 
       const data = await mertikaAPI.requestVisitors(queryString);
 
+      const tabularData = getTabularData(data);
+
+      const compiledFunction = pug.compileFile("../views/report.pug");
+
       ctx.reply(`data ${JSON.stringify(data)}`);
+      console.log(
+        compiledFunction({
+          metrics: tabularData
+        })
+      );
+      ctx.replyWithHTML(
+        compiledFunction({
+          metrics: tabularData
+        })
+      );
       break;
     default:
       ctx.reply("The specified report is not supported");

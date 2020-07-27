@@ -1,0 +1,11 @@
+table
+    thead
+        th Mетрики
+        th Даты
+        th Значения
+    tbody
+        each item in metrics
+            tr
+                td= #{item.name}
+                td= #{item.datesRange}
+                td= #{item.datesRange}
