@@ -51,6 +51,7 @@ module.exports = {
           datesRange
           metricsValues
           name
+        }
       }
     }
   `
