@@ -23,6 +23,7 @@ const createAddName = reportName => item => ({
 
 const createTable = table => {
   const ROW_MAX_LENGTH = 30;
+  let caption = `Метрика: <b>${item.name}</b>`;
   let tableHeader = table.headers.reduce(
     (acc, item) => acc + `|  ${item}  |`,
     ""
@@ -30,14 +31,11 @@ const createTable = table => {
 
   const tableBody = table.data.reduce((acc, item) => {
     return (
-      acc +
-      `|  ${item.name}  |  ${item.datesRange}  |  ${item.metricsValues.join(
-        ", "
-      )}  |\n`
+      acc + `|  ${item.datesRange}  |  ${item.metricsValues.join(", ")}  |\n`
     );
   }, "");
 
-  return `<pre>${tableHeader}\n${tableBody}</pre>`;
+  return `<pre>${caption}\n${tableHeader}\n${tableBody}</pre>`;
 };
 
 const showReportTypeSelector = ctx => {
@@ -201,7 +199,7 @@ const fetchReportData = async ctx => {
   const addName = createAddName(reportName);
   const table = createTable({
     data: reportRows.map(addName),
-    headers: ["Метрики", "Даты", "Значения"]
+    headers: ["Даты", "Значения"]
   });
   console.log(table);
   ctx.replyWithHTML(table, { parse_mode: "HTML" });
