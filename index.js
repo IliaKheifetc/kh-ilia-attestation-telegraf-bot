@@ -11,7 +11,6 @@ const axios = require("axios");
 const qs = require("qs");
 const path = require("path");
 
-const apolloClient = require("./apolloClient");
 const translationScene = require("./scenes/translationScene");
 const weatherScene = require("./scenes/weatherScene");
 const jsRunningScene = require("./scenes/jsRunningScene");
@@ -443,4 +442,4 @@ function helpMiddleware(ctx, next) {
 
 module.exports = {
   tokenStorage
-}
+};
