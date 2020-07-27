@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 const { ApolloClient } = require("apollo-client");
 const { HttpLink } = require("apollo-link-http");
 const { InMemoryCache } = require("apollo-cache-inmemory");
-import { setContext } from "@apollo/client/link/context";
+const { setContext } = require("@apollo/client/link/context");
 
 const { tokenStorage } = require("./index");
 
