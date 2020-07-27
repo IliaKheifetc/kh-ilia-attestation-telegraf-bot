@@ -79,8 +79,7 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
       m.inlineKeyboard([
         ...Object.keys(TIME_INTERVALS).map(timeIntervalName =>
           m.callbackButton(capitalize(timeIntervalName), timeIntervalName)
-        ),
-        m.callbackButton(capitalize("Calendar"), "Calendar")
+        )
       ])
     )
   );
@@ -88,17 +87,26 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
   return ctx.wizard.next();
 };
 
-const dateSelectionHandler = new Composer();
-
-dateSelectionHandler.action("Calendar", async ctx => {
+const saveTimeIntervalAndShowCalendar = async ctx => {
+  const { data: timeIntervalName } = ctx.update.callback_query || {};
   const { calendar } = ctx.wizard.state;
+  ctx.wizard.state.dataReportParams.timeIntervalName = timeIntervalName;
+
   await ctx.answerCbQuery();
+
   ctx.reply("Select start date", calendar.getCalendar());
+  return ctx.wizard.next();
+};
 
-  //return ctx.wizard.selectStep(ctx.wizard.cursor);
-});
+const handleDateSelection = new Composer();
 
-dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
+// dateSelectionHandler.action("Calendar", async ctx => {
+//
+//
+//   //return ctx.wizard.selectStep(ctx.wizard.cursor);
+// });
+
+handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
   const { state } = ctx.wizard;
   const { calendar } = state;
   let date = ctx.match[0].replace("calendar-telegram-date-", "");
@@ -117,7 +125,7 @@ dateSelectionHandler.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
   }
 });
 
-dateSelectionHandler.action(/calendar-telegram-prev-[\d-]+/g, async context => {
+handleDateSelection.action(/calendar-telegram-prev-[\d-]+/g, async context => {
   const { calendar, dataReportParams } = context.wizard.state;
   const dateString = context.match[0].replace("calendar-telegram-prev-", "");
 
@@ -129,7 +137,7 @@ dateSelectionHandler.action(/calendar-telegram-prev-[\d-]+/g, async context => {
   context.editMessageText(prevText, calendar.getCalendar(date));
 });
 
-dateSelectionHandler.action(/calendar-telegram-next-[\d-]+/g, async ctx => {
+handleDateSelection.action(/calendar-telegram-next-[\d-]+/g, async ctx => {
   const { calendar, dataReportParams } = ctx.wizard.state;
 
   const dateString = ctx.match[0].replace("calendar-telegram-next-", "");
@@ -142,11 +150,11 @@ dateSelectionHandler.action(/calendar-telegram-next-[\d-]+/g, async ctx => {
   ctx.editMessageText(prevText, calendar.getCalendar(date));
 });
 
-dateSelectionHandler.action(/calendar-telegram-ignore-[\d\w-]+/g, context =>
+handleDateSelection.action(/calendar-telegram-ignore-[\d\w-]+/g, context =>
   context.answerCbQuery()
 );
 
-dateSelectionHandler.use(ctx => {
+handleDateSelection.use(ctx => {
   console.log("use middleware");
   console.log("ctx", ctx);
 });
@@ -157,14 +165,14 @@ const fetchReportData = async ctx => {
   console.log("ctx", ctx);
 
   //const { text } = ctx.update.message || {};
-  const { data: timeIntervalName } = ctx.update.callback_query || {};
+  //const { data: timeIntervalName } = ctx.update.callback_query || {};
 
   console.log("ctx.update", JSON.stringify(ctx.update));
-  console.log("timeIntervalName", timeIntervalName);
+  //console.log("timeIntervalName", timeIntervalName);
   console.log("ctx.wizard.state", ctx.wizard.state);
 
   const {
-    dataReportParams: { date1, date2, reportName },
+    dataReportParams: { date1, date2, reportName, timeIntervalName },
     metrikaAccessToken
   } = ctx.wizard.state;
 
@@ -194,7 +202,8 @@ const yandexMetrikaScene = new WizardScene(
   "yandexMetrika",
   showReportTypeSelector,
   saveReportTypeAndShowTimeIntervalSelector,
-  dateSelectionHandler,
+  saveTimeIntervalAndShowCalendar,
+  handleDateSelection,
   fetchReportData
 );
 
