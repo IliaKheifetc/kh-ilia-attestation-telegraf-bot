@@ -52,9 +52,23 @@ const getTabularData = data => {
   }));
 };
 
-const wrapWithHTML = tabularData => {
-  let str = "<table>";
-  return;
+const createTable = table => {
+  const ROW_MAX_LENGTH = 30;
+  let tableHeader = table.headers.reduce(
+    (acc, item) => acc + `|  ${item}  |\n`,
+    ""
+  );
+
+  const tableBody = table.data.reduce((acc, item) => {
+    return (
+      acc +
+      `|  ${item.name}  |  ${item.datesRange}  |  ${item.metricsValues.join(
+        ", "
+      )}  |\n`
+    );
+  }, "");
+
+  return `<pre>${tableHeader}${tableBody}</pre>`;
 };
 
 const showReportTypeSelector = ctx => {
@@ -204,21 +218,17 @@ const fetchReportData = async ctx => {
 
       const tabularData = getTabularData(data);
 
-      const compiledFunction = pug.compileFile(
-        __dirname + "/../views/report.pug"
-      );
+      // const compiledFunction = pug.compileFile(
+      //   __dirname + "/../views/report.pug"
+      // );
 
       ctx.reply(`data ${JSON.stringify(data)}`);
-      console.log(
-        compiledFunction({
-          metrics: tabularData
-        })
-      );
-      ctx.replyWithHTML(
-        compiledFunction({
-          metrics: tabularData
-        })
-      );
+      const table = createTable({
+        data: tabularData,
+        headers: ["Метрики", "Даты", "Значения"]
+      });
+      console.log(table);
+      ctx.replyWithHTML(table, { parse_mode: "HTML" });
       break;
     default:
       ctx.reply("The specified report is not supported");
