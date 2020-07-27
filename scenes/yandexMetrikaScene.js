@@ -185,7 +185,7 @@ const fetchReportData = async ctx => {
 
   const variablesByReportName = VARIABLES_BY_REPORT_NAME[reportName];
 
-  if (!variables) {
+  if (!variablesByReportName) {
     return ctx.reply("The specified report is not supported");
   }
 
