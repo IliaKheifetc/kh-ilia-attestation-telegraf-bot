@@ -6,6 +6,7 @@ const { capitalize } = require("lodash");
 //const MetrikaAPI = require("../yandex_metrika/dataSource");
 const apolloClient = require("../apolloClient");
 const { getReportData } = require("../graphqlOpreations");
+const { handleYandexMetrikaAuth } = require("../index");
 
 // constants
 const {
@@ -39,6 +40,13 @@ const createTable = table => {
 };
 
 const showReportTypeSelector = ctx => {
+  const { metrikaAccessToken } = ctx.wizard.state;
+  if (!metrikaAccessToken) {
+    ctx.scene.leave();
+    handleYandexMetrikaAuth.call(null, ctx);
+    return;
+  }
+
   ctx.reply(
     `<b>Choose report:</b>`,
     Extra.HTML().markup(m =>

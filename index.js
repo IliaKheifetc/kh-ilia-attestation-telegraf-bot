@@ -297,14 +297,13 @@ bot.command(
   })
 );
 
-bot.command(
-  "yandex_metrika_auth",
-  authCommandHandler({
-    getAuthUrl: metrikaAuth.getAuthUrl,
-    authServerName: "Yandex",
-    apiName: "Yandex Metrika API"
-  })
-);
+const handleYandexMetrikaAuth = authCommandHandler({
+  getAuthUrl: metrikaAuth.getAuthUrl,
+  authServerName: "Yandex",
+  apiName: "Yandex Metrika API"
+});
+
+bot.command("yandex_metrika_auth", handleYandexMetrikaAuth);
 
 // bot.hears(
 //   text => text.includes("weather"),
@@ -441,5 +440,5 @@ function helpMiddleware(ctx, next) {
 }
 
 module.exports = {
-  getTokenStorage: () => tokenStorage
+  handleYandexMetrikaAuth
 };
