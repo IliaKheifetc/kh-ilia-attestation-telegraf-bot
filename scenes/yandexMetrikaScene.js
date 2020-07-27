@@ -22,20 +22,20 @@ const getQueryString = params => {
       .format(YANDEX_TIME_INTERVAL_FORMAT),
     date2 = moment().format(YANDEX_TIME_INTERVAL_FORMAT),
     timeIntervalName,
-    metrics = ["ym:s:visits", "ym:s:users"],
+    metrics = ["ym:s:visits", "ym:s:users"].toString(),
     dimensions
   } = params;
   dimensions =
     dimensions ||
-    (timeIntervalName ? [`ym:s:datePeriod${timeIntervalName}`] : []);
+    (timeIntervalName ? [`ym:s:datePeriod${timeIntervalName}`] : []).toString();
   const dataPresentationFormQsParam = dataPresentationForm
     ? `/${dataPresentationForm}`
     : "";
 
   const queryString = qs.stringify({
     ids: COUNTER_ID,
-    metrics: metrics.join(","),
-    dimensions: [`ym:s:datePeriodDay`].join(","),
+    metrics,
+    dimensions,
     date1,
     date2
   });
