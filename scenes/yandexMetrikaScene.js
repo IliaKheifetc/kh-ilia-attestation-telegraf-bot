@@ -25,9 +25,7 @@ const getQueryString = params => {
     metrics = ["ym:s:visits", "ym:s:users"].toString(),
     dimensions
   } = params;
-  dimensions =
-    dimensions ||
-    (timeIntervalName ? [`ym:s:datePeriod${timeIntervalName}`] : []).toString();
+  dimensions = dimensions || [`ym:s:datePeriod<group>`].toString();
   const dataPresentationFormQsParam = dataPresentationForm
     ? `/${dataPresentationForm}`
     : "";
@@ -36,6 +34,7 @@ const getQueryString = params => {
     ids: COUNTER_ID,
     metrics,
     dimensions,
+    group: timeIntervalName,
     date1,
     date2
   });
