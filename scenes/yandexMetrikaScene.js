@@ -7,7 +7,7 @@ const { capitalize } = require("lodash");
 //const MetrikaAPI = require("../yandex_metrika/dataSource");
 const apolloClient = require("../apolloClient");
 const { getReportData } = require("../graphqlOpreations");
-const { createLineChartData } = require("../utils/yandexMetrika");
+const { createLineChartData, sortByDate } = require("../utils/yandexMetrika");
 const { createDiagram } = require("../vega_test");
 
 // constants
@@ -205,8 +205,12 @@ const fetchReportData = async ctx => {
     }
   });
 
+  if (!reportData) {
+    return ctx.reply("Error occurred when getting data, sorry");
+  }
+
   console.log("reportData", reportData);
-  const reportRows = reportData ? reportData.reportRows : [];
+  const reportRows = sortByDate(reportData.reportRows);
 
   ctx.reply(`reportRows ${JSON.stringify(reportRows)}`);
   //const addName = createAddName(reportName);
