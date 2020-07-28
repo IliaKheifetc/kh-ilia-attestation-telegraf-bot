@@ -45,7 +45,7 @@ const showReportTypeSelector = ctx => {
   const { metrikaAccessToken } = ctx.wizard.state;
   if (!metrikaAccessToken) {
     ctx.replyWithHTML(
-      "Please authorize using <b>/yandex_metrika</b>_auth command",
+      "Please authorize using <b>/yandex_metrika_auth</b> command",
       { parse_mode: "HTML" }
     );
     ctx.scene.leave();
