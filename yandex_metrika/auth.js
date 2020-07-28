@@ -5,6 +5,7 @@ const fs = require("fs").promises;
 const CLIENT_ID = "95beaa102a9344b2821203fc778ca27b";
 const REDIRECT_URI = "https://ilia-kh-telegram-bot.herokuapp.com/yandexOAuth";
 const APP_PASSWORD = "3607d561cc9d4fbba01ac80f048e838e";
+const LOGIN_HINT = "astralonlinewatch@ya.ru";
 
 // const authUrl =
 //   "https://oauth.yandex.ru/authorize?response_type=code&client_id=95beaa102a9344b2821203fc778ca27b&redirect_uri=https://ilia-kh-telegram-bot.herokuapp.com/yandexOAuth";
@@ -46,7 +47,7 @@ module.exports = {
       response_type: "code",
       client_id: CLIENT_ID,
       redirect_uri: REDIRECT_URI,
-      login_hint: "astralonlinewatch@ya.ru"
+      login_hint: LOGIN_HINT
     });
     const extraQueryStringParams = qs.stringify(extraParams);
 
