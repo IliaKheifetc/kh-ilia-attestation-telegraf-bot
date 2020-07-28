@@ -45,7 +45,8 @@ module.exports = {
     const baseQueryStringParams = qs.stringify({
       response_type: "code",
       client_id: CLIENT_ID,
-      redirect_uri: REDIRECT_URI
+      redirect_uri: REDIRECT_URI,
+      login_hint: "astralonlinewatch@ya.ru"
     });
     const extraQueryStringParams = qs.stringify(extraParams);
 
