@@ -30,9 +30,8 @@ const createLineChartData = tabularData => {
   };
 };
 
-const sortByDate = data => {
-  return data.sort((row1, row2) => (row1.from > row.from ? 1 : -1));
-};
+const sortByDate = rows =>
+  rows.sort((row1, row2) => (row1.from > row2.from ? 1 : -1));
 
 module.exports = {
   createLineChartData,
