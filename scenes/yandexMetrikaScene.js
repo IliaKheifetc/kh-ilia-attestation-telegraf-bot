@@ -1,3 +1,4 @@
+const fs = require("fs");
 const WizardScene = require("telegraf/scenes/wizard");
 const Extra = require("telegraf/extra");
 const Composer = require("telegraf/composer");
@@ -221,7 +222,9 @@ const fetchReportData = async ctx => {
 
   const chartData = createLineChartData(reportRows);
   console.log("chartData", chartData);
-  await createDiagram(chartData);
+  const fileName = await createDiagram(chartData);
+
+  ctx.replyWithPhoto({ source: fs.readFileSync(`./${fileName}`) });
 
   //return ctx.wizard.next();
   return ctx.scene.leave();
