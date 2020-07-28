@@ -30,8 +30,16 @@ const createLineChartData = tabularData => {
   };
 };
 
+const getStartDateFromDatesRange = datesRange =>
+  datesRange.split("-").map(str => str.trim());
+
 const sortByDate = rows =>
-  rows.sort((row1, row2) => (row1.from > row2.from ? 1 : -1));
+  rows.sort((row1, row2) => {
+    const [dateFrom1, dateFrom2] = [row1, row2]
+      .map(r => r.datesRange)
+      .map(getStartDateFromDatesRange);
+    return dateFrom1 > dateFrom2 ? 1 : -1;
+  });
 
 module.exports = {
   createLineChartData,
