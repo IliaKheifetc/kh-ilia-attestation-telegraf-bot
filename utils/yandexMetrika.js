@@ -9,6 +9,28 @@ const getTabularData = (data, name) => {
     .map(item => ({ ...item, name }));
 };
 
+const createLineChartData = tabularData => {
+  // [{ datesRange: "...", metricsValues: [] }]
+  return {
+    name: "table",
+    values: tabularData.reduce(
+      (acc, { datesRange, metricsValues }, resultRowIndex) => {
+        acc.push(
+          ...metricsValues.map((value, metricsValueIndex) => ({
+            x: resultRowIndex,
+            y: value,
+            c: metricsValueIndex
+          }))
+        );
+
+        return acc;
+      },
+      []
+    )
+  };
+};
+
 module.exports = {
+  createLineChartData,
   getTabularData
 };

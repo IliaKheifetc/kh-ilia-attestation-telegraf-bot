@@ -13,6 +13,7 @@
   "dependencies": {
     "@apollo/client": "^3.0.2",
     "axios": "^0.19.2",
+    "canvas": "^2.6.1",
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "googleapis": "^39.2.0",
@@ -25,6 +26,7 @@
     "pug": "^3.0.0",
     "qs": "^6.9.4",
     "telegraf": "^3.38.0",
-    "telegraf-calendar-telegram": "^1.5.8"
+    "telegraf-calendar-telegram": "^1.5.8",
+    "vega": "^5.13.0"
   }
 }

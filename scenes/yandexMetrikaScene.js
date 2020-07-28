@@ -6,7 +6,8 @@ const { capitalize } = require("lodash");
 //const MetrikaAPI = require("../yandex_metrika/dataSource");
 const apolloClient = require("../apolloClient");
 const { getReportData } = require("../graphqlOpreations");
-const { handleYandexMetrikaAuth } = require("../index");
+const { createLineChartData } = require("../utils/yandexMetrika");
+const { createDiagram } = require("../vega_test");
 
 // constants
 const {
@@ -217,6 +218,10 @@ const fetchReportData = async ctx => {
   );
   console.log(table);
   ctx.replyWithHTML(table, { parse_mode: "HTML" });
+
+  const chartData = createLineChartData(reportRows);
+  console.log("chartData", chartData);
+  await createDiagram(chartData);
 
   //return ctx.wizard.next();
   return ctx.scene.leave();
