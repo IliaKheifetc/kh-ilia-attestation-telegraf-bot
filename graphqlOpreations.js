@@ -52,6 +52,7 @@ module.exports = {
         reportRows {
           datesRange
           metricsValues
+          name
         }
       }
     }

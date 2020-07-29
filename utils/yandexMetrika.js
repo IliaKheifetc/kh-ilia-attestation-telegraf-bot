@@ -32,7 +32,7 @@ const getLineChartDataValues = reportRows => {
 const getPieChartDataValues = reportRows => {
   return reportRows.map(({ name, metricsValues }, index) => ({
     id: index + 1,
-    metricValue: metricsValues[0]
+    metricValue: metricsValues.reduce((sum, value) => sum + value, 0)
   }));
 };
 
