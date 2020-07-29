@@ -30,6 +30,26 @@ const createLineChartData = tabularData => {
   };
 };
 
+const createTable = (table, name) => {
+  const ROW_MAX_LENGTH = 30;
+  let caption = `Метрика: <b>${name}</b>`;
+  let tableHeader = table.headers.reduce(
+    (acc, item) => acc + `|  ${item}  |`,
+    ""
+  );
+
+  const tableBody = table.data.reduce(
+    (acc, { datesRange, metricsValues }, index) => {
+      return (
+        acc + `| ${index} | ${datesRange}  |  ${metricsValues.join(", ")} |\n`
+      );
+    },
+    ""
+  );
+
+  return `<pre>${caption}\n${tableHeader}\n${tableBody}</pre>`;
+};
+
 const getStartDateFromDatesRange = datesRange =>
   datesRange.split("-").map(str => str.trim());
 
@@ -43,6 +63,7 @@ const sortByDate = rows =>
 
 module.exports = {
   createLineChartData,
+  createTable,
   getTabularData,
   sortByDate
 };

@@ -7,8 +7,12 @@ const { capitalize } = require("lodash");
 //const MetrikaAPI = require("../yandex_metrika/dataSource");
 const apolloClient = require("../apolloClient");
 const { getReportData } = require("../graphqlOpreations");
-const { createLineChartData, sortByDate } = require("../utils/yandexMetrika");
-const { createDiagram } = require("../vega_test");
+const {
+  createLineChartData,
+  createTable,
+  sortByDate
+} = require("../utils/yandexMetrika");
+const { createDiagram } = require("../diagramBuilder");
 
 // constants
 const {
@@ -23,23 +27,6 @@ const {
 //   ...item,
 //   name: TABLE_LABELS_BY_REPORT_NAME[reportName]
 // });
-
-const createTable = (table, name) => {
-  const ROW_MAX_LENGTH = 30;
-  let caption = `Метрика: <b>${name}</b>`;
-  let tableHeader = table.headers.reduce(
-    (acc, item) => acc + `|  ${item}  |`,
-    ""
-  );
-
-  const tableBody = table.data.reduce((acc, item) => {
-    return (
-      acc + `| ${item.datesRange}  |  ${item.metricsValues.join(", ")} |\n`
-    );
-  }, "");
-
-  return `<pre>${caption}\n${tableHeader}\n${tableBody}</pre>`;
-};
 
 const showReportTypeSelector = ctx => {
   const { metrikaAccessToken } = ctx.wizard.state;
@@ -219,7 +206,7 @@ const fetchReportData = async ctx => {
   const table = createTable(
     {
       data: reportRows,
-      headers: ["Даты", "Значения"]
+      headers: ["#", "Даты", "Значения"]
     },
     TABLE_LABELS_BY_REPORT_NAME[reportName]
   );
