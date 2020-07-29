@@ -15,7 +15,7 @@ const createDiagram = async (chartDataValues, reportName) => {
   return new Promise(resolve => {
     const chartSpecWithReportData = {
       ...chartSpec,
-      data: { ...chartSpec.data, values: chartDataValues }
+      data: [{ ...chartSpec.data[0], values: chartDataValues }]
     };
 
     console.log(
