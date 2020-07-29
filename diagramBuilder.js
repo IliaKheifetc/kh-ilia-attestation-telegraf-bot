@@ -18,6 +18,11 @@ const createDiagram = async (chartDataValues, reportName) => {
       data: { ...chartSpec.data, values: chartDataValues }
     };
 
+    console.log(
+      "chartSpecWithReportData",
+      JSON.stringify(chartSpecWithReportData)
+    );
+
     // create a new view instance for a given Vega JSON spec
     const view = new vega.View(vega.parse(chartSpecWithReportData))
       .renderer("none")
