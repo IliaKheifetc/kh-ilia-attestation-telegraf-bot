@@ -45,8 +45,11 @@ const createTable = ({ tableRows, headersDict, name }) => {
   );
 
   const keys = headersDict.map(item => item.key).filter(key => key !== "#");
+  console.log("keys", keys);
   const tableBody = tableRows.reduce((acc, rowData, index) => {
     const rowPresentation = keys.reduce((row, key, index) => {
+      console.log("rowData[key]", rowData[key]);
+
       const cellValue = Array.isArray(rowData[key])
         ? rowData[key].join(", ")
         : rowData[key];
