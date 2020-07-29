@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A basic pie chart example.",
-  "width": 200,
-  "height": 200,
+  "width": 400,
+  "height": 400,
   "autosize": "none",
 
   "signals": [
@@ -23,7 +23,7 @@
     },
     {
       "name": "innerRadius",
-      "value": 0,
+      "value": 60,
       "bind": { "input": "range", "min": 0, "max": 90, "step": 1 }
     },
     {

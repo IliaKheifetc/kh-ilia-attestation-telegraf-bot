@@ -36,22 +36,26 @@ const getPieChartDataValues = reportRows => {
   }));
 };
 
-const createTable = (table, name) => {
+const createTable = ({ tableRows, headersDict, name }) => {
   const ROW_MAX_LENGTH = 30;
   let caption = `Метрика: <b>${name}</b>`;
-  let tableHeader = table.header.reduce(
-    (acc, item) => acc + `|  ${item}  |`,
+  let tableHeader = headersDict.reduce(
+    (acc, item) => acc + `|  ${item.rusName}  |`,
     ""
   );
 
-  const tableBody = table.data.reduce(
-    (acc, { datesRange, metricsValues }, index) => {
-      return (
-        acc + `| ${index} | ${datesRange}  |  ${metricsValues.join(", ")} |\n`
-      );
-    },
-    ""
-  );
+  const keys = headersDict.map(item => item.key).filter(key => key !== "#");
+  const tableBody = tableRows.reduce((acc, rowData, index) => {
+    const rowPresentation = keys.reduce((row, key, index) => {
+      const cellValue = Array.isArray(rowData[key])
+        ? rowData[key].join(", ")
+        : rowData[key];
+      const cell = `| ${cellValue}${index ? " |" : " "}`;
+      return row + cell;
+    }, "");
+
+    return acc + `| ${index} ${rowPresentation}\n`;
+  }, "");
 
   return `<pre>${caption}\n${tableHeader}\n${tableBody}</pre>`;
 };

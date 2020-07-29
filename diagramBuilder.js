@@ -5,12 +5,7 @@ const fs = require("fs");
 const { REPORTS_CHART_TYPES } = require("./constants/yandexMetrika");
 
 const createDiagram = async (chartDataValues, reportName) => {
-  console.log("REPORTS_CHART_TYPES", REPORTS_CHART_TYPES);
-  console.log("reportName", reportName);
-
   const chartSpec = REPORTS_CHART_TYPES[reportName];
-
-  console.log("typeof chartSpec", typeof chartSpec);
 
   return new Promise(resolve => {
     const chartSpecWithReportData = {

@@ -44,9 +44,21 @@ const TABLE_LABELS_BY_REPORT_NAME = {
 };
 
 const TABLE_HEADER_BY_REPORT_NAME = {
-  [REPORTS.visitors]: ["#", "Даты", "Значения"],
-  [REPORTS.newVisitors]: ["#", "Даты", "Значения"],
-  [REPORTS.browsers]: ["#", "Браузер", "Значения"]
+  [REPORTS.visitors]: [
+    { key: "#", rusName: "#" },
+    { key: "datesRange", rusName: "Даты" },
+    { key: "metricsValues", rusName: "Значения" }
+  ],
+  [REPORTS.newVisitors]: [
+    { key: "#", rusName: "#" },
+    { key: "datesRange", rusName: "Даты" },
+    { key: "metricsValues", rusName: "Значения" }
+  ],
+  [REPORTS.browsers]: [
+    { key: "#", rusName: "#" },
+    { key: "name", rusName: "Браузер" },
+    { key: "metricsValues", rusName: "Значения" }
+  ]
 };
 
 const REPORTS_CHART_TYPES = {

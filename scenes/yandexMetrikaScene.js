@@ -211,13 +211,11 @@ const fetchReportData = async ctx => {
 
   ctx.reply(`reportRows ${JSON.stringify(reportRows)}`);
   //const addName = createAddName(reportName);
-  const table = createTable(
-    {
-      data: reportRows,
-      header: TABLE_HEADER_BY_REPORT_NAME[reportName]
-    },
-    TABLE_LABELS_BY_REPORT_NAME[reportName]
-  );
+  const table = createTable({
+    tableRows: reportRows,
+    headersDict: TABLE_HEADER_BY_REPORT_NAME[reportName],
+    name: TABLE_LABELS_BY_REPORT_NAME[reportName]
+  });
   console.log(table);
   ctx.replyWithHTML(table, { parse_mode: "HTML" });
 
