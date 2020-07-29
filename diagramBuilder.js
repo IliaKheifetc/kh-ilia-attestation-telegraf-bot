@@ -2,23 +2,25 @@
 const vega = require("vega");
 const fs = require("fs");
 
-const lineChartSpec = require("./line_chart.spec.json");
+const { REPORTS_CHART_TYPES } = require("./constants/yandexMetrika");
 
-const createDiagram = async chartData => {
-  console.log("typeof lineChartSpec", typeof lineChartSpec);
+const createDiagram = async (chartDataValues, reportName) => {
+  const chartSpec = REPORTS_CHART_TYPES[reportName];
+
+  console.log("typeof chartSpec", typeof chartSpec);
 
   return new Promise(resolve => {
-    const lineChartSpecWithReportData = {
-      ...lineChartSpec,
-      data: chartData
+    const chartSpecWithReportData = {
+      ...chartSpec,
+      data: { ...chartSpec.data, values: chartDataValues }
     };
 
     // create a new view instance for a given Vega JSON spec
-    const view = new vega.View(vega.parse(lineChartSpecWithReportData))
+    const view = new vega.View(vega.parse(chartSpecWithReportData))
       .renderer("none")
       .initialize();
 
-    const fileName = "lineChart.png";
+    const fileName = "chart.png";
 
     // generate static PNG file from chart
     view

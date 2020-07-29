@@ -8,7 +8,8 @@ const { capitalize } = require("lodash");
 const apolloClient = require("../apolloClient");
 const { getReportData } = require("../graphqlOpreations");
 const {
-  createLineChartData,
+  getLineChartDataValues,
+  getPieChartDataValues,
   createTable,
   sortByDate
 } = require("../utils/yandexMetrika");
@@ -18,6 +19,7 @@ const { createDiagram } = require("../diagramBuilder");
 const {
   DEFAULT_VARIABLES,
   REPORTS,
+  TABLE_HEADER_BY_REPORT_NAME,
   TABLE_LABELS_BY_REPORT_NAME,
   TIME_INTERVALS,
   VARIABLES_BY_REPORT_NAME
@@ -27,6 +29,12 @@ const {
 //   ...item,
 //   name: TABLE_LABELS_BY_REPORT_NAME[reportName]
 // });
+
+const VALUES_MAKERS_BY_REPORT_NAME = {
+  [REPORTS.visitors]: getLineChartDataValues,
+  [REPORTS.newVisitors]: getLineChartDataValues,
+  [REPORTS.browsers]: getPieChartDataValues
+};
 
 const showReportTypeSelector = ctx => {
   const { metrikaAccessToken } = ctx.wizard.state;
@@ -206,16 +214,17 @@ const fetchReportData = async ctx => {
   const table = createTable(
     {
       data: reportRows,
-      headers: ["#", "Даты", "Значения"]
+      header: TABLE_HEADER_BY_REPORT_NAME[reportName]
     },
     TABLE_LABELS_BY_REPORT_NAME[reportName]
   );
   console.log(table);
   ctx.replyWithHTML(table, { parse_mode: "HTML" });
 
-  const chartData = createLineChartData(reportRows);
-  console.log("chartData", chartData);
-  const fileName = await createDiagram(chartData);
+  const getValues = VALUES_MAKERS_BY_REPORT_NAME[reportName];
+  const chartDataValues = getValues(reportRows);
+  console.log("chartDataValues", chartDataValues);
+  const fileName = await createDiagram(chartDataValues, reportName);
 
   ctx.replyWithPhoto({ source: fs.readFileSync(`./${fileName}`) });
 

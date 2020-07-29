@@ -37,6 +37,7 @@ module.exports = {
       $timeIntervalName: String!
       $metrics: [String]
       $dimensions: [String]
+      $topKeys: Int
     ) {
       reportData(
         dataPresentationForm: $dataPresentationForm
@@ -46,6 +47,7 @@ module.exports = {
         timeIntervalName: $timeIntervalName
         metrics: $metrics
         dimensions: $dimensions
+        topKeys: $topKeys
       ) {
         reportRows {
           datesRange

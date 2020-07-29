@@ -9,31 +9,35 @@ const getTabularData = (data, name) => {
     .map(item => ({ ...item, name }));
 };
 
-const createLineChartData = tabularData => {
+const getLineChartDataValues = reportRows => {
   // [{ datesRange: "...", metricsValues: [] }]
-  return {
-    name: "table",
-    values: tabularData.reduce(
-      (acc, { datesRange, metricsValues }, resultRowIndex) => {
-        acc.push(
-          ...metricsValues.map((value, metricsValueIndex) => ({
-            x: resultRowIndex,
-            y: value,
-            c: metricsValueIndex
-          }))
-        );
+  return reportRows.reduce(
+    (acc, { datesRange, metricsValues }, resultRowIndex) => {
+      acc.push(
+        ...metricsValues.map((value, metricsValueIndex) => ({
+          x: resultRowIndex,
+          y: value,
+          c: metricsValueIndex
+        }))
+      );
 
-        return acc;
-      },
-      []
-    )
-  };
+      return acc;
+    },
+    []
+  );
+};
+
+const getPieChartDataValues = reportRows => {
+  return reportRows.map(({ name, metricsValues }, index) => ({
+    id: index + 1,
+    value: metricsValues[0]
+  }));
 };
 
 const createTable = (table, name) => {
   const ROW_MAX_LENGTH = 30;
   let caption = `Метрика: <b>${name}</b>`;
-  let tableHeader = table.headers.reduce(
+  let tableHeader = table.header.reduce(
     (acc, item) => acc + `|  ${item}  |`,
     ""
   );
@@ -62,7 +66,8 @@ const sortByDate = rows =>
   });
 
 module.exports = {
-  createLineChartData,
+  getLineChartDataValues,
+  getPieChartDataValues,
   createTable,
   getTabularData,
   sortByDate
