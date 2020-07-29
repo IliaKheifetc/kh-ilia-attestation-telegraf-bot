@@ -9,6 +9,7 @@ const getTabularData = (data, name) => {
     .map(item => ({ ...item, name }));
 };
 
+// структура должна соответствовать описанию поля data.values в line_chart.spec.json
 const getLineChartDataValues = reportRows => {
   // [{ datesRange: "...", metricsValues: [] }]
   return reportRows.reduce(
@@ -27,10 +28,11 @@ const getLineChartDataValues = reportRows => {
   );
 };
 
+// структура должна соответствовать описанию поля data.values в pie_chart.spec.json
 const getPieChartDataValues = reportRows => {
   return reportRows.map(({ name, metricsValues }, index) => ({
     id: index + 1,
-    value: metricsValues[0]
+    metricValue: metricsValues[0]
   }));
 };
 

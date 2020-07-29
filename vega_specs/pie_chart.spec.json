@@ -42,17 +42,17 @@
     {
       "name": "table",
       "values": [
-        { "id": 1, "value": 4 },
-        { "id": 2, "value": 6 },
-        { "id": 3, "value": 10 },
-        { "id": 4, "field": 3 },
-        { "id": 5, "field": 7 },
-        { "id": 6, "field": 8 }
+        { "id": 1, "metricValue": 4 },
+        { "id": 2, "metricValue": 6 },
+        { "id": 3, "metricValue": 10 },
+        { "id": 4, "metricValue": 3 },
+        { "id": 5, "metricValue": 7 },
+        { "id": 6, "metricValue": 8 }
       ],
       "transform": [
         {
           "type": "pie",
-          "field": "value",
+          "field": "metricValue",
           "startAngle": { "signal": "startAngle" },
           "endAngle": { "signal": "endAngle" },
           "sort": { "signal": "sort" }
