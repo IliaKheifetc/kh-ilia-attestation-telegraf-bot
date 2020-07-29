@@ -31,7 +31,7 @@ const VARIABLES_BY_REPORT_NAME = {
     dimensions: [`ym:s:datePeriod<group>`]
   },
   [REPORTS.browsers]: {
-    metrics: ["ym:s:users"],
+    metrics: ["ym:s:pageviews"],
     dimensions: ["ym:s:browser"],
     topKeys: 8 // маскимальное количество строк в ответе
   }
