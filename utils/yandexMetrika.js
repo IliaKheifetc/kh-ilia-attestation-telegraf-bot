@@ -36,6 +36,8 @@ const getPieChartDataValues = reportRows => {
   }));
 };
 
+//const getPieChartLegend =
+
 const createTable = ({ tableRows, headersDict, name }) => {
   const ROW_MAX_LENGTH = 30;
   let caption = `Метрика: <b>${name}</b>`;

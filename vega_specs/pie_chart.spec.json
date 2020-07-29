@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A basic pie chart example.",
-  "width": 400,
-  "height": 400,
+  "width": 500,
+  "height": 500,
   "autosize": "none",
 
   "signals": [
