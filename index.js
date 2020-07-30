@@ -18,8 +18,11 @@ const yandexMetrikaScene = require("./scenes/yandexMetrikaScene");
 const sheets = require("./sheets/index");
 const metrikaAuth = require("./yandex_metrika/auth");
 
+const LANGUAGE_STRINGS = require("./constants/lang");
+
 let tokenStorage = {};
 let metrikaAccessToken;
+let currentLanguage = "en";
 
 const { enter, leave } = Stage;
 
@@ -88,6 +91,10 @@ const init = async () => {
         description: `get a "hi" in response`
       },
       {
+        command: "select_language",
+        description: "select_language"
+      },
+      {
         command: "weather",
         description: "get weather in a city"
       },
@@ -141,6 +148,7 @@ bot.start(ctx => ctx.reply("Welcome"));
 bot.command("show_keyboard", ctx => {
   const keyboard = Markup.keyboard([
     "/hi",
+    "/select_language",
     "/weather",
     "/gif",
     "/translate_text",
@@ -349,11 +357,23 @@ bot.command("sheets_update", async ctx => {
   sheets.updateSpreadsheet(text);
 });
 
-// calendar.setDateListener((context, date) => context.reply(date));
-//
-// bot.command("calendar", ctx => {
-//   ctx.reply("Here you are", calendar.getCalendar());
-// });
+bot.command("select_language", ctx => {
+  ctx.reply(
+    `<b>${LANGUAGE_STRINGS[currentLanguage]}</b>`,
+    Extra.HTML().markup(m =>
+      m.inlineKeyboard([
+        m.callbackButton("Русский", "set_lang_ru"),
+        m.callbackButton("English", "set_lang_en")
+      ])
+    )
+  );
+});
+
+bot.action(/^set_lang_/, ctx => {
+  const { data } = ctx.update.callback_query || {};
+  console.log("ctx", ctx);
+  console.log("data", data);
+});
 
 bot.command("create_callback_button", ctx => {
   ctx.reply(
