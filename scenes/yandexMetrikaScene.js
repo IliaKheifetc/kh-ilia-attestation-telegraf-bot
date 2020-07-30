@@ -11,7 +11,8 @@ const {
   getLineChartDataValues,
   getPieChartDataValues,
   createTable,
-  sortByDate
+  sortByDate,
+  sortByMetricValue
 } = require("../utils/yandexMetrika");
 const { createDiagram } = require("../diagramBuilder");
 
@@ -25,15 +26,15 @@ const {
   VARIABLES_BY_REPORT_NAME
 } = require("../constants/yandexMetrika");
 
-// const createAddName = reportName => item => ({
-//   ...item,
-//   name: TABLE_LABELS_BY_REPORT_NAME[reportName]
-// });
+const compose = (f1, f2) => data => f1(f2(data));
 
 const VALUES_MAKERS_BY_REPORT_NAME = {
   [REPORTS.visitors]: getLineChartDataValues,
   [REPORTS.newVisitors]: getLineChartDataValues,
-  [REPORTS.browsers]: getPieChartDataValues
+  [REPORTS.browsers]: compose(
+    sortByMetricValue,
+    getPieChartDataValues
+  )
 };
 
 const showReportTypeSelector = ctx => {

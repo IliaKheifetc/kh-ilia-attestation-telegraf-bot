@@ -36,7 +36,15 @@ const getPieChartDataValues = reportRows => {
   }));
 };
 
-//const getPieChartLegend =
+const getSortBy = fieldName => collection => {
+  return collection.sort((row1, row2) => {
+    const [value1, value2] = [row1, row2].map(r => r[fieldName]);
+
+    return value1 > value2 ? 1 : -1;
+  });
+};
+
+const sortByMetricValue = getSortBy("metricValue");
 
 const createTable = ({ tableRows, headersDict, name }) => {
   const ROW_MAX_LENGTH = 30;
@@ -79,7 +87,9 @@ const sortByDate = rows =>
 module.exports = {
   getLineChartDataValues,
   getPieChartDataValues,
+  getSortBy,
   createTable,
   getTabularData,
-  sortByDate
+  sortByDate,
+  sortByMetricValue
 };
