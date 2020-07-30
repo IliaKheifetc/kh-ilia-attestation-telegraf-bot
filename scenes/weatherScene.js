@@ -43,7 +43,9 @@ weatherScene.on("text", async ctx => {
       `Temperature: ${realTemperature}\nFeels like temperature: ${feelsLikeTemperature}\n${description}`
     );
 
-    ctx.reply("enter a city name or enter *leave* command");
+    ctx.replyWithHTML("enter a city name or enter <b>/leave</b> command", {
+      parse_mode: "HTML"
+    });
   } catch (e) {
     console.error("Error occurred when fetching weather info", e);
   }
