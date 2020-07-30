@@ -126,6 +126,7 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     console.log("set date2", date);
     await ctx.reply(date);
     state.dataReportParams.date2 = date;
+    console.log("after date2 is set");
     return ctx.wizard.next();
   }
 });
