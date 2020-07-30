@@ -358,6 +358,9 @@ bot.command("sheets_update", async ctx => {
 });
 
 bot.command("select_language", ctx => {
+  console.log("LANGUAGE_STRINGS", LANGUAGE_STRINGS);
+  console.log("currentLanguage", currentLanguage);
+
   const { selectLanguagePrompt } = LANGUAGE_STRINGS[currentLanguage];
   ctx.reply(
     `<b>${selectLanguagePrompt}</b>`,
