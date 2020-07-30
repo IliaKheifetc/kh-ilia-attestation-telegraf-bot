@@ -263,9 +263,9 @@ const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
   const extraParams = { state: `chatId${chatId}` };
 
   const { authUrl } = getAuthUrl(extraParams);
-
+  const { authPrompt } = LANGUAGE_STRINGS[currentLanguage];
   return ctx.reply(
-    `<b>Please, authorize with ${authServerName} to have access\n to ${apiName}</b>`,
+    `<b>${authPrompt(authServerName, apiName)}</b>`,
     Extra.HTML().markup(m =>
       m.inlineKeyboard([m.urlButton(`Authorize`, authUrl)])
     )
@@ -358,8 +358,9 @@ bot.command("sheets_update", async ctx => {
 });
 
 bot.command("select_language", ctx => {
+  const { selectLanguagePrompt } = LANGUAGE_STRINGS[currentLanguage];
   ctx.reply(
-    `<b>${LANGUAGE_STRINGS[currentLanguage]}</b>`,
+    `<b>${selectLanguagePrompt}</b>`,
     Extra.HTML().markup(m =>
       m.inlineKeyboard([
         m.callbackButton("Русский", "set_lang_ru"),
@@ -373,6 +374,8 @@ bot.action(/^set_lang_/, ctx => {
   const { data } = ctx.update.callback_query || {};
   console.log("ctx", ctx);
   console.log("data", data);
+
+  currentLanguage = data.split("_")[2];
 });
 
 bot.command("create_callback_button", ctx => {
