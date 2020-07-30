@@ -85,7 +85,7 @@
           "endAngle": { "field": "endAngle" },
           "padAngle": { "signal": "padAngle" },
           "innerRadius": { "signal": "innerRadius" },
-          "outerRadius": { "signal": "width / 2 - 30" },
+          "outerRadius": { "signal": "width / 2 - 50" },
           "cornerRadius": { "signal": "cornerRadius" }
         }
       }
@@ -98,7 +98,12 @@
       "orient": "none",
       "encode": {
         "symbols": { "enter": { "fillOpacity": { "value": 1 } } },
-        "labels": { "update": { "text": { "field": "value" } } }
+        "labels": {
+          "update": {
+            "fontSize": { "value": 14 },
+            "text": { "field": "value" }
+          }
+        }
       }
     }
   ]
