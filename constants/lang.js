@@ -5,6 +5,7 @@ const LANGUAGE_STRINGS = {
     selectTimeIntervalPrompt: "Choose time interval:",
     authPrompt: (authServerName, apiName) =>
       `Please, authorize with ${authServerName} to have access\n to ${apiName}`,
+    authButtonLabel: "Authorize",
     authorizedSuccessfullyMessage: "You authorized successfully",
     languageSelectedMessage: "Language selected",
     yandexMetrikaNotAuthorized:
@@ -16,6 +17,7 @@ const LANGUAGE_STRINGS = {
     selectTimeIntervalPrompt: "Выберите интервал для разбиения:",
     authPrompt: (authServerName, apiName) =>
       `Пожалуйста, авторизуйтесь в ${authServerName}, чтобы иметь доступ к ${apiName}`,
+    authButtonLabel: "Авторизоваться",
     authorizedSuccessfullyMessage: "Вы успешно авторизовались",
     languageSelectedMessage: "Язык выбран",
     yandexMetrikaNotAuthorized:

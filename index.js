@@ -264,11 +264,11 @@ const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
   const extraParams = { state: `chatId${chatId}` };
 
   const { authUrl } = getAuthUrl(extraParams);
-  const { authPrompt } = LANGUAGE_STRINGS[currentLanguage];
+  const { authPrompt, authButtonLabel } = LANGUAGE_STRINGS[currentLanguage];
   return ctx.reply(
     `<b>${authPrompt(authServerName, apiName)}</b>`,
     Extra.HTML().markup(m =>
-      m.inlineKeyboard([m.urlButton(`Authorize`, authUrl)])
+      m.inlineKeyboard([m.urlButton(authButtonLabel, authUrl)])
     )
   );
 };
@@ -281,7 +281,7 @@ const getConfirmationCodeHandler = ({
 }) => async (req, res) => {
   const { state, code } = req.query;
   const chatId = state ? state.replace(/\D/g, "") : "";
-
+  const { authorizedSuccessfullyMessage } = LANGUAGE_STRINGS[currentLanguage];
   // res.send(`<body>Received confirmation code from ${authServerName} successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2500);</script></body>`)
 
   // res.sendFile(`confirmationCode.html`, {
@@ -289,11 +289,10 @@ const getConfirmationCodeHandler = ({
   // });
 
   res.render("confirmationCode", { authServerName });
-
   tokenStorage[tokenName] = await getToken(code);
 
   if (chatId) {
-    telegram.sendMessage(chatId, "Authorized successfully");
+    telegram.sendMessage(chatId, authorizedSuccessfullyMessage);
   }
 };
 
@@ -359,9 +358,6 @@ bot.command("sheets_update", async ctx => {
 });
 
 bot.command("select_language", ctx => {
-  console.log("LANGUAGE_STRINGS", LANGUAGE_STRINGS);
-  console.log("currentLanguage", currentLanguage);
-
   const { selectLanguagePrompt } = LANGUAGE_STRINGS[currentLanguage];
   ctx.reply(
     `<b>${selectLanguagePrompt}</b>`,
