@@ -1,12 +1,13 @@
 const { lineChartSpec, pieChartSpec } = require("../vega_specs/index");
 
-const TIME_INTERVALS = {
-  day: "day",
-  week: "week",
-  month: "month",
-  quarter: "quarter",
-  year: "year"
-};
+// const TIME_INTERVALS = {
+//   day: "day",
+//   week: "week",
+//   month: "month",
+//   quarter: "quarter",
+//   year: "year"
+// };
+const TIME_INTERVALS = ["day", "week", "month", "quarter", "year"];
 
 const REPORTS = {
   visitors: "Visitors",

@@ -14,6 +14,13 @@ const LANGUAGE_STRINGS = {
       visitors: "Visits and visitors",
       newVisitors: "New visitors",
       browsers: "Browsers"
+    },
+    timeIntervalSelectorButtonsLabels: {
+      day: "day",
+      week: "week",
+      month: "month",
+      quarter: "quarter",
+      year: "year"
     }
   },
   ru: {
@@ -31,6 +38,13 @@ const LANGUAGE_STRINGS = {
       visitors: "Визиты и посетители",
       newVisitors: "Новые посетители",
       browsers: "Браузеры"
+    },
+    timeIntervalSelectorButtonsLabels: {
+      day: "День",
+      week: "Неделя",
+      month: "Месяц",
+      quarter: "Квартал",
+      year: "Год"
     }
   }
 };

@@ -73,7 +73,10 @@ const showReportTypeSelector = ctx => {
 
 const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
   const { currentLanguage } = ctx.wizard.state;
-  const { selectTimeIntervalPrompt } = LANGUAGE_STRINGS[currentLanguage];
+  const {
+    selectTimeIntervalPrompt,
+    timeIntervalSelectorButtonsLabels
+  } = LANGUAGE_STRINGS[currentLanguage];
 
   const { data: reportName } = ctx.update.callback_query || {};
 
@@ -87,8 +90,11 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
     `<b>${selectTimeIntervalPrompt}</b>`,
     Extra.HTML().markup(m =>
       m.inlineKeyboard([
-        ...Object.keys(TIME_INTERVALS).map(timeIntervalName =>
-          m.callbackButton(capitalize(timeIntervalName), timeIntervalName)
+        ...TIME_INTERVALS.map(timeIntervalName =>
+          m.callbackButton(
+            capitalize(timeIntervalSelectorButtonsLabels[timeIntervalName]),
+            timeIntervalName
+          )
         )
       ])
     )
