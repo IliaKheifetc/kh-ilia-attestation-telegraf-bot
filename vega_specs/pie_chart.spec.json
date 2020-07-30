@@ -85,7 +85,7 @@
           "endAngle": { "field": "endAngle" },
           "padAngle": { "signal": "padAngle" },
           "innerRadius": { "signal": "innerRadius" },
-          "outerRadius": { "signal": "width / 2" },
+          "outerRadius": { "signal": "width / 2 - 30" },
           "cornerRadius": { "signal": "cornerRadius" }
         }
       }

@@ -204,14 +204,13 @@ const fetchReportData = async ctx => {
     return ctx.reply("Error occurred when getting data, sorry");
   }
 
-  //console.log("reportData", reportData);
   const sort = SORT_BY_REPORT_NAME[reportName];
   const reportRows = sort(reportData.reportRows);
 
   console.log("sorted reportRows", reportRows);
 
-  ctx.reply(`reportRows ${JSON.stringify(reportRows)}`);
-  //const addName = createAddName(reportName);
+  //ctx.reply(`reportRows ${JSON.stringify(reportRows)}`);
+
   const table = createTable({
     tableRows: reportRows,
     headersDict: TABLE_HEADER_BY_REPORT_NAME[reportName],
