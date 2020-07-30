@@ -18,7 +18,7 @@ const yandexMetrikaScene = require("./scenes/yandexMetrikaScene");
 const sheets = require("./sheets/index");
 const metrikaAuth = require("./yandex_metrika/auth");
 
-const LANGUAGE_STRINGS = require("./constants/lang");
+const { LANGUAGE_STRINGS } = require("./constants/lang");
 
 let tokenStorage = {};
 let metrikaAccessToken;
