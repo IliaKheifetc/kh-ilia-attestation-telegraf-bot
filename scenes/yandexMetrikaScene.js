@@ -133,6 +133,7 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     await ctx.reply(date);
     state.dataReportParams.date2 = date;
     console.log("after date2 is set");
+    ctx.wizard.next();
     return ctx.wizard.next();
   }
 });
@@ -146,7 +147,7 @@ handleDateSelection.action(/calendar-telegram-prev-[\d-]+/g, async context => {
 
   const prevText = context.callbackQuery.message.text;
   await context.answerCbQuery();
-  context.editMessageText(prevText, calendar.getCalendar(date));
+  await context.editMessageText(prevText, calendar.getCalendar(date));
 });
 
 handleDateSelection.action(/calendar-telegram-next-[\d-]+/g, async ctx => {
@@ -159,7 +160,7 @@ handleDateSelection.action(/calendar-telegram-next-[\d-]+/g, async ctx => {
 
   const prevText = ctx.callbackQuery.message.text;
   await ctx.answerCbQuery();
-  ctx.editMessageText(prevText, calendar.getCalendar(date));
+  await ctx.editMessageText(prevText, calendar.getCalendar(date));
 });
 
 handleDateSelection.action(/calendar-telegram-ignore-[\d\w-]+/g, context =>
