@@ -46,9 +46,11 @@ const SORT_BY_REPORT_NAME = {
 
 const showReportTypeSelector = ctx => {
   const { currentLanguage, metrikaAccessToken } = ctx.wizard.state;
-  const { selectReportPrompt, yandexMetrikaNotAuthorized } = LANGUAGE_STRINGS[
-    currentLanguage
-  ];
+  const {
+    reportSelectorButtonsLabels,
+    selectReportPrompt,
+    yandexMetrikaNotAuthorized
+  } = LANGUAGE_STRINGS[currentLanguage];
   if (!metrikaAccessToken) {
     ctx.replyWithHTML(yandexMetrikaNotAuthorized, { parse_mode: "HTML" });
     ctx.scene.leave();
@@ -59,8 +61,8 @@ const showReportTypeSelector = ctx => {
     `<b>${selectReportPrompt}</b>`,
     Extra.HTML().markup(m =>
       m.inlineKeyboard([
-        ...Object.values(REPORTS).map(dataReportName =>
-          m.callbackButton(dataReportName, dataReportName)
+        ...Object.key(REPORTS).map(key =>
+          m.callbackButton(reportSelectorButtonsLabels[key], REPORTS[key])
         )
       ])
     )

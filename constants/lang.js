@@ -9,7 +9,12 @@ const LANGUAGE_STRINGS = {
     authorizedSuccessfullyMessage: "You authorized successfully",
     languageSelectedMessage: "Language selected",
     yandexMetrikaNotAuthorized:
-      "Please authorize using <b>/yandex_metrika_auth</b> command"
+      "Please authorize using <b>/yandex_metrika_auth</b> command",
+    reportSelectorButtonsLabels: {
+      visitors: "Visits and visitors",
+      newVisitors: "New visitors",
+      browsers: "Browsers"
+    }
   },
   ru: {
     selectLanguagePrompt: "Выберите язык:",
@@ -21,7 +26,12 @@ const LANGUAGE_STRINGS = {
     authorizedSuccessfullyMessage: "Вы успешно авторизовались",
     languageSelectedMessage: "Язык выбран",
     yandexMetrikaNotAuthorized:
-      "Пожалуйста, авторизуйтесь, используя команду <b>/yandex_metrika_auth</b>"
+      "Пожалуйста, авторизуйтесь, используя команду <b>/yandex_metrika_auth</b>",
+    reportSelectorButtonsLabels: {
+      visitors: "Визиты и посетители",
+      newVisitors: "Новые посетители",
+      browsers: "Браузеры"
+    }
   }
 };
 
