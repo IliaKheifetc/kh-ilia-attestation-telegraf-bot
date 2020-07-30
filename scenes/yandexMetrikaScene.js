@@ -12,7 +12,7 @@ const {
   getPieChartDataValues,
   createTable,
   sortByDate,
-  sortByMetricValue
+  sortByMetricValueDesc
 } = require("../utils/yandexMetrika");
 const { createDiagram } = require("../diagramBuilder");
 
@@ -32,7 +32,7 @@ const VALUES_MAKERS_BY_REPORT_NAME = {
   [REPORTS.visitors]: getLineChartDataValues,
   [REPORTS.newVisitors]: getLineChartDataValues,
   [REPORTS.browsers]: compose(
-    sortByMetricValue,
+    sortByMetricValueDesc,
     getPieChartDataValues
   )
 };

@@ -36,15 +36,17 @@ const getPieChartDataValues = reportRows => {
   }));
 };
 
-const getSortBy = fieldName => collection => {
+const getSortBy = (fieldName, order = "asc") => collection => {
+  const comparatorResult = order === "asc" ? 1 : -1;
   return collection.sort((row1, row2) => {
     const [value1, value2] = [row1, row2].map(r => r[fieldName]);
 
-    return value1 > value2 ? 1 : -1;
+    return value1 > value2 ? comparatorResult : -comparatorResult;
   });
 };
 
-const sortByMetricValue = getSortBy("metricValue");
+// сортировка по значению поля metricValue по убыванию
+const sortByMetricValueDesc = getSortBy("metricValue", "desc");
 
 const createTable = ({ tableRows, headersDict, name }) => {
   const ROW_MAX_LENGTH = 30;
@@ -91,5 +93,5 @@ module.exports = {
   createTable,
   getTabularData,
   sortByDate,
-  sortByMetricValue
+  sortByMetricValueDesc
 };
