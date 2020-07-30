@@ -25,6 +25,7 @@ const {
   TIME_INTERVALS,
   VARIABLES_BY_REPORT_NAME
 } = require("../constants/yandexMetrika");
+const { LANGUAGE_STRINGS } = require("../constants/lang");
 
 const compose = (f1, f2) => data => f1(f2(data));
 
@@ -44,18 +45,18 @@ const SORT_BY_REPORT_NAME = {
 };
 
 const showReportTypeSelector = ctx => {
-  const { metrikaAccessToken } = ctx.wizard.state;
+  const { currentLanguage, metrikaAccessToken } = ctx.wizard.state;
+  const { selectReportPrompt, yandexMetrikaNotAuthorized } = LANGUAGE_STRINGS[
+    currentLanguage
+  ];
   if (!metrikaAccessToken) {
-    ctx.replyWithHTML(
-      "Please authorize using <b>/yandex_metrika_auth</b> command",
-      { parse_mode: "HTML" }
-    );
+    ctx.replyWithHTML(yandexMetrikaNotAuthorized, { parse_mode: "HTML" });
     ctx.scene.leave();
     return;
   }
 
   ctx.reply(
-    `<b>Choose report:</b>`,
+    `<b>${selectReportPrompt}</b>`,
     Extra.HTML().markup(m =>
       m.inlineKeyboard([
         ...Object.values(REPORTS).map(dataReportName =>
@@ -69,7 +70,8 @@ const showReportTypeSelector = ctx => {
 };
 
 const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
-  console.log("ctx", ctx);
+  const { currentLanguage } = ctx.wizard.state;
+  const { selectTimeIntervalPrompt } = LANGUAGE_STRINGS[currentLanguage];
 
   const { data: reportName } = ctx.update.callback_query || {};
 
@@ -77,12 +79,10 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
     reportName
   };
 
-  //console.log("ctx.update", JSON.stringify(ctx.update));
-  //console.log("reportName", reportName);
   await ctx.answerCbQuery();
 
   ctx.reply(
-    `<b>Choose time interval:</b>`,
+    `<b>${selectTimeIntervalPrompt}</b>`,
     Extra.HTML().markup(m =>
       m.inlineKeyboard([
         ...Object.keys(TIME_INTERVALS).map(timeIntervalName =>

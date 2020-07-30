@@ -199,6 +199,7 @@ bot.command("run_javascript", ctx => {
 
 bot.command("yandex_metrika_start", ctx => {
   ctx.scene.enter("yandexMetrika", {
+    currentLanguage,
     metrikaAccessToken: tokenStorage.metrikaAccessToken,
     calendar
   });
@@ -373,12 +374,15 @@ bot.command("select_language", ctx => {
   );
 });
 
-bot.action(/^set_lang_/, ctx => {
+bot.action(/^set_lang_/, async ctx => {
   const { data } = ctx.update.callback_query || {};
   console.log("ctx", ctx);
   console.log("data", data);
 
   currentLanguage = data.split("_")[2];
+  await ctx.answerCbQuery();
+  const { languageSelectedMessage } = LANGUAGE_STRINGS[currentLanguage];
+  ctx.reply(languageSelectedMessage);
 });
 
 bot.command("create_callback_button", ctx => {
