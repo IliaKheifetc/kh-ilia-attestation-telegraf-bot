@@ -31,7 +31,7 @@ const getLineChartDataValues = reportRows => {
 // структура должна соответствовать описанию поля data.values в pie_chart.spec.json
 const getPieChartDataValues = reportRows => {
   return reportRows.map(({ name, metricsValues }, index) => ({
-    id: index + 1,
+    id: name,
     metricValue: metricsValues.reduce((sum, value) => sum + value, 0)
   }));
 };
@@ -48,7 +48,7 @@ const createTable = ({ tableRows, headersDict, name }) => {
 
   const keys = headersDict.map(item => item.key).filter(key => key !== "#");
   console.log("keys", keys);
-  const tableBody = tableRows.reduce((acc, rowData, index) => {
+  const tableBody = tableRows.reduce((acc, rowData, rowIndex) => {
     const rowPresentation = keys.reduce((row, key, index) => {
       console.log("rowData[key]", rowData[key]);
 
@@ -59,7 +59,7 @@ const createTable = ({ tableRows, headersDict, name }) => {
       return row + cell;
     }, "");
 
-    return acc + `| ${index} ${rowPresentation}\n`;
+    return acc + `| ${rowIndex + 1} ${rowPresentation}\n`;
   }, "");
 
   return `<pre>${caption}\n${tableHeader}\n${tableBody}</pre>`;
