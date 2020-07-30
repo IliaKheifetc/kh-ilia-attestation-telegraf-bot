@@ -120,11 +120,11 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
   if (!state.dataReportParams.date1) {
     console.log("set date1", date);
     state.dataReportParams.date1 = date;
-    ctx.reply(date);
+    await ctx.reply(date);
     return ctx.reply("Select end date", calendar.getCalendar());
   } else if (!state.dataReportParams.date2) {
     console.log("set date2", date);
-    ctx.reply(date);
+    await ctx.reply(date);
     state.dataReportParams.date2 = date;
     return ctx.wizard.next();
   }

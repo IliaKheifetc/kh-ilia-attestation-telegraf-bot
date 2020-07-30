@@ -37,11 +37,12 @@ weatherScene.on("text", async ctx => {
     } = currentWeatherInfo;
 
     const iconPath = `./static/icons/${icon}.png`;
-    ctx.replyWithPhoto({ source: iconPath });
+    await ctx.replyWithPhoto({ source: iconPath });
 
-    ctx.reply(
+    await ctx.reply(
       `Temperature: ${realTemperature}\nFeels like temperature: ${feelsLikeTemperature}\n${description}`
     );
+
     ctx.reply("enter a city name or enter *leave* command");
   } catch (e) {
     console.error("Error occurred when fetching weather info", e);
