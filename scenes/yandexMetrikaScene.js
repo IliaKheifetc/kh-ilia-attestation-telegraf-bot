@@ -61,7 +61,7 @@ const showReportTypeSelector = ctx => {
     `<b>${selectReportPrompt}</b>`,
     Extra.HTML().markup(m =>
       m.inlineKeyboard([
-        ...Object.key(REPORTS).map(key =>
+        ...Object.keys(REPORTS).map(key =>
           m.callbackButton(reportSelectorButtonsLabels[key], REPORTS[key])
         )
       ])
