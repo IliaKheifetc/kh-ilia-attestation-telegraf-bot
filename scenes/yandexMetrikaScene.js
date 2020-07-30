@@ -37,6 +37,12 @@ const VALUES_MAKERS_BY_REPORT_NAME = {
   )
 };
 
+const SORT_BY_REPORT_NAME = {
+  [REPORTS.visitors]: sortByDate,
+  [REPORTS.newVisitors]: sortByDate,
+  [REPORTS.browsers]: sortByMetricValueDesc
+};
+
 const showReportTypeSelector = ctx => {
   const { metrikaAccessToken } = ctx.wizard.state;
   if (!metrikaAccessToken) {
@@ -71,9 +77,8 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
     reportName
   };
 
-  console.log("ctx.update", JSON.stringify(ctx.update));
-
-  console.log("reportName", reportName);
+  //console.log("ctx.update", JSON.stringify(ctx.update));
+  //console.log("reportName", reportName);
   await ctx.answerCbQuery();
 
   ctx.reply(
@@ -102,12 +107,6 @@ const saveTimeIntervalAndShowCalendar = async ctx => {
 };
 
 const handleDateSelection = new Composer();
-
-// dateSelectionHandler.action("Calendar", async ctx => {
-//
-//
-//   //return ctx.wizard.selectStep(ctx.wizard.cursor);
-// });
 
 handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
   const { state } = ctx.wizard;
@@ -206,7 +205,8 @@ const fetchReportData = async ctx => {
   }
 
   //console.log("reportData", reportData);
-  const reportRows = sortByDate(reportData.reportRows);
+  const sort = SORT_BY_REPORT_NAME[reportName];
+  const reportRows = sort(reportData.reportRows);
 
   console.log("sorted reportRows", reportRows);
 
