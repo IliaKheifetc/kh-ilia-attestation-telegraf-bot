@@ -1,6 +1,7 @@
 const fs = require("fs");
 const WizardScene = require("telegraf/scenes/wizard");
 const Extra = require("telegraf/extra");
+const Markup = require("telegraf/markup");
 const Composer = require("telegraf/composer");
 const { capitalize } = require("lodash");
 
@@ -139,11 +140,10 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     console.log("after date2 is set");
     //ctx.wizard.next();
 
-    await ctx.reply(
+    await ctx.replyWithHTML(
       "<b>Click to view report!</b>",
-      Extra.HTML().markup(m => m.inlineKeyboard([m.button("View")]))
+      Extra.markup(Markup.keyboard(["View"]))
     );
-
     return ctx.wizard.next();
   }
 });
