@@ -126,7 +126,7 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
   const { endDateSelectorPrompt, viewReportButton } = LANGUAGE_STRINGS[
     currentLanguage
   ];
-  let date = ctx.match[0].replace("calendar-telegram-date-", "");
+  const date = ctx.match[0].replace("calendar-telegram-date-", "");
 
   await ctx.answerCbQuery();
 
@@ -140,8 +140,9 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     await ctx.reply(date);
     dataReportParams.date2 = date;
     console.log("after date2 is set");
-    //ctx.wizard.next();
 
+    // без дополнительного действия со стороны пользователя не получается перейти из обработичка внутри Compose к
+    // к следующему шагу сцены, поэтому кидаем кнопку
     await ctx.reply(
       "<b>Click to view report!</b>",
       Extra.HTML().markup(m =>
@@ -153,7 +154,7 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
 });
 
 handleDateSelection.action(/calendar-telegram-prev-[\d-]+/g, async context => {
-  const { calendar, dataReportParams } = context.wizard.state;
+  const { calendar } = context.wizard.state;
   const dateString = context.match[0].replace("calendar-telegram-prev-", "");
 
   let date = new Date(dateString);
@@ -165,7 +166,7 @@ handleDateSelection.action(/calendar-telegram-prev-[\d-]+/g, async context => {
 });
 
 handleDateSelection.action(/calendar-telegram-next-[\d-]+/g, async ctx => {
-  const { calendar, dataReportParams } = ctx.wizard.state;
+  const { calendar } = ctx.wizard.state;
 
   const dateString = ctx.match[0].replace("calendar-telegram-next-", "");
 
@@ -188,12 +189,11 @@ handleDateSelection.use(ctx => {
 });
 
 const fetchReportData = async ctx => {
+  await ctx.answerCbQuery();
+
   console.log("collect all input and make request");
-
   console.log("ctx", ctx);
-
   console.log("ctx.update", JSON.stringify(ctx.update));
-
   console.log("ctx.wizard.state", ctx.wizard.state);
 
   const {
@@ -226,7 +226,7 @@ const fetchReportData = async ctx => {
   });
 
   if (!reportData) {
-    return ctx.reply("Error occurred when getting data, sorry");
+    ctx.reply("Error occurred when getting data, sorry");
     return ctx.scene.leave();
   }
 
@@ -234,8 +234,6 @@ const fetchReportData = async ctx => {
   const reportRows = sort(reportData.reportRows);
 
   console.log("sorted reportRows", reportRows);
-
-  //ctx.reply(`reportRows ${JSON.stringify(reportRows)}`);
 
   const table = createTable({
     tableRows: reportRows,
@@ -252,7 +250,6 @@ const fetchReportData = async ctx => {
 
   ctx.replyWithPhoto({ source: fs.readFileSync(`./${fileName}`) });
 
-  //return ctx.wizard.next();
   return ctx.scene.leave();
 };
 
