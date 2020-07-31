@@ -132,7 +132,6 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     dataReportParams.date1 = date;
     await ctx.reply(date);
     await ctx.reply(endDateSelectorPrompt, calendar.getCalendar());
-    return ctx.wizard.next();
   } else if (!dataReportParams.date2) {
     console.log("set date2", date);
     await ctx.reply(date);
@@ -224,6 +223,7 @@ const fetchReportData = async ctx => {
 
   if (!reportData) {
     return ctx.reply("Error occurred when getting data, sorry");
+    return ctx.scene.leave();
   }
 
   const sort = SORT_BY_REPORT_NAME[reportName];
