@@ -205,7 +205,7 @@ bot.command("yandex_metrika_start", ctx => {
   });
 });
 
-bot.help(helpMiddleware);
+
 bot.on("sticker", ctx => ctx.reply("👍"));
 
 bot.command("hi", async ctx => {
@@ -469,9 +469,6 @@ app.listen(process.env.PORT, async () => {
 //   process.env.PORT
 // );
 
-function helpMiddleware(ctx, next) {
-  ctx.reply("Send me a sticker");
-}
 
 module.exports = {
   handleYandexMetrikaAuth

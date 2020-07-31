@@ -118,22 +118,24 @@ const saveTimeIntervalAndShowCalendar = async ctx => {
 const handleDateSelection = new Composer();
 
 handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
-  const { state } = ctx.wizard;
-  const { calendar, currentLanguage } = state;
+  const {
+    state: { calendar, currentLanguage, dataReportParams }
+  } = ctx.wizard;
+
   const { endDateSelectorPrompt } = LANGUAGE_STRINGS[currentLanguage];
   let date = ctx.match[0].replace("calendar-telegram-date-", "");
 
   await ctx.answerCbQuery();
 
-  if (!state.dataReportParams.date1) {
+  if (!dataReportParams.date1) {
     console.log("set date1", date);
-    state.dataReportParams.date1 = date;
+    dataReportParams.date1 = date;
     await ctx.reply(date);
     await ctx.reply(endDateSelectorPrompt, calendar.getCalendar());
-  } else if (!state.dataReportParams.date2) {
+  } else if (!dataReportParams.date2) {
     console.log("set date2", date);
     await ctx.reply(date);
-    state.dataReportParams.date2 = date;
+    dataReportParams.date2 = date;
     console.log("after date2 is set");
     //ctx.wizard.next();
     return ctx.wizard.next();
