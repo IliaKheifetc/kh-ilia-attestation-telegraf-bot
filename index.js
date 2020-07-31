@@ -453,10 +453,14 @@ app.get(
 
 app.listen(process.env.PORT, async () => {
   console.log(`App is listening on port ${process.env.PORT}!`);
-  const response = await axios.get(
-    "https://telegraf-bot-graphql-server.herokuapp.com/.well-known/apollo/server-health"
-  );
-  console.log("hc response", JSON.stringify(response));
+  try {
+    const response = await axios.get(
+      "https://telegraf-bot-graphql-server.herokuapp.com/.well-known/apollo/server-health"
+    );
+    console.log("hc response", response);
+  } catch (e) {
+    console.error("Error when health checking graphql server", e);
+  }
 });
 
 // bot.startWebhook(
