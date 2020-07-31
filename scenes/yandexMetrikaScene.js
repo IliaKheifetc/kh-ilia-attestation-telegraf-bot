@@ -105,8 +105,8 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
 
 const saveTimeIntervalAndShowCalendar = async ctx => {
   const { data: timeIntervalName } = ctx.update.callback_query || {};
-  const { calendar, currentLanguage } = ctx.wizard.state;
-  ctx.wizard.state.dataReportParams.timeIntervalName = timeIntervalName;
+  const { calendar, currentLanguage, dataReportParams } = ctx.wizard.state;
+  dataReportParams.timeIntervalName = timeIntervalName;
   const { startDateSelectorPrompt } = LANGUAGE_STRINGS[currentLanguage];
 
   await ctx.answerCbQuery();
@@ -131,7 +131,7 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     console.log("set date1", date);
     dataReportParams.date1 = date;
     await ctx.reply(date);
-
+    await ctx.reply(endDateSelectorPrompt, calendar.getCalendar());
     return ctx.wizard.next();
   } else if (!dataReportParams.date2) {
     console.log("set date2", date);
@@ -139,6 +139,12 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     dataReportParams.date2 = date;
     console.log("after date2 is set");
     //ctx.wizard.next();
+
+    await ctx.reply(
+      "<b>Click to view report!</b>",
+      Extra.HTML().markup(m => m.inlineKeyboard([m.button("View")]))
+    );
+
     return ctx.wizard.next();
   }
 });
@@ -177,21 +183,6 @@ handleDateSelection.use(ctx => {
   console.log("use middleware");
   console.log("ctx", ctx);
 });
-
-const handleDateSelectionStep2 = async ctx => {
-  const {
-    state: { calendar, currentLanguage, dataReportParams }
-  } = ctx.wizard;
-  const { endDateSelectorPrompt } = LANGUAGE_STRINGS[currentLanguage];
-
-  if (!dataReportParams.date2) {
-    await ctx.reply(endDateSelectorPrompt, calendar.getCalendar());
-
-    return ctx.wizard.back();
-  }
-
-  return ctx.wizard.next();
-};
 
 const fetchReportData = async ctx => {
   console.log("collect all input and make request");
@@ -267,7 +258,6 @@ const yandexMetrikaScene = new WizardScene(
   saveReportTypeAndShowTimeIntervalSelector,
   saveTimeIntervalAndShowCalendar,
   handleDateSelection,
-  handleDateSelectionStep2,
   fetchReportData
 );
 
