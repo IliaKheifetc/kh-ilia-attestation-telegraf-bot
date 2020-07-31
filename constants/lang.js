@@ -21,7 +21,9 @@ const LANGUAGE_STRINGS = {
       month: "month",
       quarter: "quarter",
       year: "year"
-    }
+    },
+    startDateSelectorPrompt: "Select start date",
+    endDateSelectorPrompt: "Select end date"
   },
   ru: {
     selectLanguagePrompt: "Выберите язык:",
@@ -45,7 +47,9 @@ const LANGUAGE_STRINGS = {
       month: "Месяц",
       quarter: "Квартал",
       year: "Год"
-    }
+    },
+    startDateSelectorPrompt: "Выберите начальную дату",
+    endDateSelectorPrompt: "Выберите конечную дату"
   }
 };
 

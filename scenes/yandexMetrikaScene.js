@@ -105,12 +105,13 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
 
 const saveTimeIntervalAndShowCalendar = async ctx => {
   const { data: timeIntervalName } = ctx.update.callback_query || {};
-  const { calendar } = ctx.wizard.state;
+  const { calendar, currentLanguage } = ctx.wizard.state;
   ctx.wizard.state.dataReportParams.timeIntervalName = timeIntervalName;
+  const { startDateSelectorPrompt } = LANGUAGE_STRINGS[currentLanguage];
 
   await ctx.answerCbQuery();
 
-  ctx.reply("Select start date", calendar.getCalendar());
+  ctx.reply(startDateSelectorPrompt, calendar.getCalendar());
   return ctx.wizard.next();
 };
 
@@ -118,7 +119,8 @@ const handleDateSelection = new Composer();
 
 handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
   const { state } = ctx.wizard;
-  const { calendar } = state;
+  const { calendar, currentLanguage } = state;
+  const { endDateSelectorPrompt } = LANGUAGE_STRINGS[currentLanguage];
   let date = ctx.match[0].replace("calendar-telegram-date-", "");
 
   await ctx.answerCbQuery();
@@ -127,7 +129,7 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     console.log("set date1", date);
     state.dataReportParams.date1 = date;
     await ctx.reply(date);
-    return ctx.reply("Select end date", calendar.getCalendar());
+    await ctx.reply(endDateSelectorPrompt, calendar.getCalendar());
   } else if (!state.dataReportParams.date2) {
     console.log("set date2", date);
     await ctx.reply(date);
@@ -163,8 +165,9 @@ handleDateSelection.action(/calendar-telegram-next-[\d-]+/g, async ctx => {
   await ctx.editMessageText(prevText, calendar.getCalendar(date));
 });
 
-handleDateSelection.action(/calendar-telegram-ignore-[\d\w-]+/g, context =>
-  context.answerCbQuery()
+handleDateSelection.action(
+  /calendar-telegram-ignore-[\d\w-]+/g,
+  async ctx => await ctx.answerCbQuery()
 );
 
 handleDateSelection.use(ctx => {
