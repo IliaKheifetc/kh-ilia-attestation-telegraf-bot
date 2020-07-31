@@ -131,7 +131,8 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     console.log("set date1", date);
     dataReportParams.date1 = date;
     await ctx.reply(date);
-    await ctx.reply(endDateSelectorPrompt, calendar.getCalendar());
+
+    return ctx.wizard.next();
   } else if (!dataReportParams.date2) {
     console.log("set date2", date);
     await ctx.reply(date);
@@ -176,6 +177,21 @@ handleDateSelection.use(ctx => {
   console.log("use middleware");
   console.log("ctx", ctx);
 });
+
+const handleDateSelectionStep2 = async ctx => {
+  const {
+    state: { calendar, currentLanguage, dataReportParams }
+  } = ctx.wizard;
+  const { endDateSelectorPrompt } = LANGUAGE_STRINGS[currentLanguage];
+
+  if (!dataReportParams.date2) {
+    await ctx.reply(endDateSelectorPrompt, calendar.getCalendar());
+
+    return ctx.wizard.back();
+  }
+
+  return ctx.wizard.next();
+};
 
 const fetchReportData = async ctx => {
   console.log("collect all input and make request");
@@ -251,6 +267,7 @@ const yandexMetrikaScene = new WizardScene(
   saveReportTypeAndShowTimeIntervalSelector,
   saveTimeIntervalAndShowCalendar,
   handleDateSelection,
+  handleDateSelectionStep2,
   fetchReportData
 );
 
