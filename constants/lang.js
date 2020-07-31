@@ -23,7 +23,8 @@ const LANGUAGE_STRINGS = {
       year: "year"
     },
     startDateSelectorPrompt: "Select start date",
-    endDateSelectorPrompt: "Select end date"
+    endDateSelectorPrompt: "Select end date",
+    viewReportButton: "View"
   },
   ru: {
     selectLanguagePrompt: "Выберите язык:",
@@ -49,7 +50,8 @@ const LANGUAGE_STRINGS = {
       year: "Год"
     },
     startDateSelectorPrompt: "Выберите начальную дату",
-    endDateSelectorPrompt: "Выберите конечную дату"
+    endDateSelectorPrompt: "Выберите конечную дату",
+    viewReportButton: "Просмотреть"
   }
 };
 

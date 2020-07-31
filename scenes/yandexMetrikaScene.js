@@ -123,7 +123,9 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     state: { calendar, currentLanguage, dataReportParams }
   } = ctx.wizard;
 
-  const { endDateSelectorPrompt } = LANGUAGE_STRINGS[currentLanguage];
+  const { endDateSelectorPrompt, viewReportButton } = LANGUAGE_STRINGS[
+    currentLanguage
+  ];
   let date = ctx.match[0].replace("calendar-telegram-date-", "");
 
   await ctx.answerCbQuery();
@@ -140,9 +142,11 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     console.log("after date2 is set");
     //ctx.wizard.next();
 
-    await ctx.replyWithHTML(
+    await ctx.reply(
       "<b>Click to view report!</b>",
-      Extra.markup(Markup.keyboard(["View"]))
+      Extra.HTML().markup(m =>
+        m.inlineKeyboard([m.callbackButton(viewReportButton, "doesn't matter")])
+      )
     );
     return ctx.wizard.next();
   }
