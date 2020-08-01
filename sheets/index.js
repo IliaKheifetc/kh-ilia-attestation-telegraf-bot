@@ -8,8 +8,8 @@ const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 
 // Create an oAuth2 client to authorize the API call
 const oAuth2Client = new google.auth.OAuth2(
-  keys.web.client_id,
-  keys.web.client_secret,
+  process.env.GOOGLE_CLIENT_ID,
+  process.env.GOOGLE_CLIENT_SECRET,
   keys.web.redirect_uris[0]
 );
 
