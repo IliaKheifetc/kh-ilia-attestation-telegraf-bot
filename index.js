@@ -321,12 +321,8 @@ bot.command("yandex_metrika_auth", handleYandexMetrikaAuth);
 //   }
 // });
 
-bot.command("sheets_update", async ctx => {
-  const { text } = ctx.update.message || {};
-
-  console.log("text", text);
-
-  sheets.updateSpreadsheet(text);
+bot.command("sheets_update", ctx => {
+  ctx.scene.enter("googleSheets");
 });
 
 bot.command("select_language", ctx => {
