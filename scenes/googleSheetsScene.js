@@ -71,7 +71,7 @@ const googleSheetsScene = new WizardScene(
     );
 
     try {
-      const { data } = await sheets.spreadsheets.values.update(
+      const response = await sheets.spreadsheets.values.update(
         {
           spreadsheetId: SPREADSHEET_ID,
           range: `MySheet1!A${rowNumber}:C${rowNumber}`,
@@ -85,7 +85,7 @@ const googleSheetsScene = new WizardScene(
         }
       );
 
-      console.log("data", JSON.stringify(data));
+      console.log("response", JSON.stringify(response));
     } catch (e) {
       console.error("Error while updating spreadsheet", e);
     }
