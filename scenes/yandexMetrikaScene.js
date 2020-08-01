@@ -26,7 +26,9 @@ const {
   TIME_INTERVALS,
   VARIABLES_BY_REPORT_NAME
 } = require("../constants/yandexMetrika");
-const { LANGUAGE_STRINGS } = require("../constants/lang");
+const {
+  YANDEX_LANGUAGE_STRINGS: LANGUAGE_STRINGS
+} = require("../constants/lang");
 
 const compose = (f1, f2) => data => f1(f2(data));
 
