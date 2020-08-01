@@ -71,21 +71,18 @@ const googleSheetsScene = new WizardScene(
     );
 
     try {
-      const response = await sheets.spreadsheets.values.update(
-        {
-          spreadsheetId: SPREADSHEET_ID,
-          range: `MySheet1!A${rowNumber}:C${rowNumber}`,
-          valueInputOption: "RAW",
-          resource: {
-            values: [cellsData]
-          }
-        },
-        () => {
-          ctx.replyWithHTML(dataSuccessfullyWritten, { parse_mode: "HTML" });
+      const response = await sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `MySheet1!${rowNumber}:${rowNumber}`,
+        valueInputOption: "RAW",
+        resource: {
+          values: [cellsData]
         }
-      );
+      });
 
       console.log("response", JSON.stringify(response));
+
+      ctx.replyWithHTML(dataSuccessfullyWritten, { parse_mode: "HTML" });
     } catch (e) {
       console.error("Error while updating spreadsheet", e);
     }
