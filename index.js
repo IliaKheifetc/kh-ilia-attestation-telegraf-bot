@@ -26,8 +26,6 @@ let tokenStorage = {};
 let metrikaAccessToken;
 let currentLanguage = "en";
 
-//const BOT_TOKEN = "1204951589:AAHZj8hJCHf1YyJvKm4Ba8xh6_Cz6dEA3Sg";
-
 // const OPEN_WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/weather"; //?q={city name}&appid={your api key}
 // const OPEN_WEATHER_API_KEY = "a5ab5ecaa641726e400f2a4c1fa9a9f";
 // const CITY_NAME = "Kaluga";
@@ -35,9 +33,6 @@ let currentLanguage = "en";
 // const ACCU_WEATHER_URL = `http://dataservice.accuweather.com/currentconditions/v1/${CITY_NAME}`;
 
 const GREETINGS = ["man", "bro", "mate", "comrade"];
-
-const WEATHERBIT_KEY = "7a35bcf113274c5da5b570ce3e4a47b7";
-const WEATHERBIT_BASE_URL = "https://api.weatherbit.io/v2.0/current";
 
 const GIPHY_API_KEY = "YVsAQADzVJvmOt52rXTtkJXijApmIa7Y";
 
@@ -196,8 +191,6 @@ bot.command("yandex_metrika_start", ctx => {
 bot.on("sticker", ctx => ctx.reply("👍"));
 
 bot.command("hi", async ctx => {
-  console.log("ctx.update.message.text", ctx.update.message.text);
-
   const commands = await telegram.getMyCommands();
   console.log("commands", commands);
 
