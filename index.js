@@ -43,30 +43,6 @@ const WEATHERBIT_BASE_URL = "https://api.weatherbit.io/v2.0/current";
 const GIPHY_API_KEY = "YVsAQADzVJvmOt52rXTtkJXijApmIa7Y";
 const GIPHY_BASE_URL = "https://api.giphy.com/v1/gifs/search";
 
-class UrlBuilder {
-  constructor({ baseUrl }) {
-    this.baseUrl = baseUrl;
-  }
-
-  getFullUrl = params => {
-    const queryString = Object.keys(params).reduce(
-      (queryString, key, index, arr) => {
-        if (params[key] === undefined) {
-          return queryString;
-        }
-
-        queryString += `${key}=${params[key]}`;
-        queryString += index < arr.length - 1 ? "&" : "";
-
-        return queryString;
-      },
-      ""
-    );
-
-    return `${this.baseUrl}?${queryString}`;
-  };
-}
-
 const bot = new Telegraf(process.env.BOT_TOKEN, {
   // Telegram options
   agent: null, // https.Agent instance, allows custom proxy, certificate, keep alive, etc.
@@ -230,7 +206,7 @@ bot.command("hi", async ctx => {
   ctx.reply(`Hey ${GREETINGS[Math.trunc((Math.random() * 10) % 4)]}`);
 });
 
-bot.command("gif", ctx => {
+bot.command("gif", async ctx => {
   ctx.webhookReply = false;
   const { text } = ctx.update.message || {};
   const [_, keyWord] = text.split(" ");
@@ -249,11 +225,9 @@ bot.command("gif", ctx => {
     lang: "en"
   };
 
-  const urlBuilder = new UrlBuilder({ baseUrl: GIPHY_BASE_URL });
-
-  axios
-    .get(urlBuilder.getFullUrl(params))
-    .then(response => {
+  const giphyFullUrl = `${GIPHY_BASE_URL}?${qs.stringify(params)}`;
+  try {
+    await axios.get(giphyFullUrl).then(response => {
       const {
         data: { data: gifs }
       } = response;
@@ -263,11 +237,12 @@ bot.command("gif", ctx => {
 
       const { url } = images.downsized_medium || {};
       ctx.replyWithAnimation(url);
-    })
-    .catch(err => {
-      console.log("err", err);
     });
+  } catch (err) {
+    console.log("err", err);
+  }
 });
+
 bot.hears("d", ctx => ctx.reply("🍆"));
 bot.hears("today", ctx => ctx.reply(new Date()));
 
