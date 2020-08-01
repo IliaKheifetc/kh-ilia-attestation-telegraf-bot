@@ -20,7 +20,7 @@ const googleSheetsScene = new WizardScene(
       "<b>Enter data for cells, separating each cell value by a ';'</b>"
     );
 
-    return ctx.scene.next();
+    return ctx.wizard.next();
   },
   async ctx => {
     console.log("last step");
