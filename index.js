@@ -282,11 +282,6 @@ const getConfirmationCodeHandler = ({
   const { state, code } = req.query;
   const chatId = state ? state.replace(/\D/g, "") : "";
   const { authorizedSuccessfullyMessage } = LANGUAGE_STRINGS[currentLanguage];
-  // res.send(`<body>Received confirmation code from ${authServerName} successfully!<script>window.open('', '_self', ''); setTimeout(window.close, 2500);</script></body>`)
-
-  // res.sendFile(`confirmationCode.html`, {
-  //   root: path.join(__dirname, "static")
-  // });
 
   res.render("confirmationCode", { authServerName });
   tokenStorage[tokenName] = await getToken(code);
@@ -313,35 +308,7 @@ const handleYandexMetrikaAuth = authCommandHandler({
 
 bot.command("yandex_metrika_auth", handleYandexMetrikaAuth);
 
-// bot.hears(
-//   text => text.includes("weather"),
-//   ctx => {
-//     console.log("ctx.message", ctx.message);
-//     const { text } = ctx.message || {};
-//
-//     const [_, cityName] = text.split(" ");
-//     const params = {
-//       city: cityName,
-//       key: WEATHERBIT_KEY
-//     };
-//
-//     axios
-//       .get(getFullUrl(WEATHERBIT_BASE_URL, params))
-//       .then(response => {
-//         const {
-//           data: {
-//             data: [weatherInfo]
-//           }
-//         } = response;
-//         const { temp, app_temp } = weatherInfo;
-//         console.log("weatherInfo", weatherInfo);
-//         ctx.reply("weatherInfo: " + temp);
-//       })
-//       .catch(err => {
-//         console.log("err", err);
-//       });
-//   }
-// );
+
 // bot.launch({
 //   webhook: {
 //     domain: "https://ilia-kh-telegram-bot.herokuapp.com/",
@@ -372,8 +339,6 @@ bot.command("select_language", ctx => {
 
 bot.action(/^set_lang_/, async ctx => {
   const { data } = ctx.update.callback_query || {};
-  console.log("ctx", ctx);
-  console.log("data", data);
 
   currentLanguage = data.split("_")[2];
   await ctx.answerCbQuery();
@@ -401,20 +366,6 @@ bot.action("my_button", ctx => {
   );
 });
 
-// bot.command("metrika_get_visitors", async ctx => {
-//   const mertikaAPI = new MetrikaAPI(metrikaAccessToken);
-//
-//   const data = await mertikaAPI.requestVisitors();
-//
-//   return ctx.reply(
-//     `<b>Choose time interval:</b>`,
-//     Extra.HTML().markup(m =>
-//       m.inlineKeyboard([m.urlButton(`Authorize`, authUrl)])
-//     )
-//   );
-//
-//   ctx.reply(`data ${JSON.stringify(data)}`);
-// });
 
 bot.telegram.setWebhook(
   "https://ilia-kh-telegram-bot.herokuapp.com/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"

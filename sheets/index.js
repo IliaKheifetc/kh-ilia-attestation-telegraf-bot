@@ -1,6 +1,4 @@
 const { google } = require("googleapis");
-const express = require("express");
-const opn = require("open");
 const path = require("path");
 const fs = require("fs");
 
@@ -32,10 +30,6 @@ module.exports = {
     // /oauth2callback?code=<code>
     //const app = express();
 
-    //return new Promise(resolve => {
-    //   app.get("/oauth2callback", (req, res) => {
-    //     console.log("oauth2callback");
-    //     const code = req.query.code;
     return new Promise(resolve => {
       oAuth2Client.getToken(code, (err, tokens) => {
         if (err) {
@@ -44,19 +38,9 @@ module.exports = {
         }
         oAuth2Client.credentials = tokens;
 
-        // resolve(oAuth2Client);
         resolve();
-
-        //server.close();
-        //listMajors(client);
-        //workWithMySpreadsheet(oAuth2Client);
       });
     });
-
-    // const server = app.listen(6066, () => {
-    //   // open the browser to the authorize url to start the workflow
-    //   opn(this.authorizeUrl, { wait: false });
-    // });
   },
   updateSpreadsheet
 };
