@@ -10,7 +10,7 @@ const googleSheetsScene = new WizardScene(
     const { currentLanguage, googleSheetsAccessToken } = ctx.wizard.state;
     if (!googleSheetsAccessToken) {
       const { notAuthorized } = GOOGLE_SHEETS_LANGUAGE_STRINGS[currentLanguage];
-      ctx.replyWithHTML(notAuthorized, { parse_mode: "HTML" });
+      ctx.replyWithHTML(`✋🏻🙏🏻${notAuthorized}`, { parse_mode: "HTML" });
       ctx.scene.leave();
       return;
     }
@@ -82,7 +82,9 @@ const googleSheetsScene = new WizardScene(
 
       console.log("response", JSON.stringify(response));
 
-      ctx.replyWithHTML(dataSuccessfullyWritten, { parse_mode: "HTML" });
+      ctx.replyWithHTML(`😉✨${dataSuccessfullyWritten}`, {
+        parse_mode: "HTML"
+      });
     } catch (e) {
       console.error("Error while updating spreadsheet", e);
     }
