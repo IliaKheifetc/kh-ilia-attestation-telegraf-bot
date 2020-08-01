@@ -42,7 +42,7 @@ module.exports = {
       });
     });
   },
-  updateSpreadsheet
+  oAuth2Client
 };
 
 /**
@@ -76,41 +76,5 @@ function listMajors(auth) {
   );
 }
 
-async function updateSpreadsheet(data) {
-  let [_commandName, rowNumber, ...cellsData] = data.split(" ");
-  cellsData = cellsData.length ? cellsData : ["x", "текст", "дата"];
 
-  const sheets = google.sheets({ version: "v4", auth: oAuth2Client });
 
-  console.log("updateSpreadsheet");
-  console.log("rowNumber", rowNumber);
-  console.log("cellsData", cellsData);
-
-  const SPREADSHEET_ID = "1C0aO4j2fVvjO_vXXNg1S_asNnwIOpkO3GaX5gsmpFH0";
-
-  sheets.spreadsheets.values.get(
-    {
-      spreadsheetId: SPREADSHEET_ID,
-      range: "MySheet1!A1:C2"
-    },
-    (err, res) => {
-      console.log("res", res);
-      console.log("res.data.values", res.data.values);
-    }
-  );
-
-  try {
-    const { data } = await sheets.spreadsheets.values.update({
-      spreadsheetId: SPREADSHEET_ID,
-      range: `MySheet1!A${rowNumber}:C${rowNumber}`,
-      valueInputOption: "RAW",
-      resource: {
-        values: [cellsData]
-      }
-    });
-
-    console.log("data", JSON.stringify(data));
-  } catch (e) {
-    console.error("Error while updating spreadsheet", e);
-  }
-}

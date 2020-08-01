@@ -273,7 +273,7 @@ const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
   );
 };
 
-const getConfirmationCodeHandler = ({
+const createExchangeConfirmationCodeForTokenHandler = ({
   getToken,
   authServerName,
   tokenStorage,
@@ -384,7 +384,7 @@ app.use(express.static(path.join(__dirname, "static")));
 
 app.get(
   "/oauth2callback",
-  getConfirmationCodeHandler({
+  createExchangeConfirmationCodeForTokenHandler({
     getToken: sheets.getAndSaveToken,
     authServerName: "Google API",
     tokenName: "googleAccessToken",
@@ -394,7 +394,7 @@ app.get(
 
 app.get(
   "/yandexOAuth",
-  getConfirmationCodeHandler({
+  createExchangeConfirmationCodeForTokenHandler({
     getToken: metrikaAuth.getTokenByCode,
     authServerName: "Yandex OAuth",
     tokenName: "metrikaAccessToken",
