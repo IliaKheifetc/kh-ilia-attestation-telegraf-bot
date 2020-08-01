@@ -2,7 +2,7 @@ const WizardScene = require("telegraf/scenes/wizard");
 const { oAuth2Client } = require("../sheets/index");
 const { google } = require("googleapis");
 
-const translationScene = new WizardScene(
+const googleSheetsScene = new WizardScene(
   "googleSheets",
   ctx => {
     ctx.reply("<b>Enter # of the row where to write your data</b>");
@@ -71,4 +71,4 @@ const translationScene = new WizardScene(
   }
 );
 
-module.exports = translationScene;
+module.exports = googleSheetsScene;

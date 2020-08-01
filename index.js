@@ -15,6 +15,7 @@ const translationScene = require("./scenes/translationScene");
 const weatherScene = require("./scenes/weatherScene");
 const jsRunningScene = require("./scenes/jsRunningScene");
 const yandexMetrikaScene = require("./scenes/yandexMetrikaScene");
+const googleSheetsScene = require("./scenes/googleSheetsScene");
 const sheets = require("./sheets/index");
 const metrikaAuth = require("./yandex_metrika/auth");
 
@@ -74,9 +75,15 @@ const bot = new Telegraf(process.env.BOT_TOKEN, {
 const calendar = new Calendar(bot);
 const telegram = new Telegram(process.env.BOT_TOKEN);
 const stage = new Stage(
-  [translationScene, weatherScene, jsRunningScene, yandexMetrikaScene],
+  [
+    googleSheetsScene,
+    jsRunningScene,
+    translationScene,
+    weatherScene,
+    yandexMetrikaScene
+  ],
   {
-    ttl: 100
+    ttl: 120
   }
 );
 
@@ -205,7 +212,6 @@ bot.command("yandex_metrika_start", ctx => {
   });
 });
 
-
 bot.on("sticker", ctx => ctx.reply("👍"));
 
 bot.command("hi", async ctx => {
@@ -308,7 +314,6 @@ const handleYandexMetrikaAuth = authCommandHandler({
 
 bot.command("yandex_metrika_auth", handleYandexMetrikaAuth);
 
-
 // bot.launch({
 //   webhook: {
 //     domain: "https://ilia-kh-telegram-bot.herokuapp.com/",
@@ -366,7 +371,6 @@ bot.action("my_button", ctx => {
   );
 });
 
-
 bot.telegram.setWebhook(
   "https://ilia-kh-telegram-bot.herokuapp.com/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
 );
@@ -419,7 +423,6 @@ app.listen(process.env.PORT, async () => {
 //   null,
 //   process.env.PORT
 // );
-
 
 module.exports = {
   handleYandexMetrikaAuth
