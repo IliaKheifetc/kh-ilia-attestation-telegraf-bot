@@ -38,7 +38,9 @@ module.exports = {
         }
         oAuth2Client.credentials = tokens;
 
-        resolve();
+        console.log("tokens", tokens);
+
+        resolve(tokens);
       });
     });
   },
@@ -75,6 +77,3 @@ function listMajors(auth) {
     }
   );
 }
-
-
-

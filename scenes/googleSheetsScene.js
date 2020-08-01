@@ -2,32 +2,48 @@ const WizardScene = require("telegraf/scenes/wizard");
 const { oAuth2Client } = require("../sheets/index");
 const { google } = require("googleapis");
 
+const { GOOGLE_SHEETS_LANGUAGE_STRINGS } = require("../constants/lang");
+
 const googleSheetsScene = new WizardScene(
   "googleSheets",
   ctx => {
-    ctx.reply("<b>Enter # of the row where to write your data</b>");
+    const { currentLanguage, googleSheetsAccessToken } = ctx.wizard.state;
+    if (!googleSheetsAccessToken) {
+      const { notAuthorized } = GOOGLE_SHEETS_LANGUAGE_STRINGS[currentLanguage];
+      ctx.replyWithHTML(notAuthorized, { parse_mode: "HTML" });
+      ctx.scene.leave();
+      return;
+    }
 
+    const { enterRowNumberPrompt } = GOOGLE_SHEETS_LANGUAGE_STRINGS[
+      currentLanguage
+    ];
+
+    ctx.replyWithHTML(enterRowNumberPrompt, { parse_mode: "HTML" });
     return ctx.wizard.next();
   },
   ctx => {
+    const { currentLanguage } = ctx.wizard.state;
+    const { enterCellsValuesPrompt } = GOOGLE_SHEETS_LANGUAGE_STRINGS[
+      currentLanguage
+    ];
     const { text: rowNumber } = ctx.update.message;
 
     ctx.wizard.state.inputData = {
       rowNumber
     };
 
-    ctx.reply(
-      "<b>Enter data for cells, separating each cell value by a ';'</b>"
-    );
-
+    ctx.replyWithHTML(enterCellsValuesPrompt, { parse_mode: "HTML" });
     return ctx.wizard.next();
   },
   async ctx => {
-    console.log("last step");
+    const { currentLanguage } = ctx.wizard.state;
+    const { dataSuccessfullyWritten } = GOOGLE_SHEETS_LANGUAGE_STRINGS[
+      currentLanguage
+    ];
     const { text: cellsValues } = ctx.update.message;
 
     const { rowNumber } = ctx.wizard.state.inputData;
-    console.log("rowNumber", rowNumber);
 
     let cellsData = cellsValues.split(";");
     cellsData = cellsData.length ? cellsData : ["x", "текст", "дата"];
@@ -55,14 +71,19 @@ const googleSheetsScene = new WizardScene(
     );
 
     try {
-      const { data } = await sheets.spreadsheets.values.update({
-        spreadsheetId: SPREADSHEET_ID,
-        range: `MySheet1!A${rowNumber}:C${rowNumber}`,
-        valueInputOption: "RAW",
-        resource: {
-          values: [cellsData]
+      const { data } = await sheets.spreadsheets.values.update(
+        {
+          spreadsheetId: SPREADSHEET_ID,
+          range: `MySheet1!A${rowNumber}:C${rowNumber}`,
+          valueInputOption: "RAW",
+          resource: {
+            values: [cellsData]
+          }
+        },
+        () => {
+          ctx.replyWithHTML(dataSuccessfullyWritten, { parse_mode: "HTML" });
         }
-      });
+      );
 
       console.log("data", JSON.stringify(data));
     } catch (e) {

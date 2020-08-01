@@ -19,7 +19,7 @@ const googleSheetsScene = require("./scenes/googleSheetsScene");
 const sheets = require("./sheets/index");
 const metrikaAuth = require("./yandex_metrika/auth");
 
-const { LANGUAGE_STRINGS } = require("./constants/lang");
+const { COMMON_LANGUAGE_STRINGS } = require("./constants/lang");
 
 let tokenStorage = {};
 let metrikaAccessToken;
@@ -204,6 +204,13 @@ bot.command("run_javascript", ctx => {
   ctx.scene.enter("run_js");
 });
 
+bot.command("sheets_update", ctx => {
+  ctx.scene.enter("googleSheets", {
+    currentLanguage,
+    googleSheetsAccessToken: tokenStorage.googleSheetsAccessToken
+  });
+});
+
 bot.command("yandex_metrika_start", ctx => {
   ctx.scene.enter("yandexMetrika", {
     currentLanguage,
@@ -270,7 +277,9 @@ const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
   const extraParams = { state: `chatId${chatId}` };
 
   const { authUrl } = getAuthUrl(extraParams);
-  const { authPrompt, authButtonLabel } = LANGUAGE_STRINGS[currentLanguage];
+  const { authPrompt, authButtonLabel } = COMMON_LANGUAGE_STRINGS[
+    currentLanguage
+  ];
   return ctx.reply(
     `<b>${authPrompt(authServerName, apiName)}</b>`,
     Extra.HTML().markup(m =>
@@ -287,7 +296,9 @@ const createExchangeConfirmationCodeForTokenHandler = ({
 }) => async (req, res) => {
   const { state, code } = req.query;
   const chatId = state ? state.replace(/\D/g, "") : "";
-  const { authorizedSuccessfullyMessage } = LANGUAGE_STRINGS[currentLanguage];
+  const { authorizedSuccessfullyMessage } = COMMON_LANGUAGE_STRINGS[
+    currentLanguage
+  ];
 
   res.render("confirmationCode", { authServerName });
   tokenStorage[tokenName] = await getToken(code);
@@ -321,12 +332,8 @@ bot.command("yandex_metrika_auth", handleYandexMetrikaAuth);
 //   }
 // });
 
-bot.command("sheets_update", ctx => {
-  ctx.scene.enter("googleSheets");
-});
-
 bot.command("select_language", ctx => {
-  const { selectLanguagePrompt } = LANGUAGE_STRINGS[currentLanguage];
+  const { selectLanguagePrompt } = COMMON_LANGUAGE_STRINGS[currentLanguage];
   ctx.reply(
     `<b>${selectLanguagePrompt}</b>`,
     Extra.HTML().markup(m =>
@@ -343,7 +350,7 @@ bot.action(/^set_lang_/, async ctx => {
 
   currentLanguage = data.split("_")[2];
   await ctx.answerCbQuery();
-  const { languageSelectedMessage } = LANGUAGE_STRINGS[currentLanguage];
+  const { languageSelectedMessage } = COMMON_LANGUAGE_STRINGS[currentLanguage];
   ctx.reply(languageSelectedMessage);
 });
 
@@ -387,7 +394,7 @@ app.get(
   createExchangeConfirmationCodeForTokenHandler({
     getToken: sheets.getAndSaveToken,
     authServerName: "Google API",
-    tokenName: "googleAccessToken",
+    tokenName: "googleSheetsAccessToken",
     tokenStorage
   })
 );
