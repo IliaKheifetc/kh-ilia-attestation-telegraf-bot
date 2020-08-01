@@ -20,12 +20,14 @@ const googleSheetsScene = new WizardScene(
       "<b>Enter data for cells, separating each cell value by a ';'</b>"
     );
 
-    return ctx.scene.leave();
+    return ctx.scene.next();
   },
   async ctx => {
+    console.log("last step");
     const { text: cellsValues } = ctx.update.message;
 
     const { rowNumber } = ctx.wizard.state.inputData;
+    console.log("rowNumber", rowNumber);
 
     let cellsData = cellsValues.split(";");
     cellsData = cellsData.length ? cellsData : ["x", "текст", "дата"];
