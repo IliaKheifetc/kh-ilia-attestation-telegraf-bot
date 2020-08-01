@@ -4,20 +4,21 @@ const COMMON_LANGUAGE_STRINGS = {
       `Please, log in with ${authServerName} to have access\n to ${apiName}`,
     authButtonLabel: "Authorize",
     authorizedSuccessfullyMessage: "You authorized successfully",
-    languageSelectedMessage: "Language selected"
+    languageSelectedMessage: "Language selected",
+    selectLanguagePrompt: "Choose language:"
   },
   ru: {
     authPrompt: (authServerName, apiName) =>
       `Пожалуйста, авторизуйтесь в ${authServerName}, чтобы иметь доступ к ${apiName}`,
     authButtonLabel: "Авторизоваться",
     authorizedSuccessfullyMessage: "Вы успешно авторизовались",
-    languageSelectedMessage: "Язык выбран"
+    languageSelectedMessage: "Язык выбран",
+    selectLanguagePrompt: "Выберите язык:"
   }
 };
 
 const YANDEX_LANGUAGE_STRINGS = {
   en: {
-    selectLanguagePrompt: "Choose language:",
     selectReportPrompt: "Choose report:",
     selectTimeIntervalPrompt: "Choose time interval:",
     yandexMetrikaNotAuthorized:
@@ -40,7 +41,6 @@ const YANDEX_LANGUAGE_STRINGS = {
     viewReportButton: "View"
   },
   ru: {
-    selectLanguagePrompt: "Выберите язык:",
     selectReportPrompt: "Выберите отчет:",
     selectTimeIntervalPrompt: "Выберите интервал для разбиения:",
     yandexMetrikaNotAuthorized:
