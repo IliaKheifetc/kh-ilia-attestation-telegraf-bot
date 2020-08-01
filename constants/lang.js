@@ -24,6 +24,7 @@ const LANGUAGE_STRINGS = {
     },
     startDateSelectorPrompt: "Select start date",
     endDateSelectorPrompt: "Select end date",
+    viewPrompt: "<b>Click to view report!</b>",
     viewReportButton: "View"
   },
   ru: {
@@ -51,6 +52,7 @@ const LANGUAGE_STRINGS = {
     },
     startDateSelectorPrompt: "Выберите начальную дату",
     endDateSelectorPrompt: "Выберите конечную дату",
+    viewPrompt: "<b>Нажмите, чтобы просмотреть отчет!</b>",
     viewReportButton: "Просмотреть"
   }
 };
