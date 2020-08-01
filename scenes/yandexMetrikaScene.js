@@ -123,9 +123,11 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     state: { calendar, currentLanguage, dataReportParams }
   } = ctx.wizard;
 
-  const { endDateSelectorPrompt, viewReportButton } = LANGUAGE_STRINGS[
-    currentLanguage
-  ];
+  const {
+    endDateSelectorPrompt,
+    viewReportButton,
+    viewPrompt
+  } = LANGUAGE_STRINGS[currentLanguage];
   const date = ctx.match[0].replace("calendar-telegram-date-", "");
 
   await ctx.answerCbQuery();
@@ -144,7 +146,7 @@ handleDateSelection.action(/calendar-telegram-date-[\d-]+/g, async ctx => {
     // без дополнительного действия со стороны пользователя не получается перейти из обработичка внутри Compose к
     // к следующему шагу сцены, поэтому кидаем кнопку
     await ctx.reply(
-      "<b>Click to view report!</b>",
+      viewPrompt,
       Extra.HTML().markup(m =>
         m.inlineKeyboard([m.callbackButton(viewReportButton, "doesn't matter")])
       )
