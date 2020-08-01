@@ -20,12 +20,11 @@ const sheets = require("./sheets/index");
 const metrikaAuth = require("./yandex_metrika/auth");
 
 const { COMMON_LANGUAGE_STRINGS } = require("./constants/lang");
+const { GIPHY_BASE_URL } = require("./constants/apiEndpoints");
 
 let tokenStorage = {};
 let metrikaAccessToken;
 let currentLanguage = "en";
-
-const { enter, leave } = Stage;
 
 //const BOT_TOKEN = "1204951589:AAHZj8hJCHf1YyJvKm4Ba8xh6_Cz6dEA3Sg";
 
@@ -41,7 +40,6 @@ const WEATHERBIT_KEY = "7a35bcf113274c5da5b570ce3e4a47b7";
 const WEATHERBIT_BASE_URL = "https://api.weatherbit.io/v2.0/current";
 
 const GIPHY_API_KEY = "YVsAQADzVJvmOt52rXTtkJXijApmIa7Y";
-const GIPHY_BASE_URL = "https://api.giphy.com/v1/gifs/search";
 
 const bot = new Telegraf(process.env.BOT_TOKEN, {
   // Telegram options
@@ -386,6 +384,8 @@ app.get(
 
 app.listen(process.env.PORT, async () => {
   console.log(`App is listening on port ${process.env.PORT}!`);
+  console.log(`Bot token ${process.env.BOT_TOKEN}!`);
+
   try {
     const response = await axios.get(
       "https://telegraf-bot-graphql-server.herokuapp.com/.well-known/apollo/server-health"
