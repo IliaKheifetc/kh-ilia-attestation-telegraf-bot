@@ -84,6 +84,7 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
 
   const { data: reportName } = ctx.update.callback_query || {};
 
+  // тип отчета введен неправильно первый раз
   if (
     !Object.values(REPORTS).includes(reportName) &&
     !dataReportParams.reportName
@@ -92,7 +93,9 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
     return ctx.wizard.back();
   }
 
-  await ctx.answerCbQuery();
+  if (ctx.update.callback_query) {
+    await ctx.answerCbQuery();
+  }
 
   dataReportParams.reportName = reportName;
 
