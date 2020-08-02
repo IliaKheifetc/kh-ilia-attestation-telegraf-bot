@@ -22,7 +22,12 @@ const metrikaAuth = require("./yandex_metrika/auth");
 const { COMMON_LANGUAGE_STRINGS } = require("./constants/lang");
 const { GIPHY_BASE_URL } = require("./constants/apiEndpoints");
 
-let tokenStorage = {};
+let tokenStorage = {
+  googleSheetsAccessToken: {},
+  metrikaAccessToken: {}
+};
+// let tokenStorage = {};
+
 let metrikaAccessToken;
 let currentLanguage = "en";
 
@@ -174,16 +179,24 @@ bot.command("run_javascript", ctx => {
 });
 
 bot.command("sheets_update", ctx => {
+  const { id: chatId } = ctx.chat;
+
+  console.log("tokenStorage", JSON.stringify(tokenStorage));
+
   ctx.scene.enter("googleSheets", {
     currentLanguage,
-    googleSheetsAccessToken: tokenStorage.googleSheetsAccessToken
+    googleSheetsAccessToken: tokenStorage.googleSheetsAccessToken[chatId]
   });
 });
 
 bot.command("yandex_metrika_start", ctx => {
+  const { id: chatId } = ctx.chat;
+
+  console.log("tokenStorage", JSON.stringify(tokenStorage));
+
   ctx.scene.enter("yandexMetrika", {
     currentLanguage,
-    metrikaAccessToken: tokenStorage.metrikaAccessToken,
+    metrikaAccessToken: tokenStorage.metrikaAccessToken[chatId],
     calendar
   });
 });
@@ -237,7 +250,11 @@ bot.command("gif", async ctx => {
 bot.hears("d", ctx => ctx.reply("🍆"));
 bot.hears("today", ctx => ctx.reply(new Date()));
 
-const authCommandHandler = ({ getAuthUrl, authServerName, apiName }) => ctx => {
+const createAuthCommandHandler = ({
+  getAuthUrl,
+  authServerName,
+  apiName
+}) => ctx => {
   console.log("ctx.chat", JSON.stringify(ctx.chat));
   const { id: chatId } = ctx.chat;
   const extraParams = { state: `chatId${chatId}` };
@@ -267,7 +284,9 @@ const createExchangeConfirmationCodeForTokenHandler = ({
   ];
 
   res.render("confirmationCode", { authServerName });
-  tokenStorage[tokenName] = await getToken(code);
+  tokenStorage[tokenName][chatId] = await getToken(code);
+
+  console.log("tokenStorage", JSON.stringify(tokenStorage));
 
   if (chatId) {
     telegram.sendMessage(chatId, authorizedSuccessfullyMessage);
@@ -276,14 +295,14 @@ const createExchangeConfirmationCodeForTokenHandler = ({
 
 bot.command(
   "sheets_auth",
-  authCommandHandler({
+  createAuthCommandHandler({
     getAuthUrl: sheets.getAuthUrlAndClient,
     authServerName: "Google",
     apiName: "Google Sheets API"
   })
 );
 
-const handleYandexMetrikaAuth = authCommandHandler({
+const handleYandexMetrikaAuth = createAuthCommandHandler({
   getAuthUrl: metrikaAuth.getAuthUrl,
   authServerName: "Yandex",
   apiName: "Yandex Metrika API"
