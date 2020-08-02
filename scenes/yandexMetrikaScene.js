@@ -84,6 +84,9 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
 
   const { data: reportName } = ctx.update.callback_query || {};
 
+  if (ctx.update.callback_query) {
+    await ctx.answerCbQuery();
+  }
   // тип отчета введен неправильно первый раз
   if (
     !Object.values(REPORTS).includes(reportName) &&
@@ -91,10 +94,6 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
   ) {
     await ctx.reply(reportTypeError);
     return ctx.wizard.back();
-  }
-
-  if (ctx.update.callback_query) {
-    await ctx.answerCbQuery();
   }
 
   dataReportParams.reportName = reportName;
@@ -123,12 +122,14 @@ const saveTimeIntervalAndShowCalendar = async ctx => {
     currentLanguage
   ];
 
+  if (ctx.update.callback_query) {
+    await ctx.answerCbQuery();
+  }
+
   if (!TIME_INTERVALS.includes(timeIntervalName)) {
     await ctx.reply(timeIntervalTypeError);
     return ctx.wizard.back();
   }
-
-  await ctx.answerCbQuery();
 
   dataReportParams.timeIntervalName = timeIntervalName;
 
