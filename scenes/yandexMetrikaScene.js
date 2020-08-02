@@ -84,12 +84,12 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
 
   const { data: reportName } = ctx.update.callback_query || {};
 
-  await ctx.answerCbQuery();
-
   if (!Object.values(REPORTS).includes(reportName)) {
-    ctx.reply(reportTypeError);
+    await ctx.reply(reportTypeError);
     return ctx.wizard.back();
   }
+
+  await ctx.answerCbQuery();
 
   ctx.wizard.state.dataReportParams = {
     reportName
@@ -119,12 +119,12 @@ const saveTimeIntervalAndShowCalendar = async ctx => {
     currentLanguage
   ];
 
-  await ctx.answerCbQuery();
-
   if (!TIME_INTERVALS.includes(timeIntervalName)) {
-    ctx.reply(timeIntervalTypeError);
+    await ctx.reply(timeIntervalTypeError);
     return ctx.wizard.back();
   }
+
+  await ctx.answerCbQuery();
 
   dataReportParams.timeIntervalName = timeIntervalName;
 
