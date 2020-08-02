@@ -196,6 +196,7 @@ bot.command("yandex_metrika_start", ctx => {
 
   ctx.scene.enter("yandexMetrika", {
     currentLanguage,
+    dataReportParams: {},
     metrikaAccessToken: tokenStorage.metrikaAccessToken[chatId],
     calendar
   });

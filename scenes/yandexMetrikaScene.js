@@ -75,7 +75,7 @@ const showReportTypeSelector = ctx => {
 };
 
 const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
-  const { currentLanguage } = ctx.wizard.state;
+  const { currentLanguage, dataReportParams } = ctx.wizard.state;
   const {
     reportTypeError,
     selectTimeIntervalPrompt,
@@ -84,16 +84,17 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
 
   const { data: reportName } = ctx.update.callback_query || {};
 
-  if (!Object.values(REPORTS).includes(reportName)) {
+  if (
+    !Object.values(REPORTS).includes(reportName) &&
+    !dataReportParams.reportName
+  ) {
     await ctx.reply(reportTypeError);
     return ctx.wizard.back();
   }
 
   await ctx.answerCbQuery();
 
-  ctx.wizard.state.dataReportParams = {
-    reportName
-  };
+  dataReportParams.reportName = reportName;
 
   ctx.reply(
     `<b>${selectTimeIntervalPrompt}</b>`,
