@@ -71,7 +71,8 @@ const GOOGLE_SHEETS_LANGUAGE_STRINGS = {
     enterRowNumberPrompt: "<b>Enter # of the row where to write your data</b>",
     enterCellsValuesPrompt:
       "<b>Enter data for cells, separating each cell value by a ';'</b>",
-    notAuthorized: "Please log in using <b>/sheets_auth</b> command"
+    notAuthorized: "Please log in using <b>/sheets_auth</b> command",
+    rowNumberTypeError: "Row number must be a number"
   },
   ru: {
     dataSuccessfullyWritten:
@@ -81,7 +82,8 @@ const GOOGLE_SHEETS_LANGUAGE_STRINGS = {
     enterCellsValuesPrompt:
       "<b>Введите данные ячеек строки, используя ';' как разделитель</b>",
     notAuthorized:
-      "Пожалуйста, авторизуйтесь, используя команду <b>/sheets_auth</b>"
+      "Пожалуйста, авторизуйтесь, используя команду <b>/sheets_auth</b>",
+    rowNumberTypeError: "Номер строки должен быть числом"
   }
 };
 

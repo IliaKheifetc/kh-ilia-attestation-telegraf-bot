@@ -24,10 +24,16 @@ const googleSheetsScene = new WizardScene(
   },
   ctx => {
     const { currentLanguage } = ctx.wizard.state;
-    const { enterCellsValuesPrompt } = GOOGLE_SHEETS_LANGUAGE_STRINGS[
-      currentLanguage
-    ];
+    const {
+      enterCellsValuesPrompt,
+      rowNumberTypeError
+    } = GOOGLE_SHEETS_LANGUAGE_STRINGS[currentLanguage];
     const { text: rowNumber } = ctx.update.message;
+
+    if (isNaN(Number(rowNumber))) {
+      ctx.reply(rowNumberTypeError);
+      return ctx.wizard.back();
+    }
 
     ctx.wizard.state.inputData = {
       rowNumber
