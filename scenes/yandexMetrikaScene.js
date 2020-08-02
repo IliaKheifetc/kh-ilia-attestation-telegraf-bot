@@ -84,6 +84,8 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
 
   const { data: reportName } = ctx.update.callback_query || {};
 
+  await ctx.answerCbQuery();
+
   if (!Object.values(REPORTS).includes(reportName)) {
     ctx.reply(reportTypeError);
     return ctx.wizard.back();
@@ -92,8 +94,6 @@ const saveReportTypeAndShowTimeIntervalSelector = async ctx => {
   ctx.wizard.state.dataReportParams = {
     reportName
   };
-
-  await ctx.answerCbQuery();
 
   ctx.reply(
     `<b>${selectTimeIntervalPrompt}</b>`,
@@ -119,14 +119,14 @@ const saveTimeIntervalAndShowCalendar = async ctx => {
     currentLanguage
   ];
 
+  await ctx.answerCbQuery();
+
   if (!TIME_INTERVALS.includes(timeIntervalName)) {
     ctx.reply(timeIntervalTypeError);
     return ctx.wizard.back();
   }
 
   dataReportParams.timeIntervalName = timeIntervalName;
-
-  await ctx.answerCbQuery();
 
   ctx.reply(startDateSelectorPrompt, calendar.getCalendar());
   return ctx.wizard.next();
