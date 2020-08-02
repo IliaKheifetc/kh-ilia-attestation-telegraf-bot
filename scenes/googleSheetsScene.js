@@ -1,6 +1,7 @@
 const WizardScene = require("telegraf/scenes/wizard");
 const { oAuth2Client } = require("../sheets/index");
 const { google } = require("googleapis");
+const { isNumber } = require("lodash");
 
 const { GOOGLE_SHEETS_LANGUAGE_STRINGS } = require("../constants/lang");
 
@@ -30,7 +31,7 @@ const googleSheetsScene = new WizardScene(
     } = GOOGLE_SHEETS_LANGUAGE_STRINGS[currentLanguage];
     const { text: rowNumber } = ctx.update.message;
 
-    if (isNaN(Number(rowNumber))) {
+    if (!isNumber(rowNumber)) {
       ctx.reply(rowNumberTypeError);
       return ctx.wizard.back();
     }

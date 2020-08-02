@@ -28,6 +28,7 @@ const YANDEX_LANGUAGE_STRINGS = {
       newVisitors: "New visitors",
       browsers: "Browsers"
     },
+    reportTypeError: "You entered unsupported/wrong report name",
     timeIntervalSelectorButtonsLabels: {
       day: "day",
       week: "week",
@@ -35,6 +36,7 @@ const YANDEX_LANGUAGE_STRINGS = {
       quarter: "quarter",
       year: "year"
     },
+    timeIntervalTypeError: "You entered unsupported/wrong time interval",
     startDateSelectorPrompt: "Select start date",
     endDateSelectorPrompt: "Select end date",
     viewPrompt: "<b>Click to view report!</b>",
@@ -50,6 +52,7 @@ const YANDEX_LANGUAGE_STRINGS = {
       newVisitors: "Новые посетители",
       browsers: "Браузеры"
     },
+    reportTypeError: "Вы ввели неподдерживаемый/некорректный тип отчета",
     timeIntervalSelectorButtonsLabels: {
       day: "День",
       week: "Неделя",
@@ -57,6 +60,7 @@ const YANDEX_LANGUAGE_STRINGS = {
       quarter: "Квартал",
       year: "Год"
     },
+    timeIntervalTypeError: "Вы ввели неподдерживаемый/некорректный тип временного интервала",
     startDateSelectorPrompt: "Выберите начальную дату",
     endDateSelectorPrompt: "Выберите конечную дату",
     viewPrompt: "<b>Нажмите, чтобы просмотреть отчет!</b>",
