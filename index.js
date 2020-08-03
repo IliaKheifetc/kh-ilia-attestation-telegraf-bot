@@ -124,7 +124,19 @@ const init = async () => {
 
 init();
 
-bot.start(ctx => ctx.reply("Welcome"));
+bot.start(ctx =>
+  ctx.reply(`Привет, в этом боте можно использовать следующие команды:\n
+  /hi - бот ответит приветствием\n
+  /select_language - позволяет выбрать русский или английский язык\n
+  /weather - получить информацию о погоде\n
+  /gif - получить gif'ку по какому ключевому слову\n
+  /translate_text - перевести текст\n
+  /sheets_auth - авторизоваться в Google Sheets API\n
+  /sheets_update - записать данные в гугл балицу\n
+  /yandex_metrika_auth - авторизоваться в API Яндекс метрик
+  /yandex_metrika_start - сформировать и получить отчет по метрикам
+`)
+);
 
 bot.command("show_keyboard", ctx => {
   const keyboard = Markup.keyboard([
