@@ -1,0 +1,16 @@
+table,
+th,
+td {
+  /*border: 2px solid black;*/
+  /*border-collapse: collapse;*/
+}
+
+body .table {
+  width: 70%;
+  margin: 0 auto;
+}
+
+th,
+td {
+  padding: 7px 12px;
+}

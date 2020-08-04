@@ -26,6 +26,7 @@ let tokenStorage = {
   googleSheetsAccessToken: {},
   metrikaAccessToken: {}
 };
+let dataStorage = {};
 // let tokenStorage = {};
 
 let metrikaAccessToken;
@@ -212,7 +213,8 @@ bot.command("yandex_metrika_start", ctx => {
     currentLanguage,
     dataReportParams: {},
     metrikaAccessToken: tokenStorage.metrikaAccessToken[chatId],
-    calendar
+    calendar,
+    dataStorage
   });
 });
 
@@ -387,7 +389,12 @@ app.use(
     "/136232b3e2829f06066cb7da2cf72f732899f44353cfbc0467cc7f298d4806ac"
   )
 );
-app.use(express.static(path.join(__dirname, "static")));
+
+app.use(
+  express.static(path.join(__dirname, "/static"), {
+    extensions: ["css", "html"]
+  })
+);
 
 app.get(
   "/oauth2callback",
@@ -408,6 +415,47 @@ app.get(
     tokenStorage
   })
 );
+
+const reportData = {
+  headers: ["Mетрики", "Даты", "Значения"],
+  rows: [
+    {
+      datesRange: "2020-07-13 - 2020-07-19",
+      metricsValues: [16309, 4646],
+      name: "2020-07-13 - 2020-07-19",
+      __typename: "ReportRowData"
+    },
+    {
+      name: "2020-07-20 - 2020-07-26",
+      metricsValues: [16184, 4625],
+      datesRange: "2020-07-20 - 2020-07-26",
+      __typename: "ReportRowData"
+    },
+    {
+      name: "2020-07-06 - 2020-07-12",
+      metricsValues: [14540, 4464],
+      datesRange: "2020-07-06 - 2020-07-12",
+      __typename: "ReportRowData"
+    },
+    {
+      name: "2020-07-27 - 2020-07-29",
+      metricsValues: [10177, 3611],
+      datesRange: "2020-07-27 - 2020-07-29",
+      __typename: "ReportRowData"
+    },
+    {
+      name: "2020-07-01 - 2020-07-05",
+      metricsValues: [6037, 2634],
+      datesRange: "2020-07-01 - 2020-07-05",
+      __typename: "ReportRowData"
+    }
+  ]
+};
+
+app.get("/reportTable", (req, res) => {
+  const { headers, rows } = dataStorage.reportTable;
+  res.render("report", { headers, rows });
+});
 
 app.listen(process.env.PORT, async () => {
   console.log(`App is listening on port ${process.env.PORT}!`);

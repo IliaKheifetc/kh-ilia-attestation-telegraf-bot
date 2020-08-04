@@ -16,6 +16,7 @@ const {
   sortByMetricValueDesc
 } = require("../utils/yandexMetrika");
 const { createDiagram } = require("../diagramBuilder");
+const {} = require("../puppeteer");
 
 // constants
 const {
@@ -221,7 +222,8 @@ const fetchReportData = async ctx => {
 
   const {
     dataReportParams: { date1, date2, reportName, timeIntervalName },
-    metrikaAccessToken
+    metrikaAccessToken,
+    dataStorage
   } = ctx.wizard.state;
 
   const variablesByReportName = VARIABLES_BY_REPORT_NAME[reportName];
@@ -257,12 +259,22 @@ const fetchReportData = async ctx => {
     const reportRows = sort(reportData.reportRows);
 
     console.log("sorted reportRows", reportRows);
+    const headers = TABLE_HEADER_BY_REPORT_NAME[reportName];
 
     const table = createTable({
       tableRows: reportRows,
-      headersDict: TABLE_HEADER_BY_REPORT_NAME[reportName],
+      headersDict: headers,
       name: TABLE_LABELS_BY_REPORT_NAME[reportName]
     });
+
+    dataStorage.reportTable = { headers, rows };
+    const screenShotFileName = "table.png";
+    await createScreenshot(screenShotFileName);
+
+    await ctx.replyWithPhoto({
+      source: fs.readFileSync(`./${screenShotFileName}`)
+    });
+
     console.log(table);
     ctx.replyWithHTML(table, { parse_mode: "HTML" });
 
