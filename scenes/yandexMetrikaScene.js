@@ -16,7 +16,7 @@ const {
   sortByMetricValueDesc
 } = require("../utils/yandexMetrika");
 const { createDiagram } = require("../diagramBuilder");
-const {} = require("../puppeteer");
+const { createScreenshot } = require("../puppeteer");
 
 // constants
 const {
