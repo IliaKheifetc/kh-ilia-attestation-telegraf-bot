@@ -457,7 +457,7 @@ const reportData = {
 };
 
 app.get("/reportTable", (req, res) => {
-  const { headers, rows } = reportData; //dataStorage.reportTable;
+  const { headers, rows } = dataStorage.reportTable;
   res.render("report", { headers, rows });
 });
 
