@@ -3,7 +3,7 @@ const { DOMAIN_NAME_URL } = require("./constants/index");
 
 module.exports = {
   createScreenshot: async screenShotFileName => {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({ args: ["--no-sandbox"] });
     const page = await browser.newPage();
     await page.goto(`${DOMAIN_NAME_URL}reportTable`);
     await page.screenshot({ path: screenShotFileName });
