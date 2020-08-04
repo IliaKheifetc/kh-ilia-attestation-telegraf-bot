@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env BOT_TOKEN=1204951589:AAHZj8hJCHf1YyJvKm4Ba8xh6_Cz6dEA3Sg PORT=1234 nodemon index.js",
+    "dev": "cross-env PORT=1234 nodemon index.js",
     "start": "node index.js"
   },
   "author": "",

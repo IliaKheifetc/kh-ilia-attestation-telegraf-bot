@@ -267,7 +267,7 @@ const fetchReportData = async ctx => {
       name: TABLE_LABELS_BY_REPORT_NAME[reportName]
     });
 
-    dataStorage.reportTable = { headers, rows };
+    dataStorage.reportTable = { headers, rows: reportRows };
     const screenShotFileName = "table.png";
     await createScreenshot(screenShotFileName);
 
