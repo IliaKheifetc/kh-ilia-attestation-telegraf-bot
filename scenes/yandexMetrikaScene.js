@@ -229,49 +229,52 @@ const fetchReportData = async ctx => {
   if (!variablesByReportName) {
     return ctx.reply("The specified report is not supported");
   }
-
-  const {
-    data: { reportData }
-  } = await apolloClient.query({
-    query: getReportData,
-    variables: {
-      ...DEFAULT_VARIABLES,
-      ...variablesByReportName,
-      date1,
-      date2,
-      timeIntervalName
-    },
-    context: {
-      headers: {
-        authorization: metrikaAccessToken
+  try {
+    const {
+      data: { reportData }
+    } = await apolloClient.query({
+      query: getReportData,
+      variables: {
+        ...DEFAULT_VARIABLES,
+        ...variablesByReportName,
+        date1,
+        date2,
+        timeIntervalName
+      },
+      context: {
+        headers: {
+          authorization: metrikaAccessToken
+        }
       }
+    });
+
+    if (!reportData) {
+      ctx.reply("Error occurred when getting data, sorry");
+      return ctx.scene.leave();
     }
-  });
 
-  if (!reportData) {
-    ctx.reply("Error occurred when getting data, sorry");
-    return ctx.scene.leave();
+    const sort = SORT_BY_REPORT_NAME[reportName];
+    const reportRows = sort(reportData.reportRows);
+
+    console.log("sorted reportRows", reportRows);
+
+    const table = createTable({
+      tableRows: reportRows,
+      headersDict: TABLE_HEADER_BY_REPORT_NAME[reportName],
+      name: TABLE_LABELS_BY_REPORT_NAME[reportName]
+    });
+    console.log(table);
+    ctx.replyWithHTML(table, { parse_mode: "HTML" });
+
+    const getValues = VALUES_MAKERS_BY_REPORT_NAME[reportName];
+    const chartDataValues = getValues(reportRows);
+    console.log("chartDataValues", chartDataValues);
+    const fileName = await createDiagram(chartDataValues, reportName);
+
+    ctx.replyWithPhoto({ source: fs.readFileSync(`./${fileName}`) });
+  } catch (e) {
+    console.error("Error occurred when getting report data", e);
   }
-
-  const sort = SORT_BY_REPORT_NAME[reportName];
-  const reportRows = sort(reportData.reportRows);
-
-  console.log("sorted reportRows", reportRows);
-
-  const table = createTable({
-    tableRows: reportRows,
-    headersDict: TABLE_HEADER_BY_REPORT_NAME[reportName],
-    name: TABLE_LABELS_BY_REPORT_NAME[reportName]
-  });
-  console.log(table);
-  ctx.replyWithHTML(table, { parse_mode: "HTML" });
-
-  const getValues = VALUES_MAKERS_BY_REPORT_NAME[reportName];
-  const chartDataValues = getValues(reportRows);
-  console.log("chartDataValues", chartDataValues);
-  const fileName = await createDiagram(chartDataValues, reportName);
-
-  ctx.replyWithPhoto({ source: fs.readFileSync(`./${fileName}`) });
 
   return ctx.scene.leave();
 };
