@@ -13,7 +13,7 @@ console.log("indexModule", indexModule);
 const httpLink = createHttpLink({
   uri:
     process.env.NODE_ENV === "production"
-      ? "https://telegraf-bot-graphql-server.herokuapp.com/ "
+      ? "https://telegraf-bot-graphql-server.herokuapp.com/graphql"
       : "http://localhost:4055",
   fetch: fetch
 });
