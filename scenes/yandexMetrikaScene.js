@@ -31,6 +31,8 @@ const {
   YANDEX_LANGUAGE_STRINGS: LANGUAGE_STRINGS
 } = require("../constants/lang");
 
+const SCREENSHOT_FILE_NAME = "table.png";
+
 const compose = (f1, f2) => data => f1(f2(data));
 
 const VALUES_MAKERS_BY_REPORT_NAME = {
@@ -268,15 +270,14 @@ const fetchReportData = async ctx => {
     });
 
     dataStorage.reportTable = { headers, rows: reportRows };
-    const screenShotFileName = "table.png";
-    await createScreenshot(screenShotFileName);
+
+    await createScreenshot(SCREENSHOT_FILE_NAME);
 
     await ctx.replyWithPhoto({
-      source: fs.readFileSync(`./${screenShotFileName}`)
+      source: fs.readFileSync(`./${SCREENSHOT_FILE_NAME}`)
     });
 
-    console.log(table);
-    ctx.replyWithHTML(table, { parse_mode: "HTML" });
+    await ctx.replyWithHTML(table, { parse_mode: "HTML" });
 
     const getValues = VALUES_MAKERS_BY_REPORT_NAME[reportName];
     const chartDataValues = getValues(reportRows);

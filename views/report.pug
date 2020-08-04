@@ -6,10 +6,9 @@ table(class="table table-striped")
     thead(class="thead-light")
         tr
             each header in headers
-                th= header
+                th= header.rusName
     tbody
-        each row, n in rows
+        each row, rowNumber in rows
             tr
-                td= n
-                td= row.datesRange
-                td= row.metricsValues
+                each header, n in headers
+                    td= (n === 0 ? rowNumber : row[headers[n].key])

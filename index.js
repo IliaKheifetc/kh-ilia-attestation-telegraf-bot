@@ -417,7 +417,11 @@ app.get(
 );
 
 const reportData = {
-  headers: ["Mетрики", "Даты", "Значения"],
+  headers: [
+    { key: "#", rusName: "#" },
+    { key: "datesRange", rusName: "Даты" },
+    { key: "metricsValues", rusName: "Значения" }
+  ],
   rows: [
     {
       datesRange: "2020-07-13 - 2020-07-19",
@@ -453,7 +457,7 @@ const reportData = {
 };
 
 app.get("/reportTable", (req, res) => {
-  const { headers, rows } = dataStorage.reportTable;
+  const { headers, rows } = reportData; //dataStorage.reportTable;
   res.render("report", { headers, rows });
 });
 
