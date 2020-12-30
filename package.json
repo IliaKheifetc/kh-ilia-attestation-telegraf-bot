@@ -28,7 +28,7 @@
     "qs": "^6.9.4",
     "telegraf": "^3.38.0",
     "telegraf-calendar-telegram": "^1.5.8",
-    "vega": "^5.13.0"
+    "vega": "^5.17.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.4"
