@@ -25,7 +25,7 @@
     "open": "^7.1.0",
     "pug": "^3.0.0",
     "puppeteer": "^5.2.1",
-    "qs": "^6.9.4",
+    "qs": "^6.9.7",
     "telegraf": "^3.38.0",
     "telegraf-calendar-telegram": "^1.5.8",
     "vega": "^5.13.0"
